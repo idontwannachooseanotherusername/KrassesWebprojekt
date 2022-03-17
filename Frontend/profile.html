@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>Page Layout</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <style>
+            body{
+                font-family: "Arial";
+                margin: 0;
+                padding: 0;
+                background: #212121;
+                color: #fdfdfd;
+            }
+            main{
+                clear: both;
+            }
+            .main-menu{
+                overflow:hidden; 
+                /*margin-bottom:50px;*/
+                width:100%;
+                background: #191919;
+                color:white; 
+                position: -webkit-sticky; /* Safari */
+                position: sticky;
+                top: 0;
+                z-index: 100;
+                box-shadow: 0 4px 9px black;
+            }
+            .main-menu ul{
+                list-style-type: none;
+                padding: 0;
+                text-align: center;
+            }
+            .main-menu li{
+                display: inline;
+                padding: 7px 15px;
+            }
+            .main-menu a{
+                color: unset;
+                text-decoration:none;
+                cursor: pointer;
+            }
+            .main-menu .active{
+                border-bottom: 1px solid #00e1c2;
+            }
+            .login-button{
+                background: #00e1c2;
+                border-radius: 5px;
+            }
+            .login-button:hover{
+                font-weight: bold;
+            }
+            .background{
+                background-image: url("image.jpg");
+                background-position: bottom;
+                height: 270px;
+                position: relative;
+                margin-bottom: 80px;
+            }
+            .background div{
+                text-align: center;
+                margin: 0;
+                position: absolute;
+                top: 50%;
+                -ms-transform: translateY(-50%);
+                transform: translateY(-50%);
+                width: 100%;
+                text-shadow: 0 0 20px black;
+            }
+            main{
+                width: 100%;
+                margin: 0 auto;
+            }
+            article{
+                width: 80%;
+                margin: 0 auto;
+            }
+            .item-wrapper{
+                width: 100%;
+                background: #ffffff10;
+                height: 350px;
+            }
+            .item{
+                float: left;
+                width: 31%;
+                margin: 3% 1%;
+                text-align: center;
+                min-width: 250px;
+            }
+            .item img{
+                height: 150px;
+                border-radius: 3px;
+                box-shadow: 0 0 5px black;
+            }
+            .profile-header{
+                    position: relative;
+                    top: -40px;
+                    margin: -120px 20%;
+                    margin-bottom: -80px;
+                    overflow: auto;
+                    text-align: center;
+
+            }
+            .profile-picture{
+
+                float: left;
+                height: 170px;
+                width: 170px;
+                border-radius: 12px;
+                border: 8px solid #212121;
+            }
+            .user-name{
+                font-size: 2.6em;
+                float: left;
+                padding: 60px 2%;
+            }
+        </style>
+    </head>
+     
+    <body>
+        <noscript>
+            <p>Please enable JavaScript so we can track and blackmail you!</p>
+        </noscript>
+        <header>
+        </header>
+        <nav class="main-menu">
+            <ul>
+                <li class="active"><a href="#">Home</a></li>
+                <li><a href="/challenges">Challenges</a></li>
+                <li class="login-button"><a href="/login">Login</a></li>
+            </ul>
+        </nav>
+        <section class="background"></section>
+        <div class="profile-header">
+            <img src="image.jpg" class="profile-picture">
+            <p class="user-name">
+                Username
+            </p>
+        </div>
+        <main>
+            <article>
+            <h1>Our great website</h1>
+            <p>
+                Here you can read a description.
+            </p>
+            </article>
+            <section class="item-wrapper">
+                <div class="item">
+                    <img src="Kachel.png">
+                    <h2>Solve Mysteries</h2>
+                    <p>
+                        Train your brain by solving riddles and puzzles
+                        from thousands of other users.
+                    </p>
+                </div>
+                <div class="item">
+                    <img src="Kachel.png">
+                    <h2>Create your own</h2>
+                    <p>
+                        Become the master of your own mysterys and see
+                        how others have a tough time to solve them.
+                    </p>
+                </div>
+                <div class="item">
+                    <img src="Kachel.png">
+                    <h2>Collect points</h2>
+                    <p>
+                        Collect points by creating or solving puzzles
+                        to show your friends how cool you are.
+                    </p>
+                </div>
+            </section>
+        </main>
+        <footer>
+        </footer>
+    </body>
+</html>
