@@ -112,9 +112,11 @@ article{
 }
 
 /*---------- CHALLENGES ----------*/
-.challenges:{
+.challenges{
     height: 1200px;
     background: #ffffff10;
+    width: 80%;
+    margin: 0 auto;
 }
 .challenge{
     background: #212121;
