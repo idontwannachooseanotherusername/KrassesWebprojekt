@@ -2,13 +2,13 @@
 ## Hallo 
 ## hey
 ## Planed Features
--Pointsystem
--Hints
--Evaluationsystem
--Searchsystem
--Profile
--Upload System/Framework
+- Pointsystem
+- Hints
+- Evaluationsystem
+- Searchsystem
+- Profile
+- Upload System/Framework
 
 
-and thanks for reading
+and thanks for reading c:
 
