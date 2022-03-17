@@ -145,6 +145,47 @@ article{
     text-align: center;
 }
 
+/*---------- PROFILE ----------*/
+.profile-header{
+    position: relative;
+    top: -40px;
+    margin: -120px 20%;
+    margin-bottom: -80px;
+    overflow: auto;
+    text-align: center;
+}
+.profile-picture{
+
+    float: left;
+    height: 170px;
+    width: 170px;
+    border-radius: 12px;
+    border: 8px solid #212121;
+}
+.user-name{
+    font-size: 2.6em;
+    float: left;
+    padding: 60px 2%;
+}
+
+.background{
+    background-image: url("image.jpg");
+    background-position: bottom;
+    height: 270px;
+    position: relative;
+    margin-bottom: 80px;
+}
+.background div{
+    text-align: center;
+    margin: 0;
+    position: absolute;
+    top: 50%;
+    -ms-transform: translateY(-50%);
+    transform: translateY(-50%);
+    width: 100%;
+    text-shadow: 0 0 20px black;
+}
+
 /*---------- FOOTER ----------*/
 footer{
     margin-top: 200px;
