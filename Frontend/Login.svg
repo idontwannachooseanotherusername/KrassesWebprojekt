@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   viewBox="0 0 377.95277 377.95276"
+   version="1.1"
+   id="svg5"
+   sodipodi:docname="Login.svg"
+   inkscape:version="1.1.1 (3bf5ae0d25, 2021-09-20)"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <g id="layer1">
+    <ellipse
+       style="opacity:0.99;fill:#007969;fill-opacity:1;stroke:none;stroke-width:9.04325;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       id="circle"
+       cx="32.710136"
+       cy="226.31859"
+       rx="16.82531"
+       ry="16.40917" />
+    <path
+       id="waves"
+       style="fill:#007969;fill-opacity:1;stroke:none;"
+       d="M 369.14453 134.9043 C 318.71263 134.57262 319.60823 249.97972 285.08008 259.32617 C 250.55195 268.67261 246.58918 213.88024 201.16016 214.64062 C 155.73115 215.40101 148.15703 300.36314 105.46484 300.36914 C 62.772673 300.37518 64.315999 277.28761 28.162109 277.67578 C 15.750451 277.80904 6.6629252 281.57383 0 286.60547 L 0 377.95312 L 377.95312 377.95312 L 377.95312 138.9707 C 375.14229 136.44357 372.21789 134.92451 369.14453 134.9043 z " />
+  </g>
+</svg>
