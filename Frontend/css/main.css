@@ -1,10 +1,53 @@
-/*---------- MAIN BODY ----------*/
+/*---------- MAIN STYLING ----------*/
 body{
     font-family: "Arial";
     margin: 0;
     padding: 0;
     background: #212121;
     color: #fdfdfd;
+}
+h1{
+    
+}
+h2{
+    color: #00e1c2;
+}
+
+/*---------- BUTTONS ----------*/
+.btn-primary{
+    padding: 15px 35px;
+    background-color: #00e1c2;
+    border: none;
+    border-radius: 3px;
+    text-transform: uppercase;
+    font-size: 1em;
+    text-align: center;
+    box-shadow: 0 0 9px #00000020;
+    transition: 0.3s;
+}
+.btn-primary:hover{
+    scale: 1.05;
+    background-color: #007969;
+    color: white;
+    transition: 0.3s;
+}
+.btn-secondary{
+    padding: 15px 35px;
+    background-color: #007969;
+    color: white;
+    border: none;
+    border-radius: 3px;
+    text-transform: uppercase;
+    font-size: 1em;
+    text-align: center;
+    box-shadow: 0 0 9px #00000020;
+    transition: 0.3s;
+}
+.btn-secondary:hover{
+    scale: 1.05;
+    background-color: #00e1c2;
+    color: #212121;
+    transition: 0.3s;
 }
 
 /*---------- NAVIGATION ----------*/
@@ -49,7 +92,7 @@ body{
 
 /*---------- HOME IMAGE ----------*/
 .top-image{
-    background-image: url("image.jpg");
+    background-image: url("../images/image.jpg");
     background-position: bottom;
     height: 500px;
     position: relative;
@@ -99,7 +142,7 @@ article{
         margin-right: auto;
     }
 }
-@media only screen and (max-width: 400px) {
+@media only screen and (max-width: 500px) {
     .item{
         float: unset;
         width: 90%;
@@ -109,40 +152,116 @@ article{
     height: 150px;
     border-radius: 3px;
     box-shadow: 0 0 9px #00000020;
+    transition: 0.3s;
+}
+.item img:hover{
+    scale: 1.05;
+    box-shadow: 0 0 15px #00000020;
+    transition: 0.3s;
 }
 
 /*---------- CHALLENGES ----------*/
 .challenges{
-    height: 1200px;
-    background: #ffffff10;
     width: 80%;
     margin: 0 auto;
+}
+@media only screen and (max-width: 800px) {
+    .challenges{
+        width: 100%;
+        padding: 40px 0;
+    }
+}
+.challenge-wrapper{
+    background: #ffffff10;
+    padding: 10px;
+    margin: 0 auto;
+    overflow: auto;
 }
 .challenge{
     background: #212121;
     float: left;
+    width: 31%;
+    min-width: 175px;
+    max-width: 500px;
+    border-radius: 9px;
+    height: 300px;
+    margin: 1%;
+}
+@media only screen and (max-width: 800px) {
+    .challenge{
+        float: unset;
+        width: 60%;
+        margin: 30px auto;
+    }
+}
+@media only screen and (max-width: 500px) {
+    .challenge{
+        float: unset;
+        width: 90%;
+    }
+}
+.challenge-color{
+    border-radius: 9px 9px 0 0;
+}
+.challenge-color p{
+    padding: 5px 20px;
+    margin: 0;
+    font-size: 3em;
+    opacity: 0.4;
+}
+.challenge-description{
+    padding: 20px;
+}
+.challenge-description h2{
+    margin-top: 0;
+    /*min-height: 55px;*/
+}
+.challenge img{
+    /*Profile picture of uploader*/
 }
 
 /*---------- LOGIN FORM ----------*/
-.login-form{
+.form-wrapper{
     box-shadow: 0 0 9px black;
     width: 60%;
     min-width: 100px;
     max-width: 500px;
     margin: 200px auto;
-    text-align: center;
     padding: 50px;
     border-radius: 9px;
     
-    background: #00e1c2;
-    background-image: url("Login.svg");
+    background-color: #00e1c2;
+    background-image: url("../images/Login.svg");
     background-repeat: no-repeat;
     background-size: cover;
     color: #212121;
     height: 600px;
 }
+.login-form{
+    margin-top: 60px;
+    text-align: center;
+}
 .login-submit{
     text-align: center;
+    cursor: pointer;
+}
+.login-form input{
+    width: 80%;
+    background: #007969;
+    color: white;
+    border: none;
+    border-radius: 3px;
+    padding: 9px;
+    margin: 7px 0 20px 0;
+}
+.login-form p{
+    text-align: center;
+}
+.login-submit{
+    margin-top: 150px;
+}
+.login-submit:hover{
+    box-shadow: 0 0 17px #00e1c2;
 }
 
 /*---------- PROFILE ----------*/
@@ -169,7 +288,7 @@ article{
 }
 
 .background{
-    background-image: url("image.jpg");
+    background-image: url("../images/image.jpg");
     background-position: bottom;
     height: 270px;
     position: relative;
@@ -196,7 +315,7 @@ footer{
     position: relative;
     
     /*Background image*/
-    background-image: url("Footer2.png");
+    background-image: url("../images/Footer2.png");
     background-repeat: no-repeat;
     background-blend-mode: soft-light;
     background-position: center;
