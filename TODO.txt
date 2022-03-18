@@ -1,0 +1,31 @@
+Overall Ideas:
+
+Overall Small TODOs:
+-Profilepictuer Backgroundcolorpicker
+
+Searchsystem
+-Dificulty
+-Need for special Tools etc.
+
+Profile
+-Pic+Bio
+-Uploads
+-Favorites
+
+Upload System/Framework
+-Title
+-Description
+-File(s)
+-Hints
+--Hint + Pointcost
+
+Evaluationsystem
+-Dificulty
+-Enjoyment/Creativity
+
+Pointsystem
+
+Settings
+-Darkmode
+
+Relevant Fixes
