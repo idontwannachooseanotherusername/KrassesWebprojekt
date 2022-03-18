@@ -17,26 +17,19 @@
         <nav class="main-menu">
             <div class="flex-33"></div>
             <ul>
-                <li class="active"><a href="#">Home</a></li>
-                <li><a href="/challenges">Challenges</a></li>
-                <li class="login-button"><a href="/login">Login</a></li>
+                <li><a href="index.html">Home</a></li>
+                <li><a href="challenges.html">Challenges</a></li>
+                <li class="active"><a href="#">Profile</a></li>
             </ul>
-            <script>
-            </script>
-            <div class="user-dropdown">
-                <img onClick="show_dropdown()" src="images/Kachel.png">
-                <div class="dropdown" id="menu-dropdown">
-                    <p class="dropdown-entry">
-                        Settings
-                    </p>
-                    <p class="dropdown-entry">
-                        Account
-                    </p>
-                    <p class="dropdown-entry">
-                        Logout
-                    </p>
-                </div>
+            <div class="pb-image-wrapper">
+                <img id="pb" onClick="show_dropdown()" src="images/Kachel.png">
             </div>
+            <dl class="dropdown" id="menu-dropdown">
+                <dt class="dropdown-entry">Signed in as<br>Username</dt>
+                <dd class="dropdown-entry"><a href="profile.html">Settings</a></dd>
+                <dd class="dropdown-entry">Account</dd>
+                <dd class="dropdown-entry">Logout</dd>
+            </dl>
         </nav>
         <section class="background"></section>
             <form class="change-pictures">
@@ -52,12 +45,6 @@
                 </div>
             </form>
         <main>
-            <article>
-            <h1>Our great website</h1>
-            <p>
-                Here you can read a description.
-            </p>
-            </article>
             <section class="profile">
                 <article class="profile-customize">
                     <h2>Customize your profile</h2>
