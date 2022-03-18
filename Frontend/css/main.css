@@ -1,4 +1,7 @@
 /*---------- MAIN STYLING ----------*/
+html{
+    scroll-behavior: smooth;
+}
 body{
     font-family: "Arial";
     margin: 0;
@@ -263,6 +266,9 @@ article{
 .login-submit:hover{
     box-shadow: 0 0 17px #00e1c2;
 }
+.form-wrapper h2{
+    color: #242424;
+}
 
 /*---------- PROFILE ----------*/
 .profile-header{
@@ -317,7 +323,7 @@ footer{
     /*Background image*/
     background-image: url("../images/Footer2.png");
     background-repeat: no-repeat;
-    background-blend-mode: soft-light;
+    /*background-blend-mode: soft-light;*/
     background-position: center;
 }
 footer dl{
@@ -331,7 +337,32 @@ footer dt{
     margin: 0
 }
 footer dd{
-    margin: 0
+    margin: 0;
+    opacity: 0.3;
+}
+footer nav{
+    overflow: auto;
+    padding: 60px;
+    font-size: 1.2em;
+}
+footer .btn-to-top{
+    position: absolute;
+    top: 10%;
+    left: 50%;
+    padding: 10px 25px;
+    background-color: #00e1c2;
+    color: #242424;
+    transform: translate(-50%, -50%);
+    z-index: 1000;
+    font-size: 1.5em;
+    border-radius: 3px;
+    box-shadow: 0 0 9px black;
+    text-decoration: none;
+    transition: 0.3s;
+}
+footer .btn-to-top:hover{
+    font-size: 1.9em;
+    transition: 0.3s;
 }
 .copyright{
     /*Stick to bottom of footer*/
