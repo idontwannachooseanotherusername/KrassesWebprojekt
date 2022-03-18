@@ -181,6 +181,19 @@ article{
         padding: 40px 0;
     }
 }
+.challenge-picture{
+    position: relative;
+    right: 15px;
+    top: -50px;
+    float: right;
+    height: 80px;
+    width: 80px;
+    margin: 12px;
+    border-radius: 12px;
+    border: 8px solid #212121;
+
+    background-color: #007969;
+}
 .challenge-wrapper{
     background: #ffffff10;
     padding: 10px;
@@ -292,14 +305,13 @@ article{
         width: 70%;
     }
 }
-
 .profile-picture{
-
     float: left;
     height: 170px;
     width: 170px;
     border-radius: 12px;
     border: 8px solid #212121;
+    background-color: #007969;
 }
 .user-name{
     font-size: 2.6em;
