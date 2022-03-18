@@ -5,6 +5,7 @@
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link rel="stylesheet" type="text/css" href="css/main.css"></link>
+        <script type="text/javascript" src="scripts/main.js"></script>
     </head>
     <body>
         <noscript>
@@ -13,11 +14,21 @@
         <header>
         </header>
         <nav class="main-menu">
+            <div class="flex-33"></div>
             <ul>
                 <li><a href="index.html">Home</a></li>
                 <li><a href="challenges.html">Challenges</a></li>
-                <a href="login.html"><li class="login-button">Login</li></a>
+                <li class="active"><a href="#">Login</a></li>
             </ul>
+            <div class="pb-image-wrapper">
+                <img id="pb" onClick="show_dropdown()" src="images/Kachel.png">
+            </div>
+            <dl class="dropdown" id="menu-dropdown">
+                <dt class="dropdown-entry">Signed in as<br>Username</dt>
+                <dd class="dropdown-entry"><a href="profile.html">Settings</a></dd>
+                <dd class="dropdown-entry">Account</dd>
+                <dd class="dropdown-entry">Logout</dd>
+            </dl>
         </nav>
         <main>
             <div class="form-wrapper">
@@ -25,10 +36,13 @@
                 Enter E-Mail and Password to Log in / Sign up
                 <form class="login-form" action="" method="post">
                     <label for="uname"><b>Username</b></label></br>
-                    <input type="text" placeholder="Enter Username" name="uname" required>
+                    <input type="text" placeholder="Enter Username" id="uname" required>
+                    </br>
+                    <label for="email"><b>Email</b></label></br>
+                    <input type="email" placeholder="user@example.com" id="email" required>
                     </br>
                     <label for="psw"><b>Password</b></label></br>
-                    <input type="password" placeholder="Enter Password" name="psw" required>
+                    <input type="password" placeholder="Enter Password" id="psw" required>
                     <button class="login-submit btn-primary" type="submit">Log in/Sign up</button>
                 </form>
             </div>

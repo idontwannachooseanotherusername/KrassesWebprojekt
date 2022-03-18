@@ -27,6 +27,7 @@ h2{
     text-align: center;
     box-shadow: 0 0 9px #00000020;
     transition: 0.3s;
+    cursor: pointer;
 }
 .btn-primary:hover{
     scale: 1.05;
@@ -45,6 +46,7 @@ h2{
     text-align: center;
     box-shadow: 0 0 9px #00000020;
     transition: 0.3s;
+    cursor: pointer;
 }
 .btn-secondary:hover{
     scale: 1.05;
@@ -55,8 +57,8 @@ h2{
 
 /*---------- NAVIGATION ----------*/
 .main-menu{
-    overflow:hidden; 
-    /*margin-bottom:50px;*/
+    /*overflow:auto;*/
+    height: 50px;
     width:100%;
     background: #191919;
     color:white; 
@@ -71,6 +73,9 @@ h2{
     list-style-type: none;
     padding: 0;
     text-align: center;
+    float: left;
+    width: 34%;
+    margin-top: 12px;
 }
 .main-menu li{
     display: inline;
@@ -94,10 +99,48 @@ h2{
 }
 /*User profile picture when logged in*/
 .user-dropdown{
+    position: relative;
     overflow: auto;
+}
+.dropdown{
+    display: none;
+    overflow: auto;
+    background: #2f2f2f;
+    width: 150px;
+    border-radius: 5px;
+    border: 2px solid #3d3d3d;
+    margin: 0 10px;
     float: right;
-    width: 20px;
-    height: 20px;
+}
+.dropdown dt{
+    font-weight: bold;
+    border-bottom: 1px solid #3d3d3d;
+}
+.dropdown dd a:hover{
+    cursor: pointer;
+    font-weight: bold;
+}
+.dropdown-entry{
+    margin: 0;
+    padding: 7px;
+}
+.pb-image-wrapper{
+    float: left;
+    width: 33%;
+    text-align: right;
+    margin-top: 4px;
+}
+.pb-image-wrapper img{
+    width: 40px;
+    height: 40px;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-right: 10px;
+}
+.flex-33{
+    float: left;
+    width: 33%;
+    height:1px;
 }
 
 /*---------- HOME IMAGE ----------*/
@@ -287,6 +330,30 @@ article{
 }
 .form-wrapper h2{
     color: #242424;
+}
+
+/*---------- PROFILE FORMS ----------*/
+.profile form input, .profile form textarea, .profile form select{
+    background: #ffffff20;
+    color: white;
+    border: none;
+    border-radius: 3px;
+    padding: 9px;
+    margin: 10px 0 20px 0;
+    width: 450px;
+}
+.profile #new-pw{
+    margin-bottom: 0;
+}
+.profile form select{
+    width: 470px;
+}
+/*Image uploads*/
+.change-pictures input[type="file"]{
+    display: none;
+}
+.change-pictures label{
+    cursor: pointer;
 }
 
 /*---------- PROFILE ----------*/

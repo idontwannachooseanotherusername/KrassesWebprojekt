@@ -6,6 +6,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link rel="stylesheet" type="text/css" href="css/main.css"></link>
         <link rel="stylesheet" type="text/css" href="css/levels.css"></link>
+        <script type="text/javascript" src="scripts/main.js"></script>
     </head>
     <body>
         <noscript>
@@ -14,11 +15,21 @@
         <header>
         </header>
         <nav class="main-menu">
+            <div class="flex-33"></div>
             <ul>
                 <li><a href="index.html">Home</a></li>
                 <li class="active"><a href="#">Challenges</a></li>
                 <li class="login-button"><a href="login.html">Login</a></li>
             </ul>
+            <div class="pb-image-wrapper">
+                <img id="pb" onClick="show_dropdown()" src="images/Kachel.png">
+            </div>
+            <dl class="dropdown" id="menu-dropdown">
+                <dt class="dropdown-entry">Signed in as<br>Username</dt>
+                <dd class="dropdown-entry"><a href="profile.html">Settings</a></dd>
+                <dd class="dropdown-entry">Account</dd>
+                <dd class="dropdown-entry">Logout</dd>
+            </dl>
         </nav>
         <main>
             <section class="challenges">
