@@ -30,3 +30,7 @@ window.onclick = e => {
         console.log('Dropdown hidden');
     }
 }
+
+/*
+document.getElementsByClassName("hint").addEventListener("click", displayDate);
+*/
