@@ -39,23 +39,25 @@ Geben weitere Informationen zur Challenge, z.B. ob besondere Kenntnisse oder Mat
  - 3 Stück (Kosten: 0, 20%, 50%)
  - Reduzieren die möglichen Gewinnpunkte
  - Müssen nicht unbedingt angegeben werden
- - Hinweis 1 darf leer sein, die anderen müssen Text enthalten
+ - Hinweis 1 darf leer sein, die anderen müssen Text enthalten (falls sie optional hinzugefügt werden)
  - Zum Kaufen: ChallengeID und HintNr werden an server übergeben, dieser schickt Hint zurück und erniedrigt mögliche gewinnpunkte
 
 ### Bewertung
  - Nach einer gelösten Challenge Pflicht
  - In 1-5 Sternen
- - Ansonsten nur Kommentar möglich
+ - Kommentare vor Abschluss sichtbar bevor Abschluss, alle Kommentare nach Abschluss sichtbar
  - Bewertbar sind Schwierigkeit, Kreativität und Allgemein
 
 ## Profil
+ - E-Mail
+ - PW
  - Profilbild (optional)
  - Profilbanner (optional)
  - Profilname
- - E-Mail
- - PW
+ - Profilbiografie
  - Herkunftsland (optional)
  - (Nachrichten)
+ - Aus Daten ermittelte Darstellung aus letzem Rätsel, bestbewertseses Rätsel
 
 ## Seiten
  - Startseite  
@@ -65,7 +67,8 @@ Geben weitere Informationen zur Challenge, z.B. ob besondere Kenntnisse oder Mat
  -  Login  
     Login & Sign up!
  - Accounteinstellungen
- - (Verwaltung von Abbos)
+    Profilbearbeitung & Passwortupdate
+ - (Verwaltung von Abos)
  - Challenge  
     Beschreibung und Infos der Challenge  
     (Sollte über https://seite/challenge/>ChallengeID< abrufbar sein)
