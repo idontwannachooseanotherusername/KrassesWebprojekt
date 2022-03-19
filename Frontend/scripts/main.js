@@ -33,3 +33,5 @@ window.onclick = e => {
     }
 }
 
+document.getElementsByClassName("hint").addEventListener("click", displayDate);
+
