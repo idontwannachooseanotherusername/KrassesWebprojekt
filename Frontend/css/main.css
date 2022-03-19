@@ -8,6 +8,7 @@ body{
     padding: 0;
     background: #212121;
     color: #fdfdfd;
+    display: grid;
 }
 h1{
     
@@ -330,7 +331,7 @@ article{
     height: 600px;
 }
 .login-form{
-    margin-top: 60px;
+    margin-top: 50px;
     text-align: center;
 }
 .login-submit{
@@ -348,6 +349,10 @@ article{
 }
 .login-form p{
     text-align: center;
+}
+.login-form ::placeholder {
+  color: lightgrey;
+  opacity: 1;
 }
 .login-submit{
     margin-top: 150px;
@@ -377,17 +382,43 @@ form input, form textarea, form select{
     width: 470px;
 }
 /*Image uploads*/
-.change-pictures input[type="file"]{
+.change-banner input[type="file"]{
     display: none;
+
 }
-.change-pictures label{
+.background form{
     cursor: pointer;
+    position: absolute;
+    right: 20px;
+    bottom: -4px;
+    z-index:1;
+}
+.change-banner{
+    position:relative;
+    opacity: 0.3;
+}
+.change-banner:hover{
+    opacity: 0.7;
+}
+.change-picture input[type="file"]{
+    display: none;
+
+}
+.change-picture label{
+    cursor: pointer;
+    left: 70px;
+    top: -45px;;
+    position: relative;
+    opacity: 0.3;
+}
+.change-picture label:hover{
+    opacity: 0.7;
 }
 
 /*---------- PROFILE ----------*/
 .profile-header{
     position: relative;
-    top: -40px;
+    top: -60px;
     margin: -120px 20%;
     margin-bottom: -80px;
     overflow: auto;
@@ -400,9 +431,15 @@ form input, form textarea, form select{
     }
 }
 .profile-picture{
+    display:inline-block;
     float: left;
     height: 170px;
     width: 170px;
+}
+.profile-picture img{
+    height: 170px;
+    width: 170px;
+    border-radius: 12px;
     border-radius: 12px;
     border: 8px solid #212121;
     background-color: #007969;
