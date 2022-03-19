@@ -1,36 +1,36 @@
-.challenge-color.level-1{
+.level-1.level-1{
     background: #00e197;  /*If gradient not supported*/
     background-image: linear-gradient(160deg, #00e197, #007550);
 }
-.challenge-color.level-2{
+.level-2.level-2{
     background: #00e1c2;
     background-image: linear-gradient(160deg, #00e1c2, #006658);
 }
-.challenge-color.level-3{
+.level-3.level-3{
     background: #00e1e1;
     background-image: linear-gradient(160deg, #00e1e1, #006767);
 }
-.challenge-color.level-4{
+.level-4.level-4{
     background: #008de1;
     background-image: linear-gradient(160deg, #008de1, #004066);
 }
-.challenge-color.level-5{
+.level-5.level-5{
     background: #004de1;
     background-image: linear-gradient(160deg, #004de1, #002a7a);
 }
-.challenge-color.level-6{
+.level-6.level-6{
     background: #3100e1;
     background-image: linear-gradient(160deg, #3100e1, #190074);
 }
-.challenge-color.level-7{
+.level-7.level-7{
     background: #5b00e1;
     background-image: linear-gradient(160deg, #5b00e1, #2e0073);
 }
-.challenge-color.level-8{
+.level-8.level-8{
     background: #7b00e1;
     background-image: linear-gradient(160deg, #7b00e1, #420079);
 }
-.challenge-color.level-9{
+.level-9.level-9{
     background: #b000e1;
     background-image: linear-gradient(160deg, #b000e1, #60007a);
 }
