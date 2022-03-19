@@ -9,7 +9,6 @@ function show_dropdown(){
         console.log('Dropdown hidden');
     }
 }
-
 function check_password(){
     let new_pw = document.getElementById("new-pw");
     let rep_pw = document.getElementById("rep-pw");
@@ -24,7 +23,6 @@ function check_password(){
         return true
     }
 }
-
 window.onclick = e => {
     var drop = document.getElementById("menu-dropdown");
     if (!(drop.contains(e.target)) && e.target.getAttribute('id') != "pb"){
@@ -32,4 +30,3 @@ window.onclick = e => {
         console.log('Dropdown hidden');
     }
 }
-
