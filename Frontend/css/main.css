@@ -8,6 +8,7 @@ body{
     padding: 0;
     background: #212121;
     color: #fdfdfd;
+    display: grid;
 }
 h1{
     
@@ -321,6 +322,10 @@ article{
 }
 .login-form p{
     text-align: center;
+}
+.login-form ::placeholder {
+  color: lightgrey;
+  opacity: 1;
 }
 .login-submit{
     margin-top: 150px;
