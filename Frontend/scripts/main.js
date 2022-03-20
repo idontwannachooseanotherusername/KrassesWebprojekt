@@ -1,3 +1,24 @@
+window.onload = function() {
+    /*invert();*/
+};
+
+function invert(){
+    var body = Array.from(document.getElementsByTagName('body'));
+    var images = Array.from(document.getElementsByTagName('img'));
+    var backgrounds = Array.from(document.getElementsByClassName('bg-image'));
+    var levels = Array.from(document.getElementsByClassName('challenge-color'));
+    var borders = Array.from(document.getElementsByClassName('img-border'));
+    body[0].style.backgroundColor = "#fff";
+    
+    var list = [].concat(images, backgrounds, levels, body)
+    for (const e of list){
+        e.style.filter = "invert()";
+    }
+    for (const b of borders){
+        b.style.border = "8px solid #dedede";
+    }
+}
+
 function show_dropdown(){
     var drop = document.getElementById("menu-dropdown");
     if (drop.style.display != "revert"){
