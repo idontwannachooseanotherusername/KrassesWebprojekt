@@ -12,6 +12,9 @@ Profile
 -Uploads
 -Favorites
 
+Global leaderboard
+- Yeah, that's it
+
 Upload System/Framework
 -Title
 -Description
