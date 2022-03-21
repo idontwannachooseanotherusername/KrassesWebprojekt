@@ -257,19 +257,19 @@ article{
 }
 .challenge-picture{
     position: relative;
-    right: 15px;
+    right: 20px;
     top: -50px;
     float: right;
     height: 80px;
     width: 80px;
-    margin: 12px;
+    margin: 0 0 -50px 15px;
     border-radius: 12px;
-    border: 8px solid #212121;
-    background-color: #007969;
+    border: 5px solid #212121;
+    background-color: #2f2f2f;
 }
 .challenge-wrapper{
     background: #ffffff10;
-    padding: 10px;
+    padding: 20px;
     margin: 0 auto;
     display: inline-block;
 }
@@ -303,6 +303,7 @@ article{
 }
 .challenge-color{
     border-radius: 9px 9px 0 0;
+    padding: 20px 0;
 }
 .challenge-color p{
     padding: 5px 20px;
@@ -315,23 +316,35 @@ article{
 }
 .challenge-description h2{
     margin-top: 0;
+    color: #ffffff;
     /*min-height: 55px;*/
 }
 .solution h3{
     margin-bottom: 0;
 }
-.solution form input{
-    max-width: 400px;
-    width: 70%;
+.solution input{
+    width: 100%;
 }
-.solution button{
+.solution div{
     padding: 9px;
     background: #212121;
     color: white;
-    margin: 5px;
+    margin: 5px 5px 13px 30px;
+    margin-bottom: 13px;
     border-radius: 5px;
-    border: none;
     cursor: pointer;
+    width: 25px;
+    height: 25px;
+    text-align: center;
+}
+.solution table{
+    max-width: 700px;
+    width: 70%;
+}
+@media only screen and (max-width: 800px) {
+    .solution table{
+        width: 95%;
+    }
 }
 .challenge img{
     /*Profile picture of uploader*/
@@ -390,7 +403,7 @@ article{
 
 /*---------- PROFILE FORMS ----------*/
 /*General forms*/
-form input, form textarea, form select{
+form input, form textarea, form select, .form-element{
     background: #ffffff20;
     color: white;
     border: none;
@@ -536,6 +549,9 @@ form input, form textarea, form select{
     position: relative;
     overflow: auto;
     display: inline-block;
+}
+.tag-wrapper label{
+    cursor: pointer;
 }
 .challenge-tag{
     /*display: inline-block;*/

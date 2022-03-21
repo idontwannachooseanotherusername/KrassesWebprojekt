@@ -93,16 +93,24 @@
                         </p>
                         <div class="solution">
                             <h3>Enter the solution password:</h3>
-                            <form action="" method="post">
-                                <input type="password" placeholder="super secret password" required>
-                                <button type="submit">✔️</button>
-                            </form>
+                            <table>
+                                <tbody>
+                                    <tr>
+                                        <td>
+                                            <input class="form-element" type="password" placeholder="super secret password" required>
+                                        </td>
+                                        <td>
+                                            <div onClick="check_password()">✔️</div>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
                         </div>
                     </div>
                     <div class="challenge-downloads">
                     </div>
                     <div class="challenge-hints">
-                        <div class="hint hint-1">
+                        <div onClick="get_hint(1)" class="hint hint-1">
                             <h4>Hint 1</h4>
                             <p class="hint-cost">This one is for free.</p>
                             <p class="hint-text">
@@ -111,7 +119,7 @@ Labore mollitia pariatur delectus. Minima eveniet vel consequatur ut. Tempore ut
 Veritatis autem occaecati maxime non nesciunt.
                             </p>
                         </div>
-                        <div class="hint hint-2">
+                        <div onClick="get_hint(2)" class="hint hint-2">
                             <h4>Hint 2</h4>
                             <p class="hint-cost">Will reduce you reward by 20%</p>
                             <p class="hint-text">
@@ -120,7 +128,7 @@ Labore mollitia pariatur delectus. Minima eveniet vel consequatur ut. Tempore ut
 Veritatis autem occaecati maxime non nesciunt.
                             </p>
                         </div>
-                        <div class="hint hint-3">
+                        <div onClick="get_hint(3)" class="hint hint-3">
                             <h4>Hint 3</h4>
                             <p class="hint-cost">Unavailable</p>
                         </div>

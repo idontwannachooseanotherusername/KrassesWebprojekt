@@ -19,13 +19,45 @@ function invert(){
     }
 }
 
-function show_dropdown(){
+function get_hint(level){
+    var selector = "hint-".concat(level).concat(" hint-text");
+    var hint = document.getElementsByClassName("hint-".concat(level))[0];
+    var text = hint.querySelector('.hint-text');
+    if (text != undefined){
+        /*Hint already visible*/
+        if (text.style.filter == "revert"){
+            return
+        }
+        /*First click*/
+        else if (text.classList.contains("confirm") == false){
+            let warning = document.createElement("p");
+            warning.innerHTML = "Are you sure? Click again.";
+            warning.style.color = "orange";
+            hint.appendChild(warning);
+            text.classList.add("confirm");
+            warning.classList.add("warning");
+        }
+        /*Second click*/
+        else{
+            text.style.filter = "revert";
+            let warning = hint.querySelector(".warning")
+            if (warning != undefined){
+                warning.remove();
+                hint.classList.remove("confirm")
+                
+                /*Get hint from server here*/
+                text.innerHTML = "Hint from server."
+            }
+        }
+    }
+}
+function show_dropdown(x=false){
     var drop = document.getElementById("menu-dropdown");
-    if (drop.style.display != "revert"){
+    if (drop.style.display != "revert" && x == false){
         drop.style.display = "revert";
         console.log('Dropdown visible');
     }
-    else{
+    else if (drop.style.display != "none"){
         drop.style.display = "none";
         console.log('Dropdown hidden');
     }
@@ -47,8 +79,7 @@ function check_password(){
 window.onclick = e => {
     var drop = document.getElementById("menu-dropdown");
     if (!(drop.contains(e.target)) && e.target.getAttribute('id') != "pb"){
-        drop.style.display = "none";
-        console.log('Dropdown hidden');
+        show_dropdown(true);
     }
 }
 
