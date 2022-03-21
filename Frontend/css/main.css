@@ -585,13 +585,14 @@ form input, form textarea, form select, .form-element{
 }
 .challenge-information{
     clear: both;
-}
-/*Text / Description*/
-.challenge-text{
     background: #ffffff20;
     border-radius: 7px;
     padding: 20px;
-    margin: 40px 0;
+    margin: 40px auto;
+}
+/*Text / Description*/
+.challenge-text{
+    
 }
 /*Hints*/
 .challenge-hints{
