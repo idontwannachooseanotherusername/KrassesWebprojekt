@@ -157,12 +157,18 @@ header{
     cursor: pointer;
     margin-right: 10px;
 }
+.pb-image-wrapper img:hover{
+    animation-name: hoverup;
+    animation-timing-function: linear;
+    animation-duration: 0.2s;
+    box-shadow: 4px 4px white;
+}
 
 /*---------- HOME IMAGE ----------*/
 .front-image{
     position: absolute;
     right: 3%;
-    top: 60px;
+    top: -95px;
     width: 20%;
     animation-name: fadein;
     animation-timing-function: linear;
@@ -248,9 +254,15 @@ article{
     transition: 0.3s;
 }
 .item img:hover{
+
+    animation-name: hoverup;
+    animation-timing-function: linear;
+    animation-duration: 0.2s;
+    box-shadow: 4px 4px white;
+/*
     scale: 1.05;
     box-shadow: 0 0 15px #00000020;
-    transition: 0.3s;
+    transition: 0.3s;*/
 }
 
 /*---------- CHALLENGES ----------*/
@@ -296,10 +308,12 @@ article{
     border-radius: 9px;
     height: 300px;
     margin: 1%;
-
+}
+.challenge:hover{
     animation-name: hoverup;
     animation-timing-function: linear;
-    animation-duration: 2s;
+    animation-duration: 0.2s;
+    box-shadow: 4px 4px white;
 }
 @media only screen and (max-width: 800px) {
     .challenge{
@@ -359,9 +373,7 @@ article{
         width: 95%;
     }
 }
-.challenge img{
-    /*Profile picture of uploader*/
-}
+
 
 /*---------- LOGIN FORM ----------*/
 .form-wrapper{
@@ -702,6 +714,11 @@ footer .btn-to-top{
 footer .btn-to-top:hover{
     font-size: 1.9em;
     transition: 0.3s;
+    animation-name: hoverup;
+    animation-timing-function: linear;
+    animation-duration: 0.1s;
+    box-shadow: 4px 4px white;
+
 }
 .copyright{
     /*Stick to bottom of footer*/
@@ -719,18 +736,17 @@ footer .btn-to-top:hover{
 /*---------- Animation ----------*/
 @keyframes fadein {
     0% {filter: opacity(0);}
-    25% {filter: opacity(0.4);}
+    25% {filter: opacity(0.1);}
     75% {filter: opacity(0.6);}
     100% {filter: opacity(1);}
-    }
+}
 @keyframes slidein {
     0% {margin: -800px auto;}
     50% {margin: -100px auto;}
     100% {margin: 200px auto;}
-    }
 }
+
 @keyframes hoverup {
     0% {box-shadow: 0px 0px white;}
-    100% {box-shadow: 5px 5px white;}
-    }
+    100% {box-shadow: 4px 4px white;}
 }
