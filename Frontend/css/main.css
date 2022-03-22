@@ -168,7 +168,7 @@ header{
 .front-image{
     position: absolute;
     right: 3%;
-    top: 60px;
+    top: -95px;
     width: 20%;
     animation-name: fadein;
     animation-timing-function: linear;
@@ -736,7 +736,7 @@ footer .btn-to-top:hover{
 /*---------- Animation ----------*/
 @keyframes fadein {
     0% {filter: opacity(0);}
-    25% {filter: opacity(0.4);}
+    25% {filter: opacity(0.1);}
     75% {filter: opacity(0.6);}
     100% {filter: opacity(1);}
 }
