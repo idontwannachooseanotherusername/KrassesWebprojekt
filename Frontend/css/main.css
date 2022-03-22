@@ -159,6 +159,15 @@ header{
 }
 
 /*---------- HOME IMAGE ----------*/
+.front-image{
+    position: absolute;
+    right: 3%;
+    top: 60px;
+    width: 20%;
+    animation-name: fadein;
+    animation-timing-function: linear;
+    animation-duration: 1s;
+}
 .top-image{
     background-image: url("../images/image.jpg");
     background-position: bottom;
@@ -287,6 +296,10 @@ article{
     border-radius: 9px;
     height: 300px;
     margin: 1%;
+
+    animation-name: hoverup;
+    animation-timing-function: linear;
+    animation-duration: 2s;
 }
 @media only screen and (max-width: 800px) {
     .challenge{
@@ -366,6 +379,11 @@ article{
     background-size: cover;
     color: #212121;
     height: 600px;
+
+
+    animation-name: slidein;
+    animation-timing-function: linear;
+    animation-duration: 1s;
 }
 .login-form{
     margin-top: 50px;
@@ -382,7 +400,10 @@ article{
     border: none;
     border-radius: 3px;
     padding: 9px;
-    margin: 7px 0 20px 0;
+    margin: 8px 0 20px 0;
+
+    border: 3px solid #00e1c2;
+
 }
 .login-form p{
     text-align: center;
@@ -392,7 +413,7 @@ article{
   opacity: 1;
 }
 .login-submit{
-    margin-top: 150px;
+    margin-top: 130px;
 }
 .login-submit:hover{
     border: 2px solid #00e1c2;
@@ -693,4 +714,23 @@ footer .btn-to-top:hover{
     text-align: center;
     padding: 20px 0;
     margin: 0;
+}
+
+/*---------- Animation ----------*/
+@keyframes fadein {
+    0% {filter: opacity(0);}
+    25% {filter: opacity(0.4);}
+    75% {filter: opacity(0.6);}
+    100% {filter: opacity(1);}
+    }
+@keyframes slidein {
+    0% {margin: -800px auto;}
+    50% {margin: -100px auto;}
+    100% {margin: 200px auto;}
+    }
+}
+@keyframes hoverup {
+    0% {box-shadow: 0px 0px white;}
+    100% {box-shadow: 5px 5px white;}
+    }
 }
