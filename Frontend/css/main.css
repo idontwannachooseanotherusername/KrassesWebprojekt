@@ -779,3 +779,14 @@ footer .btn-to-top:hover{
     0% {box-shadow: 0px 0px white;}
     100% {box-shadow: 4px 4px white;}
 }
+
+
+/*---------- Errorsite ----------*/
+
+.errorsite{
+    text-align: center;
+
+}
+.errorsite .errorcode{
+    border-bottom: 1px solid #00e1c2;
+}
