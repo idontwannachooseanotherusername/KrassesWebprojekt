@@ -779,3 +779,41 @@ footer .btn-to-top:hover{
     0% {box-shadow: 0px 0px white;}
     100% {box-shadow: 4px 4px white;}
 }
+
+
+/*---------- Errorsite ----------*/
+
+.errorsite{
+    text-align: center;
+    width: 100%;   
+    font-size: 2em;
+    padding-top: 100px;
+
+}
+.errorsite table{
+    margin-left: auto;
+    margin-right: auto;
+
+
+}
+.errorsite .errorcode{
+    background: #00e1c2;
+    border-radius: 5px;
+    font-size: 100px;
+    padding-top: 100px;
+    padding-bottom: 100px;
+    margin: auto
+}
+
+.errorsite .errortext{
+    border-bottom: 5px solid #00e1c2
+}
+
+    
+
+.errorsite th{
+   padding-top: 100px;
+;
+    
+
+}
