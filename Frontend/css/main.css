@@ -20,6 +20,9 @@ h2{
 article h2{
     color: white;
 }
+a:link{
+    color: white;
+}
 .noscript{
     text-align: center;
     background-color: darkred;
