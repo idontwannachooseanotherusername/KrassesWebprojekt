@@ -17,6 +17,9 @@ h1{
 h2{
     color: #00e1c2;
 }
+article h2{
+    color: white;
+}
 .noscript{
     text-align: center;
     background-color: darkred;
@@ -156,12 +159,11 @@ header{
     border-radius: 5px;
     cursor: pointer;
     margin-right: 10px;
+    transition: linear .3s;
 }
 .pb-image-wrapper img:hover{
-    animation-name: hoverup;
-    animation-timing-function: linear;
-    animation-duration: 0.2s;
-    box-shadow: 4px 4px white;
+    transition: linear .3s;
+    box-shadow: 4px 4px #ffffff40;
 }
 
 /*---------- HOME IMAGE ----------*/
@@ -170,9 +172,8 @@ header{
     right: 3%;
     top: -95px;
     width: 20%;
-    animation-name: fadein;
-    animation-timing-function: linear;
-    animation-duration: 1s;
+    opacity: .6;
+    animation: fadein linear 1s;
 }
 .top-image{
     background-image: url("../images/image.jpg");
@@ -251,14 +252,11 @@ article{
     height: 150px;
     border-radius: 3px;
     box-shadow: 0 0 9px #00000020;
-    transition: 0.3s;
+    transition: linear .3s;
 }
 .item img:hover{
-
-    animation-name: hoverup;
-    animation-timing-function: linear;
-    animation-duration: 0.2s;
-    box-shadow: 4px 4px white;
+    transition: linear .3s;
+    box-shadow: 4px 4px #ffffff20;
 /*
     scale: 1.05;
     box-shadow: 0 0 15px #00000020;
@@ -293,6 +291,8 @@ article{
     padding: 20px;
     margin: 0 auto;
     display: inline-block;
+    max-height: 1000px;
+    overflow: auto;
 }
 @media only screen and (max-width: 800px) {
     .challenge-wrapper{
@@ -308,12 +308,11 @@ article{
     border-radius: 9px;
     height: 300px;
     margin: 1%;
+    transition: linear .2s;
 }
 .challenge:hover{
-    animation-name: hoverup;
-    animation-timing-function: linear;
-    animation-duration: 0.2s;
-    box-shadow: 4px 4px white;
+    transition: linear .2s;
+    box-shadow: 4px 4px #ffffff20;
 }
 @media only screen and (max-width: 800px) {
     .challenge{
@@ -376,6 +375,9 @@ article{
 
 
 /*---------- LOGIN FORM ----------*/
+.animation-wrapper{
+    animation: slidein linear .7s;
+}
 .form-wrapper{
     box-shadow: 0 0 9px black;
     width: 60%;
@@ -391,11 +393,15 @@ article{
     background-size: cover;
     color: #212121;
     height: 600px;
-
-
-    animation-name: slidein;
-    animation-timing-function: linear;
-    animation-duration: 1s;
+}
+@media only screen and (max-width: 800px) {
+    .form-wrapper{
+        margin: 100px auto;
+        padding-bottom: 100px;
+    }
+    .animation-wrapper{
+        animation: none;
+    }
 }
 .login-form{
     margin-top: 50px;
@@ -498,7 +504,6 @@ form input, form textarea, form select, .form-element{
     top: -60px;
     margin: -120px 20%;
     margin-bottom: -80px;
-    overflow: auto;
     text-align: center;
     width: 80%;
 }
@@ -524,14 +529,15 @@ form input, form textarea, form select, .form-element{
 .user-name{
     font-size: 2.6em;
     float: left;
-    padding: 60px 2%;
+    padding: 60px 30px;
+    margin-top:60px
 }
-@media only screen and (max-width: 500px) {
+@media only screen and (max-width: 550px) {
     .user-name{
-        font-size: 2.6em;
-        float: left;
         padding: 0;
-        margin-top: 0;
+        margin-top: 25px;
+        text-align: left;
+        width: 100%;
     }
 }
 
@@ -560,7 +566,7 @@ form input, form textarea, form select, .form-element{
 .challenge-attributes p{
     margin-bottom: 50px;
 }
-.challenge-attribute{
+.challenge-attribute, .rating{
     float: left;
     margin: 0 20px 10px 0;
     padding: 7px;
@@ -570,7 +576,7 @@ form input, form textarea, form select, .form-element{
     font-size: 0.8em;
     min-width: 70px;
 }
-.challenge-attribute h3, .challenge-attribute p{
+.challenge-attribute h3, .challenge-attribute p, .rating h3, .rating p{
     margin: 0;
 }
 .challenge-tags{
@@ -594,6 +600,9 @@ form input, form textarea, form select, .form-element{
 .challenge-tag p{
     display: none;
 }
+.challenge-tag img{
+    filter: invert();
+}
 /*toggle tags*/
 .challenge-tags label{
     position: absolute;
@@ -601,6 +610,7 @@ form input, form textarea, form select, .form-element{
     width: 100%;
     text-align: center;
     left: 0;
+    z-index: 10;
 }
 #toggle{
     display: none;
@@ -616,7 +626,7 @@ form input, form textarea, form select, .form-element{
 .challenge-tag p{
     margin: 0;
 }
-.challenge-information{
+.challenge-information, .challenge-comments{
     clear: both;
     background: #ffffff20;
     border-radius: 7px;
@@ -624,8 +634,8 @@ form input, form textarea, form select, .form-element{
     margin: 40px auto;
 }
 /*Text / Description*/
-.challenge-text{
-    
+.challenge-text p{
+    margin-bottom: 40px;
 }
 /*Hints*/
 .challenge-hints{
@@ -659,6 +669,30 @@ form input, form textarea, form select, .form-element{
 .hint-text{
     filter: blur(5px);
     padding: 20px;
+}
+/*Comments*/
+.challenge-comments{
+    max-height: 1000px;
+    overflow: auto;
+}
+.comment img{
+    height: 60px;
+    width: 60px;
+    border-radius: 15px;
+    float: left;
+    margin-bottom: 20px;
+    box-shadow: 0 0 9px #00000050;
+}
+.comment .username{
+    margin-left: 20px;
+    float: left;
+}
+.comment .ratings, .comment-text{
+    clear: both;
+}
+.comment .ratings{
+    margin-bottom: 20px;
+    overflow: auto;
 }
 
 /*---------- FOOTER ----------*/
@@ -709,15 +743,11 @@ footer .btn-to-top{
     border-radius: 3px;
     box-shadow: 0 0 9px black;
     text-decoration: none;
-    transition: 0.3s;
+    transition: linear .2s;
 }
 footer .btn-to-top:hover{
     font-size: 1.9em;
-    transition: 0.3s;
-    animation-name: hoverup;
-    animation-timing-function: linear;
-    animation-duration: 0.1s;
-    box-shadow: 4px 4px white;
+    transition: linear .2s;
 
 }
 .copyright{
@@ -741,9 +771,14 @@ footer .btn-to-top:hover{
     100% {filter: opacity(1);}
 }
 @keyframes slidein {
+<<<<<<< HEAD
     0% {margin: 800px auto;filter: opacity(0);}
     50% {margin: 500px auto;}
     100% {margin: 200px auto;filter: opacity(1);}
+=======
+    0% {margin-left: -1000px; opacity: 0;}
+    100% {margin-left: 0; opacity: 1;}
+>>>>>>> c59a639e5be276b668181b2c06103224afda67bd
 }
 
 @keyframes hoverup {

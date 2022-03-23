@@ -21,43 +21,44 @@
  - Challenges müssen nach der Lösung bewertet werden
  - Hat Attribute
  - Hat Tags
-### Attribute
- - Schwierigkeit
- - Kategorie (Verschlüsselung, Logik, Bildrätsel, ...)
- - Code (Eindeutige ChallengeID)
- - Ersteller
- - Erstelldatum
+### *Attribute*
+ - *Schwierigkeit*
+ - *Kategorie* (Verschlüsselung, Logik, Bildrätsel, ...)
+ - *Code* (Eindeutige ChallengeID)
+ - *Ersteller*
+ - *Erstelldatum*
  - Bewertung (Durchschnitt aus Bewertungen für Schwierigkeit, Kreativität &  Allgemein)
-### Tags
+### *Tags*
 Geben weitere Informationen zur Challenge, z.B. ob besondere Kenntnisse oder Material benötigt werden, z.B.
  - Benötigt Programmierkenntnisse
  - Benötigt Internet
  - Benötigt besondere Software (z.B. Tor, ssh o.Ä.)
  - Benötigt besondere Hardware (z.B. besonders starke Grafikkarte, bestimmte Werkzeug, ...)
  - ...
-### Hinweise
+### *Hinweise*
  - 3 Stück (Kosten: 0, 20%, 50%)
  - Reduzieren die möglichen Gewinnpunkte
  - Müssen nicht unbedingt angegeben werden
  - Hinweis 1 darf leer sein, die anderen müssen Text enthalten (falls sie optional hinzugefügt werden)
- - Zum Kaufen: ChallengeID und HintNr werden an server übergeben, dieser schickt Hint zurück und erniedrigt mögliche gewinnpunkte
+ - Zum Kaufen: ChallengeID und HintNr werden an Server übergeben, dieser schickt Hint zurück und erniedrigt mögliche gewinnpunkte
 
-### Bewertung
+### *Bewertung*
  - Nach einer gelösten Challenge Pflicht
- - In 1-5 Sternen
- - Kommentare vor Abschluss sichtbar bevor Abschluss, alle Kommentare nach Abschluss sichtbar
- - Bewertbar sind Schwierigkeit, Kreativität und Allgemein
+ - In 1-5 *Sternen*
+ - *Kommentare(+abgeschlossen Flag)* vor Abschluss sichtbar bevor Abschluss, alle Kommentare nach Abschluss sichtbar
+ - Bewertbar sind *Schwierigkeit*, *Kreativität* und *Allgemein*
 
-## Profil
- - E-Mail
- - PW
- - Profilbild (optional)
- - Profilbanner (optional)
- - Profilname
- - Profilbiografie
- - Herkunftsland (optional)
- - (Nachrichten)
+## *Profil*
+ - *E-Mail*
+ - *PW*
+ - *Profilbild* (optional)
+ - *Profilbanner* (optional)
+ - *Profil-/Accountname*
+ - *Profilbiografie* (optional)
+ - *Herkunftsland* (optional)
+ - (*Nachrichten*)
  - Aus Daten ermittelte Darstellung aus letzem Rätsel, bestbewertseses Rätsel
+ - *gelöste Rästel*
 
 ## Seiten
  - Startseite  
@@ -72,3 +73,5 @@ Geben weitere Informationen zur Challenge, z.B. ob besondere Kenntnisse oder Mat
  - Challenge  
     Beschreibung und Infos der Challenge  
     (Sollte über https://seite/challenge/>ChallengeID< abrufbar sein)
+
+*Data needs to be stored*
