@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>Challangename</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" type="text/css" href="css/main.css"></link>
+        <link rel="stylesheet" type="text/css" href="css/levels.css"></link>
+        <link rel="stylesheet" type="text/css" href="css/editor.css"></link>
+        <script type="text/javascript" src="scripts/main.js"></script>
+        <script type="text/javascript" src="scripts/editor.js"></script>
+    </head>
+     
+    <body>
+        <noscript>
+            <p class="noscript">Please enable JavaScript so we can track and blackmail you!</p>
+        </noscript>
+        <header>
+            <nav class="main-menu">
+                <div class="wrapper">
+                    <ul>
+                        <li><a href="index.html">Home</a></li>
+                        <li><a href="challenges.html">Challenges</a></li>
+                        <li class="active"><a href="#">Challenge</a></li>
+                    </ul>
+                    <div class="pb-image-wrapper">
+                        <img id="pb" onClick="show_dropdown()" src="images/Kachel.png">
+                    </div>
+                    <dl class="dropdown" id="menu-dropdown">
+                        <dt class="dropdown-entry">Signed in as<br>Username</dt>
+                        <dd class="dropdown-entry"><a href="profile.html">Settings</a></dd>
+                        <dd class="dropdown-entry">Account</dd>
+                        <dd class="dropdown-entry">Logout</dd>
+                    </dl>
+                </div>
+            </nav>
+        </header>
+        <main>
+            <section class="challenge-site">
+                <article class="challenge-information">
+                    <form>
+                            <label for="level"><h2>Challengename</h2></label>
+                            <input type="text" placeholder="Challengename" required></br>
+                            <label for="difficulty"><h2>Difficulty</h2></label>
+                            <input id="difficulty" type="number" placeholder="1" max="9" min="1" required></br>
+                            <label for="category"><h2>Category</h2></label>
+                            <input id="category" type="text" placeholder="Programming, Math" required></br>
+                            <label><h2>Tags</h2></label>
+                            <input id="tag-r-int" type="checkbox">
+                            <label for="tag-r-int">Requires internet</label>
+                            <input id="tag-r-hwa" type="checkbox">
+                            <label for="tag-r-hwa">Requires special hardware</label>
+                            <input id="tag-r-swa" type="checkbox">
+                            <label for="tag-r-swa">Requires special software</label>
+                            <input id="tag-r-kno" type="checkbox">
+                            <label for="tag-rkno">Requires special knowledge</label></br>
+                            <label for="description"><h2>Description</h2></label>
+                            <!--https://webdeasy.de/en/program-wysiwyg-editor/-->
+                            <div class="wp-webdeasy-comment-editor">
+                                <div class="toolbar">
+                                    <div class="line">
+                                        <div class="box">
+                                            <span
+                                            class="editor-btn icon smaller"
+                                            data-action="bold"
+                                            data-tag-name="b"
+                                            title="Bold"
+                                            >
+                                            <img alt="bold"
+                                                src="https://img.icons8.com/fluency-systems-filled/48/000000/bold.png"
+                                            />
+                                            </span>
+                                            <span
+                                            class="editor-btn icon smaller"
+                                            data-action="italic"
+                                            data-tag-name="i"
+                                            title="Italic"
+                                            >
+                                            <img alt="italic"
+                                                src="https://img.icons8.com/fluency-systems-filled/48/000000/italic.png"
+                                            />
+                                            </span>
+                                            <span
+                                            class="editor-btn icon smaller"
+                                            data-action="underline"
+                                            data-tag-name="u"
+                                            title="Underline"
+                                            >
+                                            <img alt="underline"
+                                                src="https://img.icons8.com/fluency-systems-filled/48/000000/underline.png"
+                                            />
+                                            </span>
+                                            <span
+                                            class="editor-btn icon smaller"
+                                            data-action="strikeThrough"
+                                            data-tag-name="strike"
+                                            title="Strike through"
+                                            >
+                                            <img alt="strike through"
+                                                src="https://img.icons8.com/fluency-systems-filled/30/000000/strikethrough.png"
+                                            />
+                                            </span>
+                                        </div>
+                                        <div class="box">
+                                            <span class="editor-btn icon has-submenu">
+                                            <img alt="box"
+                                                src="https://img.icons8.com/fluency-systems-filled/48/000000/align-left.png"
+                                            />
+                                            <div class="submenu">
+                                                <span
+                                                class="editor-btn icon"
+                                                data-action="justifyLeft"
+                                                data-style="textAlign:left"
+                                                title="Justify left"
+                                                >
+                                                <img alt="justify left"
+                                                    src="https://img.icons8.com/fluency-systems-filled/48/000000/align-left.png"
+                                                />
+                                                </span>
+                                                <span
+                                                class="editor-btn icon"
+                                                data-action="justifyCenter"
+                                                data-style="textAlign:center"
+                                                title="Justify center"
+                                                >
+                                                <img alt="justify center"
+                                                    src="https://img.icons8.com/fluency-systems-filled/48/000000/align-center.png"
+                                                />
+                                                </span>
+                                                <span
+                                                class="editor-btn icon"
+                                                data-action="justifyRight"
+                                                data-style="textAlign:right"
+                                                title="Justify right"
+                                                >
+                                                <img alt="justify right"
+                                                    src="https://img.icons8.com/fluency-systems-filled/48/000000/align-right.png"
+                                                />
+                                                </span>
+                                                <span
+                                                class="editor-btn icon"
+                                                data-action="formatBlock"
+                                                data-style="textAlign:justify"
+                                                title="Justify block"
+                                                >
+                                                <img alt="justify block"
+                                                    src="https://img.icons8.com/fluency-systems-filled/48/000000/align-justify.png"
+                                                />
+                                                </span>
+                                            </div>
+                                        </span>
+                                        <span
+                                        class="editor-btn icon"
+                                        data-action="insertOrderedList"
+                                        data-tag-name="ol"
+                                        title="Insert ordered list"
+                                        >
+                                        <img alt="ordered list"
+                                            src="https://img.icons8.com/fluency-systems-filled/48/000000/numbered-list.png"
+                                        />
+                                        </span>
+                                        <span
+                                        class="editor-btn icon"
+                                        data-action="insertUnorderedList"
+                                        data-tag-name="ul"
+                                        title="Insert unordered list"
+                                        >
+                                        <img alt="unordered list"
+                                            src="https://img.icons8.com/fluency-systems-filled/48/000000/bulleted-list.png"
+                                        />
+                                        </span>
+                                        <span
+                                        class="editor-btn icon"
+                                        data-action="outdent"
+                                        title="Outdent"
+                                        data-required-tag="li"
+                                        >
+                                        <img alt="outdent"
+                                            src="https://img.icons8.com/fluency-systems-filled/48/000000/outdent.png"
+                                        />
+                                        </span>
+                                        <span class="editor-btn icon" data-action="indent" title="Indent">
+                                        <img alt="indent"
+                                            src="https://img.icons8.com/fluency-systems-filled/48/000000/indent.png"
+                                        />
+                                        </span>
+                                        </div>
+                                        <div class="box">
+                                            <span
+                                            class="editor-btn icon"
+                                            data-action="insertHorizontalRule"
+                                            title="Insert horizontal rule"
+                                            >
+                                            <img alt="horizontal rule"
+                                                src="https://img.icons8.com/fluency-systems-filled/48/000000/horizontal-line.png"
+                                            />
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <div class="line">
+                                        <div class="box">
+                                            <span class="editor-btn icon smaller" data-action="undo" title="Undo">
+                                            <img
+                                                src="https://img.icons8.com/fluency-systems-filled/48/000000/undo--v1.png"
+                                            />
+                                            </span>
+                                            <span
+                                            class="editor-btn icon"
+                                            data-action="removeFormat"
+                                            title="Remove format"
+                                            >
+                                            <img
+                                                src="https://img.icons8.com/fluency-systems-filled/48/000000/remove-format.png"
+                                            />
+                                            </span>
+                                        </div>
+                                        <div class="box">
+                                            <span
+                                            class="editor-btn icon smaller"
+                                            data-action="createLink"
+                                            title="Insert Link"
+                                            >
+                                            <img
+                                                src="https://img.icons8.com/fluency-systems-filled/48/000000/add-link.png"
+                                            />
+                                            </span>
+                                            <span
+                                            class="editor-btn icon smaller"
+                                            data-action="unlink"
+                                            data-tag-name="a"
+                                            title="Unlink"
+                                            >
+                                            <img
+                                                src="https://img.icons8.com/fluency-systems-filled/48/000000/delete-link.png"
+                                            />
+                                            </span>
+                                        </div>
+                                        <div class="box">
+                                            <span
+                                            class="editor-btn icon"
+                                            data-action="toggle-view"
+                                            title="Show HTML-Code"
+                                            >
+                                            <img
+                                                src="https://img.icons8.com/fluency-systems-filled/48/000000/source-code.png"
+                                            />
+                                            </span>
+                                        </div>
+                                        </div>
+                                    </div>
+                                    <div class="content-area" id="description">
+                                        <div class="visuell-view" contenteditable></div>
+                                        <textarea class="html-view"></textarea>
+                                    </div>
+                                </div>
+                                <div class="modal">
+                                    <div class="modal-bg"></div>
+                                        <div class="modal-wrapper">
+                                            <div class="close">✖</div>
+                                                <div class="modal-content" id="modalCreateLink">
+                                                    <h3>Insert Link</h3>
+                                                    <input
+                                                        type="text"
+                                                        id="linkValue"
+                                                        placeholder="Link (example: https://webdeasy.de/)"
+                                                    />
+                                                    <div class="row">
+                                                        <input type="checkbox" id="new-tab" />
+                                                        <label for="new-tab">Open in new Tab?</label>
+                                                    </div>
+                                                    <div class="btn-primary done">Done</div>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                            <input type="file"></input></br>
+                            <button type="submit" class="btn-primary">Save</button>
+                    </form>
+                </article>
+            </section>
+        </main>
+        <footer>
+            <a class="btn-to-top" href="#">↑</a>
+            <nav class="footer-menu">
+                <dl>
+                    <dt>Legal</dt>
+                    <dd>Privacy<dd>
+                    <dd>Sth. else<dd>
+                    <dd>ToS<dd>
+                </dl>
+                <dl>
+                    <dt>Contact</dt>
+                    <dd>Site problem<dd>
+                    <dd>Sth. else<dd>
+                </dl>
+            </nav>
+            <p class="copyright">
+                Copyright © 1529–4203 Some weird company
+            </p>
+        </footer>
+    </body>
+</html>
