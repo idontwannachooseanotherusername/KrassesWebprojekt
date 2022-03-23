@@ -771,10 +771,8 @@ footer .btn-to-top:hover{
     100% {filter: opacity(1);}
 }
 @keyframes slidein {
-
     0% {margin-left: -1000px; opacity: 0;}
     100% {margin-left: 0; opacity: 1;}
-
 }
 
 @keyframes hoverup {
