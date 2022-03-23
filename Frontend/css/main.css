@@ -741,9 +741,9 @@ footer .btn-to-top:hover{
     100% {filter: opacity(1);}
 }
 @keyframes slidein {
-    0% {margin: -800px auto;}
-    50% {margin: -100px auto;}
-    100% {margin: 200px auto;}
+    0% {margin: 800px auto;filter: opacity(0);}
+    50% {margin: 500px auto;}
+    100% {margin: 200px auto;filter: opacity(1);}
 }
 
 @keyframes hoverup {
