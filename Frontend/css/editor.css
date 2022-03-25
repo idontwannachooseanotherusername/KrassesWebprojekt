@@ -6,6 +6,7 @@
     box-shadow: 0 0 4px 1px rgba(0, 0, 0, 0.3);
     background-color: #212121;
     border-radius: 5px;
+    margin-top: 10px;
   }
   @media only screen and (max-width: 800px) {
     .wp-webdeasy-comment-edit{
