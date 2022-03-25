@@ -12,7 +12,7 @@ body{
     line-height: 1.5em;
 }
 h1{
-    
+    font-size: 2em;
 }
 h2{
     color: #00e1c2;
@@ -330,9 +330,14 @@ article{
         width: 90%;
     }
 }
+.challenge:hover .challenge-color{
+    filter: brightness(120%);
+    transition: linear .2s;
+}
 .challenge-color{
     border-radius: 9px 9px 0 0;
     padding: 20px 0;
+    transition: linear .2s;
 }
 .challenge-color p{
     padding: 5px 20px;
@@ -805,7 +810,7 @@ footer .btn-to-top:hover{
     font-size: 100px;
     padding-top: 100px;
     padding-bottom: 100px;
-    margin: auto
+    line-height: 1;
 }
 
 .errorsite .errortext{
