@@ -1,20 +1,11 @@
-- Erstelldatum eines Accs speichern?
-- E-Mail Ändern anbieten (oder Username = E-Mail)
-- Kategorien als Mehrfachauswahl
-- Hints in Challengecreator
-- Coins of player in Dropdown and elsewhere
-- Password in challengecreator
-- Bewertung raus
-- Search-Field challenges page
-
 Overall Ideas:
 
 Overall Small TODOs:
--Profilepictuer Backgroundcolorpicker
+- Fix Fileupload width in Challengecreator
 
 Searchsystem
 -Dificulty
--Need for special Tools etc.
+-Category
 
 Profile
 -Pic+Bio
