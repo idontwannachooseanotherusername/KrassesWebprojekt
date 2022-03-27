@@ -92,7 +92,7 @@ function check_password(){
 /* Challenge rating slider */
 function starupdate(slider){
     var stars = document.getElementById("solved-stars")
-    stars.innerHTML = "Rating: ".concat("⭐".repeat(slider.value))
+    stars.innerHTML = "Rating ".concat("⭐".repeat(slider.value))
 }
 
 /*
