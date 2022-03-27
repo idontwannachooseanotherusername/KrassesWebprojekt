@@ -1,7 +1,7 @@
+/*Light mode - discontinued */
 window.onload = function() {
     /*invert();*/
 };
-
 function invert(){
     var body = Array.from(document.getElementsByTagName('body'));
     var images = Array.from(document.getElementsByTagName('img'));
@@ -19,6 +19,7 @@ function invert(){
     }
 }
 
+/* Click on hint */
 function get_hint(level){
     var selector = "hint-".concat(level).concat(" hint-text");
     var hint = document.getElementsByClassName("hint-".concat(level))[0];
@@ -51,6 +52,8 @@ function get_hint(level){
         }
     }
 }
+
+/* Usermenu dropdown */
 function show_dropdown(x=false){
     var drop = document.getElementById("menu-dropdown");
     if (drop.style.display != "revert" && x == false){
@@ -62,6 +65,15 @@ function show_dropdown(x=false){
         console.log('Dropdown hidden');
     }
 }
+window.onclick = e => {
+    var drop = document.getElementById("menu-dropdown");
+    /* Hide dropdown when clicking elsewhere */
+    if (!(drop.contains(e.target)) && e.target.getAttribute('id') != "pb"){
+        show_dropdown(true);
+    }
+}
+
+/* change password pw checker */
 function check_password(){
     let new_pw = document.getElementById("new-pw");
     let rep_pw = document.getElementById("rep-pw");
@@ -76,11 +88,11 @@ function check_password(){
         return true
     }
 }
-window.onclick = e => {
-    var drop = document.getElementById("menu-dropdown");
-    if (!(drop.contains(e.target)) && e.target.getAttribute('id') != "pb"){
-        show_dropdown(true);
-    }
+
+/* Challenge rating slider */
+function starupdate(slider){
+    var stars = document.getElementById("solved-stars")
+    stars.innerHTML = "Rating: ".concat("⭐".repeat(slider.value))
 }
 
 /*
