@@ -153,6 +153,18 @@ Veritatis autem occaecati maxime non nesciunt.
                     </div>
                 </article>
                 <article class="challenge-comments">
+                    <form class="solved-comment">
+                        <div class="rating">
+                            <p id="solved-stars">Rating ⭐⭐⭐⭐⭐</p>
+                        </div>
+                        <br>
+                        <br>
+                        <input id="solved-rating" type="range" min="1" max="5" onchange="starupdate(this)" value="3" required><br>
+                        <textarea id="solved-text" placeholder="Write something nice but don't give spoilers!" cols="100" rows="10" required>
+                        </textarea><br>
+                        <button type="submit" class="solved-button btn-primary">Send</button>
+                    </form>
+                    <hr>
                     <div class="comment">
                         <img src="images/profile-3.png" alt="profile picture">
                         <h3 class="username">Username</h3>
