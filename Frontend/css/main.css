@@ -31,6 +31,9 @@ a:link{
     margin: 0;
     padding: 10px;
 }
+hr{
+    border: 1px solid #ffffff20;;
+}
 
 /*---------- BUTTONS ----------*/
 .btn-primary{
@@ -738,7 +741,7 @@ input, textarea, select, .form-element{
 /*Comments*/
 .solved-comment .rating{
     margin: 0;
-    width: 110px;
+    width: 140px;
 }
 #solved-text{
     width: 98.5%;
@@ -751,8 +754,14 @@ input, textarea, select, .form-element{
     }
 }
 #solved-rating{
-    width: 110px;
+    -webkit-appearance: none;
+    width: 140px;
     margin-top: 0;
+    padding: 0;
+    height: 8px;
+}
+#solved-rating::-webkit-slider-thumb {
+    /*-webkit-appearance: none;*/
 }
 #solved-stars{
     margin-bottom: 0;
