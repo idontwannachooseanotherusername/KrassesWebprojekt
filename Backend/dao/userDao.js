@@ -1,7 +1,8 @@
+const md5 = require('md5');
 const helper = require('../helper.js');
-const FilmgenreDao = require('./filmgenreDao.js');
+const CountryDao = require('./countryDao.js');
 
-class FilmDao {
+class UserDao {
 
     constructor(dbConnection) {
         this._conn = dbConnection;
@@ -12,9 +13,9 @@ class FilmDao {
     }
 
     loadById(id) {
-        const filmgenreDao = new FilmgenreDao(this._conn);
+        const countryDao = new CountryDao(this._conn);
 
-        var sql = 'SELECT * FROM Film WHERE ID=?';
+        var sql = 'SELECT * FROM User WHERE UserID=?';
         var statement = this._conn.prepare(sql);
         var result = statement.get(id);
 
@@ -23,17 +24,17 @@ class FilmDao {
 
         result = helper.objectKeysToLower(result);
 
-        result.genre = filmgenreDao.loadById(result.genreid);
-        delete result.genreid;
+        result.country = countryDao.loadById(result.countryid);
+        delete result.countryid;
 
         return result;
     }
 
     loadAll() {
-        const filmgenreDao = new FilmgenreDao(this._conn);
-        var genres = filmgenreDao.loadAll();
+        const countryDao = new CountryDao(this._conn);
+        var countries = countryDao.loadAll();
 
-        var sql = 'SELECT * FROM Film';
+        var sql = 'SELECT * FROM User';
         var statement = this._conn.prepare(sql);
         var result = statement.all();
 
@@ -42,34 +43,34 @@ class FilmDao {
         
         result = helper.arrayObjectKeysToLower(result);
 
-        for (var i = 0; i < result.length; i++) {
-            for (var element of genres) {
-                if (element.id == result[i].genreid) {
-                    result[i].genre = element;
+        for (var i = 0; i < result.length; i++) {          
+            for (var element of countries) {
+                if (element.id == result[i].countryid) {
+                    result[i].country = element;
                     break;
                 }
             }
-            delete result[i].genreid;
+            delete result[i].countryid;
         }
-
         return result;
     }
 
     exists(id) {
-        var sql = 'SELECT COUNT(ID) AS cnt FROM Film WHERE ID=?';
+        var sql = 'SELECT COUNT(ID) AS cnt FROM User WHERE UserID=?';
         var statement = this._conn.prepare(sql);
         var result = statement.get(id);
 
         if (result.cnt == 1) 
             return true;
-
         return false;
     }
 
-    create(bezeichnung = '', beschreibung = '', genreid = 1, fsk = 12, dauer = 90, regie = '', darsteller = '', preis = 9.0, coverpfad = null, videopfad = null, imdb = null) {
-        var sql = 'INSERT INTO Film (Bezeichnung,Beschreibung,GenreID,FSK,Dauer,Regie,Darsteller,Preis,Coverpfad,Videopfad,IMDB) VALUES (?,?,?,?,?,?,?,?,?,?,?)';
+    create(username = '', password = '', bio = '', picturepath = '', country = null, points = 0) {
+        const countryDao = new CountryDao(this._conn);
+        
+        var sql = 'INSERT INTO Person (Username, Password, Bio, PicturePath, CountryID, Points) VALUES (?,?,?,?,?,?,?)';
         var statement = this._conn.prepare(sql);
-        var params = [bezeichnung, beschreibung, genreid, fsk, dauer, regie, darsteller, preis, coverpfad, videopfad, imdb];
+        var params = [username, md5(password), bio, picturepath, countryDao.loadById(result.countryid), points];
         var result = statement.run(params);
 
         if (result.changes != 1) 
@@ -79,10 +80,20 @@ class FilmDao {
         return newObj;
     }
 
-    update(id, bezeichnung = '', beschreibung = '', genreid = 1, fsk = 12, dauer = 90, regie = '', darsteller = '', preis = 9.0, coverpfad = null, videopfad = null, imdb = null) {
-        var sql = 'UPDATE Film SET Bezeichnung=?,Beschreibung=?,GenreID=?,FSK=?,Dauer=?,Regie=?,Darsteller=?,Preis=?,Coverpfad=?,Videopfad=?,IMDB=? WHERE ID=?';
-        var statement = this._conn.prepare(sql);
-        var params = [bezeichnung, beschreibung, genreid, fsk, dauer, regie, darsteller, preis, coverpfad, videopfad, imdb, id];
+    update(id, username = '', newpassword = null, oldpassword = null) {
+        if (helper.isNull(newpassword)) {
+            var sql = 'UPDATE User SET Username=? WHERE UserID=?';
+            var statement = this._conn.prepare(sql);
+            var params = [username, id];
+        } else{
+            var result_t = this.loadById(id) // Check if old passwords match
+            if (result_t.password == md5(oldpassword)){
+                var params = [username, md5(newpassword), id];
+            }
+            else{
+                throw new Error('Old passwords do not match - userid:' + id);
+            }
+        }
         var result = statement.run(params);
 
         if (result.changes != 1) 
@@ -94,7 +105,7 @@ class FilmDao {
 
     delete(id) {
         try {
-            var sql = 'DELETE FROM Film WHERE ID=?';
+            var sql = 'DELETE FROM User WHERE UserID=?';
             var statement = this._conn.prepare(sql);
             var result = statement.run(id);
 
@@ -108,8 +119,8 @@ class FilmDao {
     }
 
     toString() {
-        helper.log('FilmDao [_conn=' + this._conn + ']');
+        helper.log('UserDao [_conn=' + this._conn + ']');
     }
 }
 
-module.exports = FilmDao;
+module.exports = UserDao;

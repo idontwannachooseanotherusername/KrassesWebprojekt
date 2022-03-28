@@ -1,6 +1,6 @@
 const helper = require('../helper.js');
 
-class ZahlungsartDao {
+class CountryDao {
 
     constructor(dbConnection) {
         this._conn = dbConnection;
@@ -11,7 +11,7 @@ class ZahlungsartDao {
     }
 
     loadById(id) {
-        var sql = 'SELECT * FROM Zahlungsart WHERE ID=?';
+        var sql = 'SELECT * FROM Country WHERE CountryID=?';
         var statement = this._conn.prepare(sql);
         var result = statement.get(id);
 
@@ -22,7 +22,7 @@ class ZahlungsartDao {
     }
 
     loadAll() {
-        var sql = 'SELECT * FROM Zahlungsart';
+        var sql = 'SELECT * FROM Country';
         var statement = this._conn.prepare(sql);
         var result = statement.all();
 
@@ -33,7 +33,7 @@ class ZahlungsartDao {
     }
 
     exists(id) {
-        var sql = 'SELECT COUNT(ID) AS cnt FROM Zahlungsart WHERE ID=?';
+        var sql = 'SELECT COUNT(ID) AS cnt FROM Country WHERE CountryID=?';
         var statement = this._conn.prepare(sql);
         var result = statement.get(id);
 
@@ -43,10 +43,10 @@ class ZahlungsartDao {
         return false;
     }
 
-    create(bezeichnung = '') {
-        var sql = 'INSERT INTO Zahlungsart (Bezeichnung) VALUES (?)';
+    create(countryname = '') {
+        var sql = 'INSERT INTO Country (CountryName) VALUES (?)';
         var statement = this._conn.prepare(sql);
-        var params = [bezeichnung];
+        var params = [countryname];
         var result = statement.run(params);
 
         if (result.changes != 1) 
@@ -56,10 +56,10 @@ class ZahlungsartDao {
         return newObj;
     }
 
-    update(id, bezeichnung = '') {
-        var sql = 'UPDATE Zahlungsart SET Bezeichnung=? WHERE ID=?';
+    update(id, countryname = '') {
+        var sql = 'UPDATE Country SET CountryName=? WHERE CountryID=?';
         var statement = this._conn.prepare(sql);
-        var params = [bezeichnung, id];
+        var params = [countryname, id];
         var result = statement.run(params);
 
         if (result.changes != 1) 
@@ -71,7 +71,7 @@ class ZahlungsartDao {
 
     delete(id) {
         try {
-            var sql = 'DELETE FROM Zahlungsart WHERE ID=?';
+            var sql = 'DELETE FROM Country WHERE CountryID=?';
             var statement = this._conn.prepare(sql);
             var result = statement.run(id);
 
@@ -85,8 +85,8 @@ class ZahlungsartDao {
     }
 
     toString() {
-        helper.log('ZahlungsartDao [_conn=' + this._conn + ']');
+        helper.log('CountryDao [_conn=' + this._conn + ']');
     }
 }
 
-module.exports = ZahlungsartDao;
+module.exports = CountryDao;
