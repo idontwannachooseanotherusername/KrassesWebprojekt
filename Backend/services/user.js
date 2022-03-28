@@ -5,7 +5,7 @@ var serviceRouter = express.Router();
 
 helper.log('- Service User');
 
-serviceRouter.get('/user/gib/:id', function(request, response) {
+serviceRouter.get('/user/get/:id', function(request, response) {
     helper.log('Service User: Client requested one record, id=' + request.params.id);
 
     const userDao = new UserDao(request.app.locals.dbConnection);
@@ -19,7 +19,7 @@ serviceRouter.get('/user/gib/:id', function(request, response) {
     }
 });
 
-serviceRouter.get('/user/alle/', function(request, response) {
+serviceRouter.get('/user/all/', function(request, response) {
     helper.log('Service User: Client requested all records');
 
     const userDao = new UserDao(request.app.locals.dbConnection);

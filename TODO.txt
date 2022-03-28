@@ -1,4 +1,5 @@
 Overall Ideas:
+- Secure Passwords with sha256 and salt
 
 Overall Small TODOs:
 - Fix Fileupload width in Challengecreator

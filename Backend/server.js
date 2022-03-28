@@ -52,6 +52,16 @@ try {
     const TOPLEVELPATH = '/wba2api';
     helper.log('Binding enpoints, top level Path at ' + TOPLEVELPATH);
     
+    var serviceRouter = require('./services/user.js');
+    app.use(TOPLEVELPATH, serviceRouter);
+
+    var serviceRouter = require('./services/country.js');
+    app.use(TOPLEVELPATH, serviceRouter);
+
+
+
+
+
     var serviceRouter = require('./services/land.js');
     app.use(TOPLEVELPATH, serviceRouter);
 
