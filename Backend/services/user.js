@@ -11,6 +11,7 @@ serviceRouter.get('/user/get/:id', function(request, response) {
     const userDao = new UserDao(request.app.locals.dbConnection);
     try {
         var result = userDao.loadById(request.params.id);
+        //TODO: Add default picture and banner if path is empty string
         helper.log('Service User: Record loaded');
         response.status(200).json(helper.jsonMsgOK(result));
     } catch (ex) {
@@ -105,24 +106,26 @@ serviceRouter.post('/user', function(request, response) {
         errorMsgs.push('username missing');
     if (helper.isUndefined(request.body.passwort)) 
         errorMsgs.push('passwort missing');
-
-    if (helper.isUndefined(request.body.person)) {
-        request.body.person = null;
-    } else if (helper.isUndefined(request.body.person.id)) {
-        errorMsgs.push('person gesetzt, aber id missing');
-    } else {
-        request.body.person = request.body.person.id;
-    }
-    
+    if (helper.isUndefined(request.body.bio)) 
+        request.body.bio = ''
+    if (helper.isUndefined(request.body.picturepath)) 
+        request.body.picturepath = ''
+    if (helper.isUndefined(request.body.bannerpath)) 
+        request.body.bannerpath = ''
+    if (helper.isUndefined(request.body.countryid)) 
+        request.body.countryid = null  //TODO: best solution?
     if (errorMsgs.length > 0) {
         helper.log('Service User: Creation not possible, data missing');
         response.status(400).json(helper.jsonMsgError('Creation not possible, data missing: ' + helper.concatArray(errorMsgs)));
         return;
     }
 
+    // Init accounts with 0 coins
+    request.body.coins = 0
+
     const userDao = new UserDao(request.app.locals.dbConnection);
     try {
-        var result = userDao.create(request.body.username, request.body.passwort, request.body.userrolle.id, request.body.person);
+        var result = userDao.create(request.body.username, request.body.password, request.body.bio, request.picturepath, request.bannerpath, request.countryid, request.coins);
         helper.log('Service User: Record inserted');
         response.status(200).json(helper.jsonMsgOK(result));
     } catch (ex) {
@@ -135,29 +138,29 @@ serviceRouter.put('/user', function(request, response) {
     helper.log('Service User: Client requested update of existing record');
 
     var errorMsgs=[];
-    if (helper.isUndefined(request.body.id)) 
-        errorMsgs.push('id missing');
     if (helper.isUndefined(request.body.username)) 
         errorMsgs.push('username missing');
-    if (helper.isUndefined(request.body.neuespasswort)) 
-        request.body.neuespasswort = null;      
-    if (helper.isUndefined(request.body.person)) {
-        request.body.person = null;
-    } else if (helper.isUndefined(request.body.person.id)) {
-        errorMsgs.push('person gesetzt, aber id missing');
-    } else {
-        request.body.person = request.body.person.id;
-    }
-
+    if (helper.isUndefined(request.body.passwort)) 
+        errorMsgs.push('passwort missing');
+    if (helper.isUndefined(request.body.bio)) 
+        request.body.bio = ''
+    if (helper.isUndefined(request.body.picturepath)) 
+        request.body.picturepath = ''
+    if (helper.isUndefined(request.body.bannerpath)) 
+        request.body.bannerpath = ''
+    if (helper.isUndefined(request.body.countryid)) 
+        request.body.countryid = null  //TODO: best solution?
+    if (helper.isUndefined(request.body.coins)) 
+        request.body.coins = 0
     if (errorMsgs.length > 0) {
-        helper.log('Service User: Update not possible, data missing');
-        response.status(400).json(helper.jsonMsgError('Update not possible, data missing: ' + helper.concatArray(errorMsgs)));
+        helper.log('Service User: Creation not possible, data missing');
+        response.status(400).json(helper.jsonMsgError('Creation not possible, data missing: ' + helper.concatArray(errorMsgs)));
         return;
     }
 
     const userDao = new UserDao(request.app.locals.dbConnection);
     try {
-        var result = userDao.update(request.body.id, request.body.username, request.body.neuespasswort, request.body.userrolle.id, request.body.person);
+        var result = userDao.update(request.body.id, request.body.username, request.body.newpassword, request.body.oldpassword, request.body.bio, request.picturepath, request.bannerpath, request.countryid, request.coins);
         helper.log('Service User: Record updated, id=' + request.body.id);
         response.status(200).json(helper.jsonMsgOK(result));
     } catch (ex) {
