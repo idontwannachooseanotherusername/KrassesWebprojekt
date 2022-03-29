@@ -8,8 +8,8 @@ CREATE TABLE "Category" (
 -- challenge definition
 
 CREATE TABLE Challenge (
-	challengeID INTEGER NOT NULL,
-	challengeName TEXT NOT NULL,
+	ChallengeID INTEGER NOT NULL,
+	ChallengeName TEXT NOT NULL,
 	DifficultyID INTEGER DEFAULT 1 NOT NULL,
 	Description TEXT,
 	CreationDate TEXT NOT NULL,
@@ -31,7 +31,7 @@ CREATE TABLE Challengecategory (
 
 CREATE TABLE Challengepicture (
 	PictureID INTEGER NOT NULL,
-	challengeID INTEGER NOT NULL,
+	ChallengeID INTEGER NOT NULL,
 	PicturePath TEXT NOT NULL,
 	CONSTRAINT challengePICTURE_PK PRIMARY KEY (PictureID),
 	CONSTRAINT challengepicture_FK FOREIGN KEY (challengeID) REFERENCES challenge(ChallengeID)
@@ -69,6 +69,7 @@ CREATE TABLE "Hint" (
 	"HintID"	INTEGER NOT NULL,
 	"Description"	TEXT NOT NULL,
 	"Cost"	INTEGER NOT NULL,
+	"ChallengeID"  INTEGER NOT NULL,
 	PRIMARY KEY("HintID")
 );
 
