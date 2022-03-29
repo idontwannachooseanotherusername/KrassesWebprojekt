@@ -65,10 +65,10 @@ class UserDao {
         return false;
     }
 
-    create(username = '', password = '', bio = '', picturepath = '', country = null, points = 0) {
+    create(username = '', password = '', bio = '', picturepath = '', bannerpath = '', countryid = null, points = 0) {
         const countryDao = new CountryDao(this._conn);
         
-        var sql = 'INSERT INTO Person (Username, Password, Bio, PicturePath, CountryID, Points) VALUES (?,?,?,?,?,?,?)';
+        var sql = 'INSERT INTO Person (Username, Password, Bio, PicturePath, BannerPath, CountryID, Points) VALUES (?,?,?,?,?,?,?)';
         var statement = this._conn.prepare(sql);
         var params = [username, md5(password), bio, picturepath, countryDao.loadById(result.countryid), points];
         var result = statement.run(params);
@@ -80,20 +80,21 @@ class UserDao {
         return newObj;
     }
 
-    update(id, username = '', newpassword = null, oldpassword = null) {
+    update(id, username = '', newpassword = null, oldpassword = null, bio = '', picturepath = '', bannerpath = '', countryid = null, points = 0) {
         if (helper.isNull(newpassword)) {
-            var sql = 'UPDATE User SET Username=? WHERE UserID=?';
-            var statement = this._conn.prepare(sql);
-            var params = [username, id];
+            var sql = 'UPDATE User SET Username=?,Bio=?,PicturePath=?,BannerPath=?,CountryID=?,Points=? WHERE UserID=?';
+            var params = [username, bio, picturepath, bannerpath, countryid, points, id];
         } else{
+            var sql = 'UPDATE User SET Username=?,Password=?,Bio=?,PicturePath=?,BannerPath=?,CountryID=?,Points=? WHERE UserID=?';
             var result_t = this.loadById(id) // Check if old passwords match
             if (result_t.password == md5(oldpassword)){
-                var params = [username, md5(newpassword), id];
+                var params = [username, md5(newpassword), bio, picturepath, bannerpath, countryid, points, id];
             }
             else{
                 throw new Error('Old passwords do not match - userid:' + id);
             }
         }
+        var statement = this._conn.prepare(sql);
         var result = statement.run(params);
 
         if (result.changes != 1) 
