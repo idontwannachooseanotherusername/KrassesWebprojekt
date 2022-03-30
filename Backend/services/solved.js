@@ -1,16 +1,16 @@
 const helper = require('../helper.js');
-const ChallengefileDao = require('../dao/challengefileDao.js');
+const SolvedDao = require('../dao/solvedDao.js');
 const express = require('express');
 var serviceRouter = express.Router();
 
 helper.log('- Service Challengefile');
 
-serviceRouter.get('/challengefile/get/:id', function(request, response) {
+serviceRouter.get('/solved/get/:id', function(request, response) {
     helper.log('Service Challengefile: Client requested one record, id=' + request.params.id);
 
-    const challengefileDao = new ChallengefileDao(request.app.locals.dbConnection);
+    const solvedDao = new SolvedDao(request.app.locals.dbConnection);
     try {
-        var result = challengefileDao.loadById(request.params.id);
+        var result = solvedDao.loadById(request.params.id);
         helper.log('Service Challengefile: Record loaded');
         response.status(200).json(helper.jsonMsgOK(result));
     } catch (ex) {
@@ -19,12 +19,12 @@ serviceRouter.get('/challengefile/get/:id', function(request, response) {
     }
 });
 
-serviceRouter.get('/challengefile/all/', function(request, response) {
+serviceRouter.get('/solved/all/', function(request, response) {
     helper.log('Service Challengefile: Client requested all records');
 
-    const challengefileDao = new ChallengefileDao(request.app.locals.dbConnection);
+    const solvedDao = new SolvedDao(request.app.locals.dbConnection);
     try {
-        var result = challengefileDao.loadAll();
+        var result = solvedDao.loadAll();
         helper.log('Service Challengefile: Records loaded, count=' + result.length);
         response.status(200).json(helper.jsonMsgOK(result));
     } catch (ex) {
@@ -33,12 +33,12 @@ serviceRouter.get('/challengefile/all/', function(request, response) {
     }
 });
 
-serviceRouter.get('/challengefile/exists/:id', function(request, response) {
+serviceRouter.get('/solved/exists/:id', function(request, response) {
     helper.log('Service Challengefile: Client requested check, if record exists, id=' + request.params.id);
 
-    const challengefileDao = new ChallengefileDao(request.app.locals.dbConnection);
+    const solvedDao = new SolvedDao(request.app.locals.dbConnection);
     try {
-        var result = challengefileDao.exists(request.params.id);
+        var result = solvedDao.exists(request.params.id);
         helper.log('Service Challengefile: Check if record exists by id=' + request.params.id + ', result=' + result);
         response.status(200).json(helper.jsonMsgOK({ 'id': request.params.id, 'existiert': result }));
     } catch (ex) {
@@ -47,7 +47,7 @@ serviceRouter.get('/challengefile/exists/:id', function(request, response) {
     }
 });
 
-serviceRouter.post('/challengefile', function(request, response) {
+serviceRouter.post('/solved', function(request, response) {
     helper.log('Service Challengefile: Client requested creation of new record');
 
     var errorMsgs=[];
@@ -61,9 +61,9 @@ serviceRouter.post('/challengefile', function(request, response) {
         return;
     }
 
-    const challengefileDao = new ChallengefileDao(request.app.locals.dbConnection);
+    const solvedDao = new SolvedDao(request.app.locals.dbConnection);
     try {
-        var result = challengefileDao.create(request.body.filepath, request.body.id);
+        var result = solvedDao.create(request.body.filepath, request.body.id);
         helper.log('Service Challengefile: Record inserted');
         response.status(200).json(helper.jsonMsgOK(result));
     } catch (ex) {
@@ -72,7 +72,7 @@ serviceRouter.post('/challengefile', function(request, response) {
     }
 });
 
-serviceRouter.put('/challengefile', function(request, response) {
+serviceRouter.put('/solved', function(request, response) {
     helper.log('Service Challengefile: Client requested update of existing record');
 
     var errorMsgs=[];
@@ -86,9 +86,9 @@ serviceRouter.put('/challengefile', function(request, response) {
         return;
     }
 
-    const challengefileDao = new ChallengefileDao(request.app.locals.dbConnection);
+    const solvedDao = new SolvedDao(request.app.locals.dbConnection);
     try {
-        var result = challengefileDao.create(request.body.filepath, request.body.id);
+        var result = solvedDao.create(request.body.filepath, request.body.id);
         helper.log('Service Challengefile: Record updated, id=' + request.body.id);
         response.status(200).json(helper.jsonMsgOK(result));
     } catch (ex) {
@@ -97,13 +97,13 @@ serviceRouter.put('/challengefile', function(request, response) {
     }    
 });
 
-serviceRouter.delete('/challengefile/:id', function(request, response) {
+serviceRouter.delete('/solved/:id', function(request, response) {
     helper.log('Service Challengefile: Client requested deletion of record, id=' + request.params.id);
 
-    const challengefileDao = new ChallengefileDao(request.app.locals.dbConnection);
+    const solvedDao = new SolvedDao(request.app.locals.dbConnection);
     try {
-        var obj = challengefileDao.loadById(request.params.id);
-        challengefileDao.delete(request.params.id);
+        var obj = solvedDao.loadById(request.params.id);
+        solvedDao.delete(request.params.id);
         helper.log('Service Challengefile: Deletion of record successfull, id=' + request.params.id);
         response.status(200).json(helper.jsonMsgOK({ 'deleted': true, 'entry': obj }));
     } catch (ex) {
