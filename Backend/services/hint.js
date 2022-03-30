@@ -1,5 +1,5 @@
 const helper = require('../helper.js');
-const HintDao = require('../dao/challengeDao.js');
+const HintDao = require('../dao/hintDao.js');
 const express = require('express');
 const req = require('express/lib/request');
 var serviceRouter = express.Router();
@@ -9,9 +9,9 @@ helper.log('- Service Hint');
 serviceRouter.get('/hint/get/:id', function(request, response) {
     helper.log('Service Hint: Client requested one record, id=' + request.params.id);
 
-    const challengeDao = new HintDao(request.app.locals.dbConnection);
+    const hintDao = new HintDao(request.app.locals.dbConnection);
     try {
-        var result = challengeDao.loadById(request.params.id);
+        var result = hintDao.loadById(request.params.id);
         helper.log('Service Hint: Record loaded');
         response.status(200).json(helper.jsonMsgOK(result));
     } catch (ex) {
@@ -23,9 +23,9 @@ serviceRouter.get('/hint/get/:id', function(request, response) {
 serviceRouter.get('/hint/all/', function(request, response) {
     helper.log('Service Hint: Client requested all records');
 
-    const challengeDao = new HintDao(request.app.locals.dbConnection);
+    const hintDao = new HintDao(request.app.locals.dbConnection);
     try {
-        var result = challengeDao.loadAll();
+        var result = hintDao.loadAll();
         helper.log('Service Hint: Records loaded, count=' + result.length);
         response.status(200).json(helper.jsonMsgOK(result));
     } catch (ex) {
@@ -37,9 +37,9 @@ serviceRouter.get('/hint/all/', function(request, response) {
 serviceRouter.get('/hint/exists/:id', function(request, response) {
     helper.log('Service Hint: Client requested check, if record exists, id=' + request.params.id);
 
-    const challengeDao = new HintDao(request.app.locals.dbConnection);
+    const hintDao = new HintDao(request.app.locals.dbConnection);
     try {
-        var result = challengeDao.exists(request.params.id);
+        var result = hintDao.exists(request.params.id);
         helper.log('Service Hint: Check if record exists by id=' + request.params.id + ', result=' + result);
         response.status(200).json(helper.jsonMsgOK({ 'id': request.params.id, 'existiert': result }));
     } catch (ex) {
@@ -69,9 +69,9 @@ serviceRouter.post('/hint', function(request, response) {
     // Set current time as creationtime
     request.body.creationdate = new Date().toLocaleString();
 
-    const challengeDao = new HintDao(request.app.locals.dbConnection);
+    const hintDao = new HintDao(request.app.locals.dbConnection);
     try {
-        var result = challengeDao.create(request.body.challengename, request.body.difficulty, request.body.description, request.body.creationdate, request.body.solution);
+        var result = hintDao.create(request.body.challengename, request.body.difficulty, request.body.description, request.body.creationdate, request.body.solution);
         helper.log('Service Hint: Record inserted');
         response.status(200).json(helper.jsonMsgOK(result));
     } catch (ex) {
@@ -98,9 +98,9 @@ serviceRouter.put('/hint', function(request, response) {
         return;
     }
 
-    const challengeDao = new HintDao(request.app.locals.dbConnection);
+    const hintDao = new HintDao(request.app.locals.dbConnection);
     try {
-        var result = challengeDao.update(request.body.challengename, request.body.difficulty, request.body.description, request.body.creationdate, request.body.solution);
+        var result = hintDao.update(request.body.challengename, request.body.difficulty, request.body.description, request.body.creationdate, request.body.solution);
         helper.log('Service Hint: Record updated, id=' + request.body.id);
         response.status(200).json(helper.jsonMsgOK(result));
     } catch (ex) {
@@ -112,10 +112,10 @@ serviceRouter.put('/hint', function(request, response) {
 serviceRouter.delete('/hint/:id', function(request, response) {
     helper.log('Service Hint: Client requested deletion of record, id=' + request.params.id);
 
-    const challengeDao = new HintDao(request.app.locals.dbConnection);
+    const hintDao = new HintDao(request.app.locals.dbConnection);
     try {
-        var obj = challengeDao.loadById(request.params.id);
-        challengeDao.delete(request.params.id);
+        var obj = hintDao.loadById(request.params.id);
+        hintDao.delete(request.params.id);
         helper.log('Service Hint: Deletion of record successfull, id=' + request.params.id);
         response.status(200).json(helper.jsonMsgOK({ 'deleted': true, 'entry': obj }));
     } catch (ex) {
