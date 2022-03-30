@@ -14,10 +14,10 @@ INSERT INTO Hint (Description, Cost, ChallengeID) VALUES ('Nothing', 0, 1);
 INSERT INTO Hint (Description, Cost, ChallengeID) VALUES ('Something', 20, 1);
 INSERT INTO Hint (Description, Cost, ChallengeID) VALUES ('Basicly the solution', 50, 2);
 
-INSERT INTO Difficulty (Level, Coins) VALUES (1, 10);
-INSERT INTO Difficulty (Level, Coins) VALUES (2, 15);
-INSERT INTO Difficulty (Level, Coins) VALUES (3, 20);
-INSERT INTO Difficulty (Level, Coins) VALUES (9, 50);
+INSERT INTO Difficulty (Level, Points) VALUES (1, 10);
+INSERT INTO Difficulty (Level, Points) VALUES (2, 15);
+INSERT INTO Difficulty (Level, Points) VALUES (3, 20);
+INSERT INTO Difficulty (Level, Points) VALUES (9, 50);
 
 INSERT INTO Country (CountryName) VALUES ('Tuvalu');
 INSERT INTO Country (CountryName) VALUES ('Uganda');
