@@ -7,7 +7,11 @@ CREATE TABLE "Category" (
 
 -- challenge definition
 
+<<<<<<< HEAD
 CREATE TABLE "Challenge" (
+=======
+CREATE TABLE Challenge (
+>>>>>>> 6489e4e04b85bcfbdc630805cfb311661a8931d0
 	ChallengeID INTEGER NOT NULL,
 	ChallengeName TEXT NOT NULL,
 	DifficultyID INTEGER DEFAULT 1 NOT NULL,
@@ -69,6 +73,7 @@ CREATE TABLE "Hint" (
 	"HintID"	INTEGER NOT NULL,
 	"Description"	TEXT NOT NULL,
 	"Cost"	INTEGER NOT NULL,
+	"ChallengeID"  INTEGER NOT NULL,
 	PRIMARY KEY("HintID")
 );
 

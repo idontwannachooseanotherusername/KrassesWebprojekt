@@ -10,9 +10,9 @@ INSERT INTO Tag (PicturePath, Title) VALUES ('../../Frontend/images/icons/knowle
 INSERT INTO Tag (PicturePath, Title) VALUES ('../../Frontend/images/icons/software.png', 'Special software');
 INSERT INTO Tag (PicturePath, Title) VALUES ('../../Frontend/images/icons/location.png', 'Physical location');
 
-INSERT INTO Hint (Description, Cost) VALUES ('Nothing', 0);
-INSERT INTO Hint (Description, Cost) VALUES ('Something', 20);
-INSERT INTO Hint (Description, Cost) VALUES ('Basicly the solution', 50);
+INSERT INTO Hint (Description, Cost, ChallengeID) VALUES ('Nothing', 0, 1);
+INSERT INTO Hint (Description, Cost, ChallengeID) VALUES ('Something', 20, 1);
+INSERT INTO Hint (Description, Cost, ChallengeID) VALUES ('Basicly the solution', 50, 2);
 
 INSERT INTO Difficulty (Level, Coins) VALUES (1, 10);
 INSERT INTO Difficulty (Level, Coins) VALUES (2, 15);
