@@ -58,6 +58,15 @@ try {
     var serviceRouter = require('./services/country.js');
     app.use(TOPLEVELPATH, serviceRouter);
 
+    var serviceRouter = require('./services/hint.js');
+    app.use(TOPLEVELPATH, serviceRouter);
+
+    var serviceRouter = require('./services/category.js');
+    app.use(TOPLEVELPATH, serviceRouter);
+
+    var serviceRouter = require('./services/difficulty.js');
+    app.use(TOPLEVELPATH, serviceRouter);
+
     
     serviceRouter = require('./services/dateiuploadeinzeln.js');
     app.use(TOPLEVELPATH, serviceRouter);
