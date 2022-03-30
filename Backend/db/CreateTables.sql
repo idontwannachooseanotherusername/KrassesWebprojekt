@@ -7,9 +7,9 @@ CREATE TABLE "Category" (
 
 -- challenge definition
 
-CREATE TABLE Challenge (
-	challengeID INTEGER NOT NULL,
-	challengeName TEXT NOT NULL,
+CREATE TABLE "Challenge" (
+	ChallengeID INTEGER NOT NULL,
+	ChallengeName TEXT NOT NULL,
 	DifficultyID INTEGER DEFAULT 1 NOT NULL,
 	Description TEXT,
 	CreationDate TEXT NOT NULL,
@@ -20,26 +20,26 @@ CREATE TABLE Challenge (
 
 -- challengecategory definition
 
-CREATE TABLE Challengecategory (
-	challengeID INTEGER NOT NULL,
+CREATE TABLE "Challengecategory" (
+	ChallengeID INTEGER NOT NULL,
 	CategoryID INTEGER NOT NULL,
-	CONSTRAINT challengecategory_FK FOREIGN KEY (challengeID) REFERENCES challenge(ChallengeID),
-	CONSTRAINT challengecategory_FK_1 FOREIGN KEY (CategoryID) REFERENCES challenge(ChallengeID)
+	CONSTRAINT challengecategory_FK FOREIGN KEY (ChallengeID) REFERENCES Challenge(ChallengeID),
+	CONSTRAINT challengecategory_FK_1 FOREIGN KEY (CategoryID) REFERENCES Challenge(ChallengeID)
 );
 
 -- challengepicture definition
 
-CREATE TABLE Challengepicture (
+CREATE TABLE "Challengefile" (
 	PictureID INTEGER NOT NULL,
-	challengeID INTEGER NOT NULL,
-	PicturePath TEXT NOT NULL,
+	ChallengeID INTEGER NOT NULL,
+	FilePath TEXT NOT NULL,
 	CONSTRAINT challengePICTURE_PK PRIMARY KEY (PictureID),
-	CONSTRAINT challengepicture_FK FOREIGN KEY (challengeID) REFERENCES challenge(ChallengeID)
+	CONSTRAINT challengepicture_FK FOREIGN KEY (ChallengeID) REFERENCES Challenge(ChallengeID)
 );
 
 -- challengetag definition
 
-CREATE TABLE Challengetag (
+CREATE TABLE "Challengetag" (
 	challengeID INTEGER NOT NULL,
 	TagID INTEGER NOT NULL,
 	CONSTRAINT fk_challengetag2 FOREIGN KEY (TagID) REFERENCES Tag(TagID),
@@ -69,10 +69,11 @@ CREATE TABLE "Hint" (
 	"HintID"	INTEGER NOT NULL,
 	"Description"	TEXT NOT NULL,
 	"Cost"	INTEGER NOT NULL,
+	"ChallengeID"  INTEGER NOT NULL,
 	PRIMARY KEY("HintID")
 );
 
--- Tag definition
+-- Tag definition 
 
 CREATE TABLE "Tag" (
 	"TagID"	INTEGER,
@@ -91,5 +92,6 @@ CREATE TABLE "User" (
 	"PicturePath"	TEXT,
 	"CountryID"	INTEGER,
 	"Points"	INTEGER NOT NULL DEFAULT 0,
+	"Deleted"   INTEGER NOT NULL DEFAULT 0,
 	PRIMARY KEY("UserID" AUTOINCREMENT)
 );
