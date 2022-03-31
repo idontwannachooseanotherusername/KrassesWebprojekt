@@ -1,7 +1,6 @@
 const helper = require('../helper.js');
-const DifficultyDao = require('./difficultyDao.js');
 
-class ChallengeDao {
+class ChallengeTagDao {
 
     constructor(dbConnection) {
         this._conn = dbConnection;
@@ -12,9 +11,7 @@ class ChallengeDao {
     }
 
     loadById(id) {
-        const difficultyDao = new DifficultyDao(this._conn);
-
-        var sql = 'SELECT * FROM Challenge WHERE ChallengeID=?';
+        var sql = 'SELECT * FROM ChallengeTag WHERE ChallengeTagID=?';
         var statement = this._conn.prepare(sql);
         var result = statement.get(id);
 
@@ -23,66 +20,81 @@ class ChallengeDao {
 
         result = helper.objectKeysToLower(result);
 
-        result.difficulty = difficultyDao.loadById(result.difficultyid);
-        delete result.difficultyid;
+        result.challenge = challengeDao.loadById(result.challengeid);
+        delete result.challengeid;
+
+        result.tag = tagDao.loadById(result.tagid);
+        delete result.tagid;
 
         return result;
     }
 
-    loadAll() {
-        const difficultyDao = new DifficultyDao(this._conn);
-        var countries = difficultyDao.loadAll();
+    loadAll() {;
+        const challengeDao = new ChallengeDao(this._conn);
+        var challenges = challengeDao.loadAll();
 
-        var sql = 'SELECT * FROM Challenge';
+        const tagDao = new TagDao(this._conn);
+        var tags = tagDao.loadAll();
+
+        var sql = 'SELECT * FROM ChallengeTag';
         var statement = this._conn.prepare(sql);
         var result = statement.all();
 
         if (helper.isArrayEmpty(result)) 
             return [];
-        
+
         result = helper.arrayObjectKeysToLower(result);
 
-        for (var i = 0; i < result.length; i++) {          
-            for (var element of countries) {
-                if (element.id == result[i].difficultyid) {
-                    result[i].difficulty = element;
+        for (var i = 0; i < result.length; i++) {
+            for (var element of challenges) {
+                if (element.id == result[i].challengeid) {
+                    result[i].challenge = element;
                     break;
                 }
             }
-            delete result[i].difficultyid;
+            delete result[i].challengeid;
+        }
+
+        for (var i = 0; i < result.length; i++) {
+            for (var element of tags) {
+                if (element.id == result[i].tagid) {
+                    result[i].tag = element;
+                    break;
+                }
+            }
+            delete result[i].tagid;
         }
         return result;
     }
 
     exists(id) {
-        var sql = 'SELECT COUNT(ID) AS cnt FROM Challenge WHERE ChallengeID=?';
+        var sql = 'SELECT COUNT(ChallengeTagID) AS cnt FROM Bestellposition WHERE ID=?';
         var statement = this._conn.prepare(sql);
         var result = statement.get(id);
 
-        if (result.cnt == 1) 
+        if (result.cnt == 1)
             return true;
+
         return false;
     }
 
-    create(challengename = '', description = '', creationdate = '', solution = '', difficultyid = null) {
-        const difficultyDao = new DifficultyDao(this._conn);
-        
-        var sql = 'INSERT INTO Person (Challengename, Description, CreationDate, Solution, CountryID) VALUES (?,?,?,?,?)';
+    create(challengeid = '', tagid = '') {
+        var sql = 'INSERT INTO ChallengeTag (ChallengeID, TagID) VALUES (?,?)';
         var statement = this._conn.prepare(sql);
-        var params = [challengename, description, creationdate, solution, difficultyDao.loadById(result.difficultyid)];
+        var params = [challengeid, tagid];
         var result = statement.run(params);
 
-        if (result.changes != 1) 
+        if (result.changes != 1)
             throw new Error('Could not insert new Record. Data: ' + params);
 
         var newObj = this.loadById(result.lastInsertRowid);
         return newObj;
     }
 
-    update(id, challengename = '',  description = '', creationdate = '', solution = '', difficultyid = null) {
-        var sql = 'UPDATE Challenge SET Challengename=?, Description=?, CreationDate=?, Solution=?, CountryID=? WHERE ChallengeID=?)';
+    update(id, challengeid = '', tagid = '') {
+        var sql = 'UPDATE ChallengeTag SET ChallengeID=?, TagID=? WHERE ChallengeTagID=?';
         var statement = this._conn.prepare(sql);
-        var params = [challengename, description, creationdate, solution, difficultyDao.loadById(result.difficultyid)];
+        var params = [challengeid, tagid];
         var result = statement.run(params);
 
         if (result.changes != 1)
@@ -92,9 +104,10 @@ class ChallengeDao {
         return updatedObj;
     }
 
+
     delete(id) {
         try {
-            var sql = 'DELETE FROM Challenge WHERE ChallengeID=?';
+            var sql = 'DELETE FROM ChallengeTag WHERE ChallengeTagID=?';
             var statement = this._conn.prepare(sql);
             var result = statement.run(id);
 
@@ -108,8 +121,8 @@ class ChallengeDao {
     }
 
     toString() {
-        helper.log('ChallengeDao [_conn=' + this._conn + ']');
+        helper.log('ChallengeTagDao [_conn=' + this._conn + ']');
     }
 }
 
-module.exports = ChallengeDao;
+module.exports = ChallengeTagDao;

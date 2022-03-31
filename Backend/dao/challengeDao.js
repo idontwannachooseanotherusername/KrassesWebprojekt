@@ -23,6 +23,9 @@ class ChallengeDao {
 
         result = helper.objectKeysToLower(result);
 
+        var dt = helper.parseSQLDateTimeString(result.creationdate);
+        result.creationdate = helper.formatToGermanDateTime(dt)
+
         result.difficulty = difficultyDao.loadById(result.difficultyid);
         delete result.difficultyid;
 
@@ -36,7 +39,8 @@ class ChallengeDao {
         var sql = 'SELECT * FROM Challenge';
         var statement = this._conn.prepare(sql);
         var result = statement.all();
-
+        var dt = helper.parseSQLDateTimeString(result.creationdate);
+        result.creationdate = helper.formatToGermanDateTime(dt)
         if (helper.isArrayEmpty(result)) 
             return [];
         
@@ -55,7 +59,7 @@ class ChallengeDao {
     }
 
     exists(id) {
-        var sql = 'SELECT COUNT(ID) AS cnt FROM Challenge WHERE ChallengeID=?';
+        var sql = 'SELECT COUNT(ChallengeID) AS cnt FROM Challenge WHERE ChallengeID=?';
         var statement = this._conn.prepare(sql);
         var result = statement.get(id);
 
@@ -69,7 +73,7 @@ class ChallengeDao {
         
         var sql = 'INSERT INTO Person (Challengename, Description, CreationDate, Solution, CountryID) VALUES (?,?,?,?,?)';
         var statement = this._conn.prepare(sql);
-        var params = [challengename, description, creationdate, solution, difficultyDao.loadById(result.difficultyid)];
+        var params = [challengename, description, helper.formatToSQLDateTime(creationdate), solution, difficultyDao.loadById(result.difficultyid)];
         var result = statement.run(params);
 
         if (result.changes != 1) 
@@ -82,7 +86,7 @@ class ChallengeDao {
     update(id, challengename = '',  description = '', creationdate = '', solution = '', difficultyid = null) {
         var sql = 'UPDATE Challenge SET Challengename=?, Description=?, CreationDate=?, Solution=?, CountryID=? WHERE ChallengeID=?)';
         var statement = this._conn.prepare(sql);
-        var params = [challengename, description, creationdate, solution, difficultyDao.loadById(result.difficultyid)];
+        var params = [challengename, description, helper.formatToSQLDateTime(creationdate), solution, difficultyDao.loadById(result.difficultyid)];
         var result = statement.run(params);
 
         if (result.changes != 1)

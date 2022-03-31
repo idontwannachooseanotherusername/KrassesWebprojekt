@@ -35,7 +35,7 @@ class TagDao {
     }
 
     exists(id) {
-        var sql = 'SELECT COUNT(ID) AS cnt FROM Tag WHERE TagID=?';
+        var sql = 'SELECT COUNT(TagID) AS cnt FROM Tag WHERE TagID=?';
         var statement = this._conn.prepare(sql);
         var result = statement.get(id);
 
