@@ -73,6 +73,10 @@ hr{
     color: #212121;
     transition: 0.3s;
 }
+.btn-create{
+    text-align: center;
+    margin-top: 40px;
+}
 
 /*---------- NAVIGATION ----------*/
 header{
@@ -143,9 +147,11 @@ header{
     padding-bottom: 0;
 }
 .dropdown .points{
-    border-bottom: 1px solid #3d3d3d;
     color: #b000e1;
     text-shadow: 0 0 3px #b000e1;
+}
+.dropdown .seperator{
+    border-bottom: 1px solid #3d3d3d;
 }
 .dropdown dd a:hover{
     cursor: pointer;
@@ -263,12 +269,14 @@ article{
 .item img{
     height: 150px;
     border-radius: 3px;
-    box-shadow: 0 0 9px #00000020;
     transition: linear .3s;
+    filter: drop-shadow(0 3px 3px black);
 }
 .item img:hover{
     transition: linear .3s;
-    box-shadow: 4px 4px #ffffff20;
+    filter: drop-shadow(0 6px 6px black);
+    scale: 1.02;
+    
 /*
     scale: 1.05;
     box-shadow: 0 0 15px #00000020;
