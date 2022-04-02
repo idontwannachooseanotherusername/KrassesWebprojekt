@@ -24,7 +24,7 @@ class UserDao {
 
         result = helper.objectKeysToLower(result);
 
-        result.country = countryDao.loadById(result.countryid);
+        result.country = countryDao.loadById(result.countryid).countryname;
         delete result.countryid;
 
         return result;
@@ -45,7 +45,7 @@ class UserDao {
 
         for (var i = 0; i < result.length; i++) {          
             for (var element of countries) {
-                if (element.id == result[i].countryid) {
+                if (element.id == result[i].countryid).countryname {
                     result[i].country = element;
                     break;
                 }
@@ -56,7 +56,7 @@ class UserDao {
     }
 
     exists(id) {
-        var sql = 'SELECT COUNT(ID) AS cnt FROM User WHERE UserID=?';
+        var sql = 'SELECT COUNT(UserID) AS cnt FROM User WHERE UserID=?';
         var statement = this._conn.prepare(sql);
         var result = statement.get(id);
 

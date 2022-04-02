@@ -1,6 +1,6 @@
 const helper = require('../helper.js');
 
-class SpeisenartDao {
+class TagDao {
 
     constructor(dbConnection) {
         this._conn = dbConnection;
@@ -11,67 +11,69 @@ class SpeisenartDao {
     }
 
     loadById(id) {
-        var sql = 'SELECT * FROM Speisenart WHERE ID=?';
+        var sql = 'SELECT * FROM Tag WHERE TagID=?';
         var statement = this._conn.prepare(sql);
         var result = statement.get(id);
 
         if (helper.isUndefined(result)) 
             throw new Error('No Record found by id=' + id);
 
-        return helper.objectKeysToLower(result);
+        result = helper.objectKeysToLower(result);
+
+        return result;
     }
 
-    loadAll() {
-        var sql = 'SELECT * FROM Speisenart';
+    loadAll() {;
+        var sql = 'SELECT * FROM Tag';
         var statement = this._conn.prepare(sql);
         var result = statement.all();
 
         if (helper.isArrayEmpty(result)) 
-           return [];
-        
+            return [];
         return helper.arrayObjectKeysToLower(result);
+
     }
 
     exists(id) {
-        var sql = 'SELECT COUNT(ID) AS cnt FROM Speisenart WHERE ID=?';
+        var sql = 'SELECT COUNT(TagID) AS cnt FROM Tag WHERE TagID=?';
         var statement = this._conn.prepare(sql);
         var result = statement.get(id);
 
         if (result.cnt == 1) 
             return true;
-
         return false;
     }
 
-    create(bezeichnung = '', beschreibung = '', bildpfad = null) {
-        var sql = 'INSERT INTO Speisenart (Bezeichnung,Beschreibung,Bildpfad) VALUES (?,?,?)';
+    create(picturepath = '', title = '') {
+        var sql = 'INSERT INTO Tag (Picturepath, Title) VALUES (?,?)';
         var statement = this._conn.prepare(sql);
-        var params = [bezeichnung, beschreibung, bildpfad];
+        var params = [picturepath, title];
         var result = statement.run(params);
 
-        if (result.changes != 1) 
+        if (result.changes != 1)
             throw new Error('Could not insert new Record. Data: ' + params);
 
         var newObj = this.loadById(result.lastInsertRowid);
         return newObj;
     }
 
-    update(id, bezeichnung = '', beschreibung = '', bildpfad = null) {
-        var sql = 'UPDATE Speisenart SET Bezeichnung=?,Beschreibung=?,Bildpfad=? WHERE ID=?';
+    update(id, picturepath = '', title = '') {
+        var sql = 'UPDATE Tag SET Picturepath=?, Title=? WHERE TagID=?';
         var statement = this._conn.prepare(sql);
-        var params = [bezeichnung, beschreibung, bildpfad, id];
+        var params = [picturepath, title];
         var result = statement.run(params);
 
-        if (result.changes != 1) 
+        if (result.changes != 1)
             throw new Error('Could not update existing Record. Data: ' + params);
 
         var updatedObj = this.loadById(id);
         return updatedObj;
     }
 
+
     delete(id) {
         try {
-            var sql = 'DELETE FROM Speisenart WHERE ID=?';
+            var sql = 'DELETE FROM Tag WHERE TagID=?';
             var statement = this._conn.prepare(sql);
             var result = statement.run(id);
 
@@ -85,8 +87,8 @@ class SpeisenartDao {
     }
 
     toString() {
-        helper.log('SpeisenartDao [_conn=' + this._conn + ']');
+        helper.log('TagDao [_conn=' + this._conn + ']');
     }
 }
 
-module.exports = SpeisenartDao;
+module.exports = TagDao;

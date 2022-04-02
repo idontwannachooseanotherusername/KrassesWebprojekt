@@ -1,7 +1,6 @@
 const helper = require('../helper.js');
-const CountryDao = require('./challengeDao.js');
 
-class HintDao {
+class ChallengeFileDao {
 
     constructor(dbConnection) {
         this._conn = dbConnection;
@@ -12,7 +11,7 @@ class HintDao {
     }
 
     loadById(id) {
-        var sql = 'SELECT * FROM Hint WHERE HintID=?';
+        var sql = 'SELECT * FROM ChallengeFile WHERE ChallengeFileID=?';
         var statement = this._conn.prepare(sql);
         var result = statement.get(id);
 
@@ -24,47 +23,65 @@ class HintDao {
         result.challenge = challengeDao.loadById(result.challengeid);
         delete result.challengeid;
 
+        result.file = fileDao.loadById(result.fileid);
+        delete result.fileid;
+
         return result;
     }
 
     loadAll() {;
-        const challengeDao = new challengeDao(this._conn);
+        const challengeDao = new ChallengeDao(this._conn);
         var challenges = challengeDao.loadAll();
 
-        var sql = 'SELECT * FROM Hint';
+        const fileDao = new FileDao(this._conn);
+        var files = fileDao.loadAll();
+
+        var sql = 'SELECT * FROM ChallengeFile';
         var statement = this._conn.prepare(sql);
         var result = statement.all();
 
         if (helper.isArrayEmpty(result)) 
             return [];
-        return helper.arrayObjectKeysToLower(result);
+
+        result = helper.arrayObjectKeysToLower(result);
 
         for (var i = 0; i < result.length; i++) {
             for (var element of challenges) {
-                if (element.id == result[i].challengeid){
+                if (element.id == result[i].challengeid) {
                     result[i].challenge = element;
                     break;
                 }
             }
             delete result[i].challengeid;
         }
+
+        for (var i = 0; i < result.length; i++) {
+            for (var element of files) {
+                if (element.id == result[i].fileid) {
+                    result[i].file = element;
+                    break;
+                }
+            }
+            delete result[i].fileid;
+        }
         return result;
     }
 
     exists(id) {
-        var sql = 'SELECT COUNT(HintID) AS cnt FROM Hint WHERE HintID=?';
+        var sql = 'SELECT COUNT(ChallengeFileID) AS cnt FROM Bestellposition WHERE ID=?';
         var statement = this._conn.prepare(sql);
         var result = statement.get(id);
 
-        if (result.cnt == 1) 
+        if (result.cnt == 1)
             return true;
+
         return false;
     }
 
-    create(description = '', cost = '',challengeid = null) {
-        var sql = 'INSERT INTO Hint (Description, Cost, ChallengeID) VALUES (?,?,?)';
+    create(challengeid = '', fileid = '') {
+        var sql = 'INSERT INTO ChallengeFile (ChallengeID, FileID) VALUES (?,?)';
         var statement = this._conn.prepare(sql);
-        var params = [description, cost, challengeDao.loadById(result.challengeid)];
+        var params = [challengeid, fileid];
         var result = statement.run(params);
 
         if (result.changes != 1)
@@ -74,10 +91,10 @@ class HintDao {
         return newObj;
     }
 
-    update(id, description = '', cost = '',challengeid = null) {
-        var sql = 'UPDATE Hint SET Description=?, Cost=? ,ChallengeID=? WHERE HintID=?';
+    update(id, challengeid = '', fileid = '') {
+        var sql = 'UPDATE ChallengeFile SET ChallengeID=?, FileID=? WHERE ChallengeFileID=?';
         var statement = this._conn.prepare(sql);
-        var params = [description, cost, challengeid];
+        var params = [challengeid, fileid];
         var result = statement.run(params);
 
         if (result.changes != 1)
@@ -90,7 +107,7 @@ class HintDao {
 
     delete(id) {
         try {
-            var sql = 'DELETE FROM Hint WHERE HintID=?';
+            var sql = 'DELETE FROM ChallengeFile WHERE ChallengeFileID=?';
             var statement = this._conn.prepare(sql);
             var result = statement.run(id);
 
@@ -104,8 +121,8 @@ class HintDao {
     }
 
     toString() {
-        helper.log('HintDao [_conn=' + this._conn + ']');
+        helper.log('ChallengeFileDao [_conn=' + this._conn + ']');
     }
 }
 
-module.exports = HintDao;
+module.exports = ChallengeFileDao;

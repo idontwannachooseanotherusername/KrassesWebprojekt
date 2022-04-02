@@ -59,7 +59,7 @@ CREATE TABLE "Country" (
 CREATE TABLE "Difficulty" (
 	DifficultyID INTEGER NOT NULL,
 	Level INTEGER NOT NULL DEFAULT 1,
-	Coins INTEGER NOT NULL,
+	Points INTEGER NOT NULL,
 	PRIMARY KEY("DifficultyID")
 );
 

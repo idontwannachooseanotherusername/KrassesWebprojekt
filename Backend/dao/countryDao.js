@@ -33,7 +33,7 @@ class CountryDao {
     }
 
     exists(id) {
-        var sql = 'SELECT COUNT(ID) AS cnt FROM Country WHERE CountryID=?';
+        var sql = 'SELECT COUNT(CountryID) AS cnt FROM Country WHERE CountryID=?';
         var statement = this._conn.prepare(sql);
         var result = statement.get(id);
 

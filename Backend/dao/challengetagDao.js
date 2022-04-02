@@ -1,6 +1,6 @@
 const helper = require('../helper.js');
 
-class KinosaalDao {
+class ChallengeTagDao {
 
     constructor(dbConnection) {
         this._conn = dbConnection;
@@ -11,7 +11,7 @@ class KinosaalDao {
     }
 
     loadById(id) {
-        var sql = 'SELECT * FROM Kinosaal WHERE ID=?';
+        var sql = 'SELECT * FROM ChallengeTag WHERE ChallengeTagID=?';
         var statement = this._conn.prepare(sql);
         var result = statement.get(id);
 
@@ -20,78 +20,94 @@ class KinosaalDao {
 
         result = helper.objectKeysToLower(result);
 
-        if (result.projektionsart == 0) 
-            result.projektionsart = '2D';
-        else 
-            result.projektionsart = '3D';
+        result.challenge = challengeDao.loadById(result.challengeid);
+        delete result.challengeid;
 
-        result.sitzegesammt = result.sitzreihen * result.sitzeproreihe;
+        result.tag = tagDao.loadById(result.tagid);
+        delete result.tagid;
 
         return result;
     }
 
-    loadAll() {
-        var sql = 'SELECT * FROM Kinosaal';
+    loadAll() {;
+        const challengeDao = new ChallengeDao(this._conn);
+        var challenges = challengeDao.loadAll();
+
+        const tagDao = new TagDao(this._conn);
+        var tags = tagDao.loadAll();
+
+        var sql = 'SELECT * FROM ChallengeTag';
         var statement = this._conn.prepare(sql);
         var result = statement.all();
 
         if (helper.isArrayEmpty(result)) 
             return [];
-        
+
         result = helper.arrayObjectKeysToLower(result);
 
         for (var i = 0; i < result.length; i++) {
-            if (result[i].projektionsart == 0) 
-                result[i].projektionsart = '2D';
-            else 
-                result[i].projektionsart = '3D';
-
-            result[i].sitzegesammt = result[i].sitzreihen * result[i].sitzeproreihe;
+            for (var element of challenges) {
+                if (element.id == result[i].challengeid) {
+                    result[i].challenge = element;
+                    break;
+                }
+            }
+            delete result[i].challengeid;
         }
 
+        for (var i = 0; i < result.length; i++) {
+            for (var element of tags) {
+                if (element.id == result[i].tagid) {
+                    result[i].tag = element;
+                    break;
+                }
+            }
+            delete result[i].tagid;
+        }
         return result;
     }
 
     exists(id) {
-        var sql = 'SELECT COUNT(ID) AS cnt FROM Kinosaal WHERE ID=?';
+        var sql = 'SELECT COUNT(ChallengeTagID) AS cnt FROM Bestellposition WHERE ID=?';
         var statement = this._conn.prepare(sql);
         var result = statement.get(id);
 
-        if (result.cnt == 1) 
+        if (result.cnt == 1)
             return true;
 
         return false;
     }
 
-    create(bezeichnung = '', leinwand = 120, tonsystem = '', projektion = '', projektionsart = '2D', sitzreihen = 20, sitzeproreihe = 25, geschoss = 'EG') {
-        var sql = 'INSERT INTO Kinosaal (Bezeichnung,Leinwand,Tonsystem,Projektion,Projektionsart,Sitzreihen,SitzeProReihe,Geschoss) VALUES (?,?,?,?,?,?,?,?)';
+    create(challengeid = '', tagid = '') {
+        var sql = 'INSERT INTO ChallengeTag (ChallengeID, TagID) VALUES (?,?)';
         var statement = this._conn.prepare(sql);
-        var params = [bezeichnung, leinwand, tonsystem, projektion, (projektionsart.toLowerCase() === '2d' ? 0 : 1), sitzreihen, sitzeproreihe, geschoss];
+        var params = [challengeid, tagid];
         var result = statement.run(params);
 
-        if (result.changes != 1) 
+        if (result.changes != 1)
             throw new Error('Could not insert new Record. Data: ' + params);
 
         var newObj = this.loadById(result.lastInsertRowid);
         return newObj;
     }
 
-    update(id, bezeichnung = '', leinwand = 120, tonsystem = '', projektion = '', projektionsart = '2D', sitzreihen = 20, sitzeproreihe = 25, geschoss = 'EG') {
-        var sql = 'UPDATE Kinosaal SET Bezeichnung=?,Leinwand=?,Tonsystem=?,Projektion=?,Projektionsart=?,Sitzreihen=?,SitzeProReihe=?,Geschoss=? WHERE ID=?';
+    update(id, challengeid = '', tagid = '') {
+        var sql = 'UPDATE ChallengeTag SET ChallengeID=?, TagID=? WHERE ChallengeTagID=?';
         var statement = this._conn.prepare(sql);
-        var params = [bezeichnung, leinwand, tonsystem, projektion, (projektionsart.toLowerCase() === '2d' ? 0 : 1), sitzreihen, sitzeproreihe, geschoss, id];
+        var params = [challengeid, tagid];
         var result = statement.run(params);
 
-        if (result.changes != 1) 
+        if (result.changes != 1)
             throw new Error('Could not update existing Record. Data: ' + params);
 
         var updatedObj = this.loadById(id);
         return updatedObj;
     }
 
+
     delete(id) {
         try {
-            var sql = 'DELETE FROM Kinosaal WHERE ID=?';
+            var sql = 'DELETE FROM ChallengeTag WHERE ChallengeTagID=?';
             var statement = this._conn.prepare(sql);
             var result = statement.run(id);
 
@@ -105,8 +121,8 @@ class KinosaalDao {
     }
 
     toString() {
-        helper.log('KinosaalDao [_conn=' + this._conn + ']');
+        helper.log('ChallengeTagDao [_conn=' + this._conn + ']');
     }
 }
 
-module.exports = KinosaalDao;
+module.exports = ChallengeTagDao;

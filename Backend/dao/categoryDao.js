@@ -35,7 +35,7 @@ class CategoryDao {
     }
 
     exists(id) {
-        var sql = 'SELECT COUNT(ID) AS cnt FROM Category WHERE CategoryID=?';
+        var sql = 'SELECT COUNT(CategoryID) AS cnt FROM Category WHERE CategoryID=?';
         var statement = this._conn.prepare(sql);
         var result = statement.get(id);
 
