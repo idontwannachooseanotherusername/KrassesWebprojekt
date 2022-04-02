@@ -73,6 +73,10 @@ hr{
     color: #212121;
     transition: 0.3s;
 }
+.btn-create{
+    text-align: center;
+    margin-top: 40px;
+}
 
 /*---------- NAVIGATION ----------*/
 header{
@@ -143,9 +147,11 @@ header{
     padding-bottom: 0;
 }
 .dropdown .points{
-    border-bottom: 1px solid #3d3d3d;
     color: #b000e1;
     text-shadow: 0 0 3px #b000e1;
+}
+.dropdown .seperator{
+    border-bottom: 1px solid #3d3d3d;
 }
 .dropdown dd a:hover{
     cursor: pointer;
