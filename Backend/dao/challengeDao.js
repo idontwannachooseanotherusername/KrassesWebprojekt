@@ -34,22 +34,21 @@ class ChallengeDao {
 
     loadAll() {
         const difficultyDao = new DifficultyDao(this._conn);
-        var countries = difficultyDao.loadAll();
+        var difficulties = difficultyDao.loadAll();
 
         var sql = 'SELECT * FROM Challenge';
         var statement = this._conn.prepare(sql);
         var result = statement.all();
-        var dt = helper.parseSQLDateTimeString(result.creationdate);
-        result.creationdate = helper.formatToGermanDateTime(dt)
-        if (helper.isArrayEmpty(result)) 
+
+        if (helper.isArrayEmpty(result))
             return [];
-        
+
         result = helper.arrayObjectKeysToLower(result);
 
-        for (var i = 0; i < result.length; i++) {          
-            for (var element of countries) {
-                if (element.id == result[i].difficultyid) {
-                    result[i].difficulty = element;
+        for (var i = 0; i < result.length; i++) {
+            for (var element of difficulties) {
+                if (element.difficultyid == result[i].difficultyid) {
+                    result[i].difficulty = element.level;
                     break;
                 }
             }
