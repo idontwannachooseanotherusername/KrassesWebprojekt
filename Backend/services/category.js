@@ -8,7 +8,7 @@ helper.log('- Service Category');
 serviceRouter.get('/category/get/:id', function(request, response) {
     helper.log('Service Category: Client requested one record, id=' + request.params.id);
 
-    const categoryDao = new CountryDao(request.app.locals.dbConnection);
+    const categoryDao = new CategoryDao(request.app.locals.dbConnection);
     try {
         var result = categoryDao.loadById(request.params.id);
         helper.log('Service Category: Record loaded');
@@ -22,7 +22,7 @@ serviceRouter.get('/category/get/:id', function(request, response) {
 serviceRouter.get('/category/all', function(request, response) {
     helper.log('Service Category: Client requested all records');
 
-    const categoryDao = new CountryDao(request.app.locals.dbConnection);
+    const categoryDao = new CategoryDao(request.app.locals.dbConnection);
     try {
         var result = categoryDao.loadAll();
         helper.log('Service Category: Records loaded, count=' + result.length);
@@ -36,7 +36,7 @@ serviceRouter.get('/category/all', function(request, response) {
 serviceRouter.get('/category/exists/:id', function(request, response) {
     helper.log('Service Category: Client requested check, if record exists, id=' + request.params.id);
 
-    const categoryDao = new CountryDao(request.app.locals.dbConnection);
+    const categoryDao = new CategoryDao(request.app.locals.dbConnection);
     try {
         var result = categoryDao.exists(request.paramCountrys.id);
         helper.log('Service Category: Check if record exists by id=' + request.params.id + ', result=' + result);
