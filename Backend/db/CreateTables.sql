@@ -24,17 +24,17 @@ CREATE TABLE "Challengecategory" (
 	ChallengeID INTEGER NOT NULL,
 	CategoryID INTEGER NOT NULL,
 	CONSTRAINT challengecategory_FK FOREIGN KEY (ChallengeID) REFERENCES Challenge(ChallengeID),
-	CONSTRAINT challengecategory_FK_1 FOREIGN KEY (CategoryID) REFERENCES Challenge(ChallengeID)
+	CONSTRAINT challengecategory_FK2 FOREIGN KEY (CategoryID) REFERENCES Challenge(ChallengeID)
 );
 
 -- challengepicture definition
 
 CREATE TABLE "Challengefile" (
-	PictureID INTEGER NOT NULL,
+	FileID INTEGER NOT NULL,
 	ChallengeID INTEGER NOT NULL,
 	FilePath TEXT NOT NULL,
-	CONSTRAINT challengePICTURE_PK PRIMARY KEY (PictureID),
-	CONSTRAINT challengepicture_FK FOREIGN KEY (ChallengeID) REFERENCES Challenge(ChallengeID)
+	CONSTRAINT challengefile_FK PRIMARY KEY (FileID),
+	CONSTRAINT challengefile_FK2 FOREIGN KEY (ChallengeID) REFERENCES Challenge(ChallengeID)
 );
 
 -- challengetag definition
@@ -42,8 +42,8 @@ CREATE TABLE "Challengefile" (
 CREATE TABLE "Challengetag" (
 	challengeID INTEGER NOT NULL,
 	TagID INTEGER NOT NULL,
-	CONSTRAINT fk_challengetag2 FOREIGN KEY (TagID) REFERENCES Tag(TagID),
-	CONSTRAINT challengetag_FK FOREIGN KEY (challengeID) REFERENCES challenge(ChallengeID)
+	CONSTRAINT challengetag_FK FOREIGN KEY (TagID) REFERENCES Tag(TagID),
+	CONSTRAINT challengetag_FK2 FOREIGN KEY (challengeID) REFERENCES challenge(ChallengeID)
 );
 
 -- Country definition
@@ -70,15 +70,16 @@ CREATE TABLE "Hint" (
 	"Description"	TEXT NOT NULL,
 	"Cost"	INTEGER NOT NULL,
 	"ChallengeID"  INTEGER NOT NULL,
-	PRIMARY KEY("HintID")
+	PRIMARY KEY("HintID"),
+	CONSTRAINT hint_FK FOREIGN KEY (ChallengeID) REFERENCES Challenge(ChallengeID)
 );
 
 -- Tag definition 
 
 CREATE TABLE "Tag" (
-	"TagID"	INTEGER,
-	"PicturePath"	TEXT,
-	"Title"	TEXT,
+	"TagID"	INTEGER NOT NULL,
+	"PicturePath"	TEXT NOT NULL,
+	"Title"	TEXT NOT NULL,
 	PRIMARY KEY("TagID")
 );
 
@@ -94,4 +95,15 @@ CREATE TABLE "User" (
 	"Points"	INTEGER NOT NULL DEFAULT 0,
 	"Deleted"   INTEGER NOT NULL DEFAULT 0,
 	PRIMARY KEY("UserID" AUTOINCREMENT)
+);
+
+-- Solved definition 
+
+CREATE TABLE "Solved" (
+	"SolvedID"	INTEGER NOT NULL,
+	"UserID"	INTEGER NOT NULL,
+	"ChallengeID"	INTEGER NOT NULL,
+	"TS"	TEXT NOT NULL,
+	PRIMARY KEY("SolvedID"),
+	CONSTRAINT solved_FK FOREIGN KEY (ChallengeID) REFERENCES Challenge(ChallengeID)
 );
