@@ -24,8 +24,17 @@ class UserDao {
 
         result = helper.objectKeysToLower(result);
 
-        result.country = countryDao.loadById(result.countryid).countryname;
+        // Countries can be empty(null)
+        if (result.countryid != null){
+            result.country = countryDao.loadById(result.countryid).countryname;
+        }
+        else{
+            result.country = null;
+        }
         delete result.countryid;
+
+        // Strip user password
+        delete result.password;
 
         return result;
     }
@@ -44,13 +53,18 @@ class UserDao {
         result = helper.arrayObjectKeysToLower(result);
 
         for (var i = 0; i < result.length; i++) {          
-            for (var element of countries) {
-                if (element.id == result[i].countryid.countryname) {
-                    result[i].country = element;
-                    break;
+            // Countries can be empty(null)
+            if (result[i].countryid != null){
+                for (var element of countries) {
+                    if (element.id == result[i].countryid.countryname) {
+                        result[i].country = element;
+                        break;
+                    }
                 }
+                delete result[i].countryid;
             }
-            delete result[i].countryid;
+            // Strip user password
+            delete result[i].password;
         }
         return result;
     }
