@@ -33,6 +33,34 @@ class UserDao {
         }
         delete result.countryid;
 
+        // Get last 10 solved challenges
+        var sql = 'SELECT * FROM Solved WHERE UserID=?';
+        var statement = this._conn.prepare(sql);
+        var result_soved = statement.get(id);
+        
+        if (helper.isUndefined(result_soved)) {
+            result.solved = [];
+        }
+        else{
+            result.solved = result_soved;  // TODO: Only first 10 or so
+        }
+
+        // Get created challenges
+        var sql = 'SELECT * FROM Challenge WHERE UserID=?';
+        var statement = this._conn.prepare(sql);
+        var result_created = statement.get(id);
+
+        if (helper.isUndefined(result_created)) {
+            result.created = [];
+        }
+        else{
+            var created = []
+            for (var i; i < result_created.length; i++){
+                this.created[i] = result_created[i].challengeid;
+            }
+            result.created = created;
+        }
+
         // Strip user password
         delete result.password;
 
