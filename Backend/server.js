@@ -41,7 +41,7 @@ try {
     app.use(cors());
     app.use(bodyParser.urlencoded({ extended: true}));
     app.use(bodyParser.json());
-    var root = '../Frontend'; // TODO: Replace by path.resolve
+    var root = '../Frontend';
     app.use(express.static(path.resolve(root)));
     console.log('PATH:' + path.resolve(root + '/images'));
     app.use(function(request, response, next) {
