@@ -74,23 +74,23 @@ try {
     var serviceRouter = require('./services/difficulty.js');
     app.use(TOPLEVELPATH, serviceRouter);
 
-    //var serviceRouter = require('./services/challengefile.js');
-    //app.use(TOPLEVELPATH, serviceRouter);
+    var serviceRouter = require('./services/challengefile.js');
+    app.use(TOPLEVELPATH, serviceRouter);
 
-    //var serviceRouter = require('./services/challengetag.js');
-    //app.use(TOPLEVELPATH, serviceRouter);
+    var serviceRouter = require('./services/challengetag.js');
+    app.use(TOPLEVELPATH, serviceRouter);
 
-    //var serviceRouter = require('./services/challengecategory.js');
-    //app.use(TOPLEVELPATH, serviceRouter);
+    var serviceRouter = require('./services/challengecategory.js');
+    app.use(TOPLEVELPATH, serviceRouter);
 
-    //var serviceRouter = require('./services/solved.js');
-    //app.use(TOPLEVELPATH, serviceRouter);
+    var serviceRouter = require('./services/solved.js');
+    app.use(TOPLEVELPATH, serviceRouter);
 
     var serviceRouter = require('./services/challenge.js');
     app.use(TOPLEVELPATH, serviceRouter);
 
-    //var serviceRouter = require('./services/tag.js');
-    //app.use(TOPLEVELPATH, serviceRouter);
+    var serviceRouter = require('./services/tag.js');
+    app.use(TOPLEVELPATH, serviceRouter);
     
     //serviceRouter = require('./services/dateiuploadeinzeln.js');
     //app.use(TOPLEVELPATH, serviceRouter);
