@@ -92,11 +92,12 @@ try {
     //var serviceRouter = require('./services/tag.js');
     //app.use(TOPLEVELPATH, serviceRouter);
     
+    /*
     serviceRouter = require('./services/dateiuploadeinzeln.js');
     app.use(TOPLEVELPATH, serviceRouter);
 
     serviceRouter = require('./services/dateiuploadmehrere.js');
-    app.use(TOPLEVELPATH, serviceRouter);
+    app.use(TOPLEVELPATH, serviceRouter);*/
 
     // send default error message if no matching endpoint found
     app.use(function (request, response) {
