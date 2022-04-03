@@ -24,8 +24,45 @@ class UserDao {
 
         result = helper.objectKeysToLower(result);
 
-        result.country = countryDao.loadById(result.countryid).countryname;
+        // Countries can be empty(null)
+        if (result.countryid != null){
+            result.country = countryDao.loadById(result.countryid).countryname;
+        }
+        else{
+            result.country = null;
+        }
         delete result.countryid;
+
+        // Get last 10 solved challenges
+        var sql = 'SELECT * FROM Solved WHERE UserID=?';
+        var statement = this._conn.prepare(sql);
+        var result_soved = statement.get(id);
+        
+        if (helper.isUndefined(result_soved)) {
+            result.solved = [];
+        }
+        else{
+            result.solved = result_soved;  // TODO: Only first 10 or so
+        }
+
+        // Get created challenges
+        var sql = 'SELECT * FROM Challenge WHERE UserID=?';
+        var statement = this._conn.prepare(sql);
+        var result_created = statement.get(id);
+
+        if (helper.isUndefined(result_created)) {
+            result.created = [];
+        }
+        else{
+            var created = []
+            for (var i; i < result_created.length; i++){
+                this.created[i] = result_created[i].challengeid;
+            }
+            result.created = created;
+        }
+
+        // Strip user password
+        delete result.password;
 
         return result;
     }
@@ -44,13 +81,18 @@ class UserDao {
         result = helper.arrayObjectKeysToLower(result);
 
         for (var i = 0; i < result.length; i++) {          
-            for (var element of countries) {
-                if (element.id == result[i].countryid.countryname) {
-                    result[i].country = element;
-                    break;
+            // Countries can be empty(null)
+            if (result[i].countryid != null){
+                for (var element of countries) {
+                    if (element.id == result[i].countryid.countryname) {
+                        result[i].country = element;
+                        break;
+                    }
                 }
+                delete result[i].countryid;
             }
-            delete result[i].countryid;
+            // Strip user password
+            delete result[i].password;
         }
         return result;
     }

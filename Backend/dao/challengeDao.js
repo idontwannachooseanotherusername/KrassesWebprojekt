@@ -29,6 +29,9 @@ class ChallengeDao {
         result.difficulty = difficultyDao.loadById(result.difficultyid);
         delete result.difficultyid;
 
+        // Do not leak challenge pw
+        delete result.solution;
+
         return result;
     }
 
@@ -53,6 +56,8 @@ class ChallengeDao {
                 }
             }
             delete result[i].difficultyid;
+            // Do not leak challenge pw
+            delete result.solution;
         }
         return result;
     }

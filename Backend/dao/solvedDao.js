@@ -1,4 +1,6 @@
 const helper = require('../helper.js');
+const ChallengeDao = require('../dao/challengeDao.js');
+const UserDao = require('../dao/userDao.js');
 
 class SolvedDao {
 
@@ -11,6 +13,9 @@ class SolvedDao {
     }
 
     loadById(id) {
+        const challengeDao = new ChallengeDao(this._conn);
+        const userDao = new UserDao(this._conn);
+
         var sql = 'SELECT * FROM Solved WHERE SolvedID=?';
         var statement = this._conn.prepare(sql);
         var result = statement.get(id);
@@ -20,11 +25,13 @@ class SolvedDao {
 
         result = helper.objectKeysToLower(result);
 
+        /* NOT NEEDED
         result.challenge = challengeDao.loadById(result.challengeid);
         delete result.challengeid;
 
         result.user = userDao.loadById(result.userid);
         delete result.userid;
+        */
 
         var dt = helper.parseSQLDateTimeString(result.ts);
         result.ts = helper.formatToGermanDateTime(dt)
@@ -50,6 +57,7 @@ class SolvedDao {
 
         result = helper.arrayObjectKeysToLower(result);
 
+        /* NOT NEEDED
         for (var i = 0; i < result.length; i++) {
             for (var element of challenges) {
                 if (element.id == result[i].challengeid) {
@@ -69,6 +77,7 @@ class SolvedDao {
             }
             delete result[i].userid;
         }
+        */
         return result;
     }
 
