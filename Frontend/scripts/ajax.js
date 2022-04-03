@@ -55,7 +55,7 @@ function challenge_all(){
             description.appendChild(text);
             challenge.appendChild(description);
 
-            console.log('Appended everything:');
+            console.log('Appended everything:'); 
             console.log(challenge)
 
             // add to link-wrapper and to wrapper
@@ -71,4 +71,21 @@ function challenge_all(){
 }
 function challenge_id(id){
     
+}
+function load_profile(id){
+    $.ajax({
+        url: 'http://localhost:8001/wba2api/user/get/' + id,
+        method: 'get',
+        dataType: 'json'
+    }).done(function (response) {
+        console.log(response);
+        $(".user-name").html(response.daten.username);
+        $('#profile-description').html(response.daten.bio);
+        $('#profile-country').html(response.daten.country);
+        $('#profile-points').html(response.daten.points);
+        
+    }).fail(function (jqXHR, statusText, error) {
+        console.log('Response Code: ' + jqXHR.status + ' - Fehlermeldung: ' + jqXHR.responseText);
+        alert.html('Ein Fehler ist aufgetreten');
+    });
 }

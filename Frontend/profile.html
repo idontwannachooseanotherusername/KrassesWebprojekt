@@ -6,6 +6,8 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link rel="stylesheet" type="text/css" href="css/main.css"></link>
         <script type="text/javascript" src="scripts/main.js"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+        <script type="text/javascript" src="scripts/ajax.js"></script>
     </head>
      
     <body>
@@ -56,11 +58,11 @@
             <section class="profile">
                 <article class="profile-info">
                     <h2>Bio</h2>
-                    <p id="profile-description">Hier steht meine tolle Beschreibung</p>
+                    <p id="profile-description"></p>
                     <h2>Country</h2>
-                    <p id="profile-country">Hier</p>
+                    <p id="profile-country"></p>
                     <h2>Points</h2>
-                    <p id="profile-points">50324857692</p>
+                    <p id="profile-points"></p>
                     <h2>Solved Challenges (120)</h2>
                     <ul id="profile-solved">
                         <li><a href="">(#2463) Challengename</a></li>
@@ -76,6 +78,7 @@
                 </article>
             </section>
         </main>
+        <script>load_profile(1)</script>
         <footer>
             <a class="btn-to-top" href="#">↑</a>
             <nav class="footer-menu">
