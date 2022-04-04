@@ -78,6 +78,48 @@ function challenge_id(id){
         console.log('Response:');
         console.log(response);
 
+        // Heading
+        var challenge = document.getElementsByClassName("challenge-attributes")[0];
+        var title = document.createElement("h1");
+        title.innerHTML = response.daten.challengename;
+        challenge.insertBefore(title, challenge.firstChild);
+
+        // Attributes
+        var attributes = document.getElementsByClassName("challenge-attribute");
+        attributes[0].className = "challenge-attribute level-" + response.daten.difficulty.level;
+        var level = document.createElement("p");
+        level.innerHTML = "Level " + response.daten.difficulty.level;
+        attributes[0].appendChild(level);
+        var cat = document.createElement("p");
+        cat.innerHTML = response.daten.category;
+        attributes[1].appendChild(cat);
+        var code = document.createElement("p");
+        code.innerHTML = response.daten.challengeid;
+        attributes[2].appendChild(code);
+        var link = document.getElementById("profile-link");
+        link.href = "profile.html?id=" + response.daten.userid;
+        var username = document.createElement("p");
+        username.innerHTML = response.daten.username;
+        attributes[3].appendChild(username);
+        var date = document.createElement("p");
+        date.innerHTML = response.daten.creationdate;  // TODO: Only date, not time
+        attributes[4].appendChild(date);
+        var rating = document.createElement("p");
+        rating.innerHTML = "⭐".repeat(response.daten.rating);
+        attributes[5].appendChild(rating);
+
+        // Tags
+        // TODO: Load tags in simple for loop
+
+        // challenge body
+        var challenge = document.getElementsByClassName("challenge-text")[0];
+        var description = document.createElement("div");
+        description.className = "challenge-text";
+        description.innerHTML = response.daten.description;
+        challenge.appendChild(description);
+        // TODO: Files!
+
+
     }).fail(function (jqXHR, statusText, error) {
         console.log('Response Code: ' + jqXHR.status + ' - Fehlermeldung: ' + jqXHR.responseText);
         $('#output').html('Ein Fehler ist aufgetreten');

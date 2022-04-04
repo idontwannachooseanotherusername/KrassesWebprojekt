@@ -13,6 +13,8 @@
         <link rel="manifest" href="images/ico/site.webmanifest">
         <!-- -->
         <script type="text/javascript" src="scripts/main.js"></script>
+        <script type="text/javascript" src="scripts/ajax.js"></script>
+        <script type="text/javascript" src="scripts/jquery-3.6.0.min.js"></script>
     </head>
      
     <body>
@@ -44,33 +46,25 @@
         <main>
             <section class="challenge-site">
                 <article class="challenge-attributes">
-                    <h2>Challengename</h2>
-                    <p>This is the short description, which is also visible in the challenges tab.</p>
-                    <div class="challenge-attribute level-1">
+                    <div class="challenge-attribute">
                         <h3>Difficulty</h3>
-                        <p>Level 1</p>
                     </div>
                     <div class="challenge-attribute">
                         <h3>Category</h3>
-                        <p>Math</p>
                     </div>
                     <div class="challenge-attribute">
                         <h3>Code</h3>
-                        <p>Vs5f2Kdv</p>
                     </div>
-                    <a href="profile.html">
+                    <a id="profile-link" href="profile.html">
                         <div class="challenge-attribute">
                             <h3>Creator</h3>
-                            <p>Username</p>
                         </div>
                     </a>
                     <div class="challenge-attribute">
                         <h3>Created</h3>
-                        <p>30.02.1780</p>
                     </div>
                     <div class="challenge-attribute">
                         <h3>Rating</h3>
-                        <p>⭐⭐⭐⭐⭐</p>
                     </div>
                 </article>
                 <article class="challenge-tags">
@@ -203,6 +197,7 @@ Hic ullam alias qui aut quo qui laudantium dicta. Perferendis sed et eum veritat
                 </article>
             </section>
         </main>
+        <script>challenge_id(1)</script>
         <footer>
             <a class="btn-to-top" href="#">↑</a>
             <nav class="footer-menu">
