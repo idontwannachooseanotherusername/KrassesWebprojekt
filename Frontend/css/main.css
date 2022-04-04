@@ -331,6 +331,7 @@ main .teaser{
 @media only screen and (max-width: 800px) {
     .challenge-wrapper{
         display: revert;
+        padding: 0;
     }
 }
 .challenge{
