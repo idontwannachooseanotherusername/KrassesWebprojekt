@@ -109,3 +109,12 @@ CREATE TABLE "Solved" (
 	PRIMARY KEY("SolvedID"),
 	CONSTRAINT solved_FK FOREIGN KEY (ChallengeID) REFERENCES Challenge(ChallengeID)
 );
+
+-- Userhints definition
+
+CREATE TABLE "Userhints" (
+    "UserID" INTEGER NOT NULL,
+    "HintID" INTEGER NOT NULL,
+    CONSTRAINT userhints_FK FOREIGN KEY (UserID) REFERENCES User(UserID),
+    CONSTRAINT userhints_FK2 FOREIGN KEY (HintID) REFERENCES Hint(HintID)
+);

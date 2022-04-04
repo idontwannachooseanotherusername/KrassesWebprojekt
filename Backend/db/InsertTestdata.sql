@@ -40,3 +40,8 @@ INSERT INTO Challengefile (ChallengeID, FilePath) VALUES (2, '../Data/image.png'
 INSERT INTO Solved (UserID, ChallengeID, TS) VALUES (1, 1, '2022-05-01');
 INSERT INTO Solved (UserID, ChallengeID, TS) VALUES (1, 2, '2022-05-02');
 INSERT INTO Solved (UserID, ChallengeID, TS) VALUES (2, 2, '2022-04-04');
+
+INSERT INTO Userhints (UserID, HintID) VALUES (1, 1);
+INSERT INTO Userhints (UserID, HintID) VALUES (1, 2);
+INSERT INTO Userhints (UserID, HintID) VALUES (1, 3);
+INSERT INTO Userhints (UserID, HintID) VALUES (2, 2);
