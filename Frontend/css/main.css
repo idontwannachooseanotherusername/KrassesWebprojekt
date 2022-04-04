@@ -189,12 +189,13 @@ header{
     position: absolute;
     right: 3%;
     top: -95px;
-    width: 20%;
+    width: 15%;
     opacity: .6;
     animation: fadein linear 1s;
+    max-width: 300px;
 }
 .top-image{
-    background-image: url("../images/image.jpg");
+    background-image: url("../images/main-banner.jpg");
     background-position: bottom;
     height: 700px;
     position: relative;
