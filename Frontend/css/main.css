@@ -188,7 +188,7 @@ header{
 .front-image{
     position: absolute;
     right: 3%;
-    top: -95px;
+    top: 40px;
     width: 15%;
     opacity: .6;
     animation: fadein linear 1s;
@@ -237,6 +237,10 @@ main{
 article{
     width: 80%;
     margin: 0 auto;
+}
+
+main .teaser{
+    margin-bottom: 70px;
 }
 
 /*---------- 3 ITEMS ----------*/
