@@ -1,5 +1,6 @@
 const helper = require('../helper.js');
 const DifficultyDao = require('./difficultyDao.js');
+const ChallengeTagDao = require('./challengetagDao.js');
 
 class ChallengeDao {
 
@@ -13,6 +14,7 @@ class ChallengeDao {
 
     loadById(id) {
         const difficultyDao = new DifficultyDao(this._conn);
+        const challengetagDao = new ChallengeTagDao(this._conn);
 
         var sql = 'SELECT * FROM Challenge WHERE ChallengeID=?';
         var statement = this._conn.prepare(sql);
@@ -26,8 +28,13 @@ class ChallengeDao {
         var dt = helper.parseSQLDateTimeString(result.creationdate);
         result.creationdate = helper.formatToGermanDateTime(dt)
 
+        // Get difficulty
         result.difficulty = difficultyDao.loadById(result.difficultyid);
         delete result.difficultyid;
+
+        // Get challengetags
+        var tags = challengetagDao.loadByParent(result.challengeid);
+        result.tags = tags;
 
         // Do not leak challenge pw
         delete result.solution;
@@ -49,6 +56,7 @@ class ChallengeDao {
         result = helper.arrayObjectKeysToLower(result);
 
         for (var i = 0; i < result.length; i++) {
+            // Get difficulty level
             for (var element of difficulties) {
                 if (element.difficultyid == result[i].difficultyid) {
                     result[i].difficulty = element.level;
@@ -56,8 +64,9 @@ class ChallengeDao {
                 }
             }
             delete result[i].difficultyid;
+            
             // Do not leak challenge pw
-            delete result.solution;
+            delete result[i].solution;
         }
         return result;
     }

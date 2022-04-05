@@ -1,4 +1,6 @@
 const helper = require('../helper.js');
+const TagDao = require('../dao/tagDao.js');
+const { response } = require('express');
 
 class ChallengeTagDao {
 
@@ -19,20 +21,40 @@ class ChallengeTagDao {
             throw new Error('No Record found by id=' + id);
 
         result = helper.objectKeysToLower(result);
-
-        result.challenge = challengeDao.loadById(result.challengeid);
-        delete result.challengeid;
+        const tagDao = new TagDao(request.app.locals.dbConnection);
 
         result.tag = tagDao.loadById(result.tagid);
         delete result.tagid;
 
         return result;
     }
+    
+    loadByParent(challengeid) {
+        const tagDao = new TagDao(this._conn);
+        var tags = tagDao.loadAll();
+
+        var sql = 'SELECT * FROM ChallengeTag WHERE challengeID=?';
+        var statement = this._conn.prepare(sql);
+        var result = statement.all(challengeid);
+
+        if (helper.isArrayEmpty(result)) 
+            return [];
+        
+        result = helper.arrayObjectKeysToLower(result);
+
+        for (var i = 0; i < result.length; i++) {
+            for (var element of tags){
+                if (element.tagid == result[i].tagid){
+                    result[i] = element;
+                    break;
+                }
+            }
+            delete result[i].challengeid;
+        }
+        return result;
+    }
 
     loadAll() {;
-        const challengeDao = new ChallengeDao(this._conn);
-        var challenges = challengeDao.loadAll();
-
         const tagDao = new TagDao(this._conn);
         var tags = tagDao.loadAll();
 
@@ -44,20 +66,11 @@ class ChallengeTagDao {
             return [];
 
         result = helper.arrayObjectKeysToLower(result);
-
-        for (var i = 0; i < result.length; i++) {
-            for (var element of challenges) {
-                if (element.id == result[i].challengeid) {
-                    result[i].challenge = element;
-                    break;
-                }
-            }
-            delete result[i].challengeid;
-        }
+        console.log(result);
 
         for (var i = 0; i < result.length; i++) {
             for (var element of tags) {
-                if (element.id == result[i].tagid) {
+                if (element.tagid == result[i].tagid) {
                     result[i].tag = element;
                     break;
                 }

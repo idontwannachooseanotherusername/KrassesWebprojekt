@@ -76,7 +76,6 @@ function challenge_id(id){
         dataType: 'json'
     }).done(function (response) {
         console.log('Response:');
-        console.log(response);
 
         // Heading
         var challenge = document.getElementsByClassName("challenge-attributes")[0];
@@ -109,14 +108,27 @@ function challenge_id(id){
         attributes[5].appendChild(rating);
 
         // Tags
-        // TODO: Load tags in simple for loop
+        var wrapper = document.getElementsByClassName("tag-wrapper")[0];
+        for (var i = 0; i < response.daten.tags.length; i++){
+            var tag = document.createElement("div");
+            tag.className = "challenge-tag";
+            var img = document.createElement("img");
+            img.src = response.daten.tags[i].picturepath;
+            img.title = response.daten.tags[i].title;
+            var description = document.createElement("p");
+            description.innerHTML = response.daten.tags[i].title;
+
+            tag.appendChild(img);
+            tag.appendChild(description);
+            wrapper.appendChild(tag);
+        }
 
         // challenge body
-        var challenge = document.getElementsByClassName("challenge-text")[0];
+        var challenge = document.getElementsByClassName("challenge-information")[0];
         var description = document.createElement("div");
         description.className = "challenge-text";
         description.innerHTML = response.daten.description;
-        challenge.appendChild(description);
+        challenge.prepend(description);
         // TODO: Files!
 
 
