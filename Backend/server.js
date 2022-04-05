@@ -41,7 +41,7 @@ try {
     app.use(cors());
     app.use(bodyParser.urlencoded({ extended: true}));
     app.use(bodyParser.json());
-    var root = '../Frontend'; // TODO: Replace by path.resolve
+    var root = '../Frontend';
     app.use(express.static(path.resolve(root)));
     console.log('PATH:' + path.resolve(root + '/images'));
     app.use(function(request, response, next) {
@@ -74,30 +74,29 @@ try {
     var serviceRouter = require('./services/difficulty.js');
     app.use(TOPLEVELPATH, serviceRouter);
 
-    //var serviceRouter = require('./services/challengefile.js');
-    //app.use(TOPLEVELPATH, serviceRouter);
+    var serviceRouter = require('./services/challengefile.js');
+    app.use(TOPLEVELPATH, serviceRouter);
 
-    //var serviceRouter = require('./services/challengetag.js');
-    //app.use(TOPLEVELPATH, serviceRouter);
+    var serviceRouter = require('./services/challengetag.js');
+    app.use(TOPLEVELPATH, serviceRouter);
 
-    //var serviceRouter = require('./services/challengecategory.js');
-    //app.use(TOPLEVELPATH, serviceRouter);
+    var serviceRouter = require('./services/challengecategory.js');
+    app.use(TOPLEVELPATH, serviceRouter);
 
-    //var serviceRouter = require('./services/solved.js');
-    //app.use(TOPLEVELPATH, serviceRouter);
+    var serviceRouter = require('./services/solved.js');
+    app.use(TOPLEVELPATH, serviceRouter);
 
     var serviceRouter = require('./services/challenge.js');
     app.use(TOPLEVELPATH, serviceRouter);
 
-    //var serviceRouter = require('./services/tag.js');
-    //app.use(TOPLEVELPATH, serviceRouter);
-    
-    /*
-    serviceRouter = require('./services/dateiuploadeinzeln.js');
+    var serviceRouter = require('./services/tag.js');
     app.use(TOPLEVELPATH, serviceRouter);
+    
+    //serviceRouter = require('./services/dateiuploadeinzeln.js');
+    //app.use(TOPLEVELPATH, serviceRouter);
 
-    serviceRouter = require('./services/dateiuploadmehrere.js');
-    app.use(TOPLEVELPATH, serviceRouter);*/
+    //serviceRouter = require('./services/dateiuploadmehrere.js');
+    //app.use(TOPLEVELPATH, serviceRouter);
 
     // send default error message if no matching endpoint found
     app.use(function (request, response) {

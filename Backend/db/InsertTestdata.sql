@@ -25,8 +25,8 @@ INSERT INTO Country (CountryName) VALUES ('Uganda');
 INSERT INTO Challengecategory (ChallengeID, CategoryID) VALUES (1, 1);
 INSERT INTO Challengecategory (ChallengeID, CategoryID) VALUES (2, 2);
 
-INSERT INTO Challenge (ChallengeName, DifficultyID, Description, CreationDate, Solution) VALUES ('Challenge1', 1, 'This is some really long <b>text</b', '2021/03/27', 'passowrd');
-INSERT INTO Challenge (ChallengeName, DifficultyID, Description, CreationDate, Solution) VALUES ('Challenge2', 2, 'Super interesting description', '2021/03/27', '');
+INSERT INTO Challenge (ChallengeName, DifficultyID, Description, CreationDate, Solution, UserID) VALUES ('Challenge1', 1, 'This is some really long <b>text</b', '2021-03-27', 'password', 2);
+INSERT INTO Challenge (ChallengeName, DifficultyID, Description, CreationDate, Solution, UserID) VALUES ('Challenge2', 2, 'Super interesting description', '2021-03-27', '', 1);
 
 
 INSERT INTO Challengetag (ChallengeID, TagID) VALUES (1, 1);
@@ -37,3 +37,6 @@ INSERT INTO Challengetag (ChallengeID, TagID) VALUES (2, 4);
 INSERT INTO Challengefile (ChallengeID, FilePath) VALUES (1, '../Data/image.png');
 INSERT INTO Challengefile (ChallengeID, FilePath) VALUES (2, '../Data/image.png');
 
+INSERT INTO Solved (UserID, ChallengeID, TS) VALUES (1, 1, '2022-05-01');
+INSERT INTO Solved (UserID, ChallengeID, TS) VALUES (1, 2, '2022-05-02');
+INSERT INTO Solved (UserID, ChallengeID, TS) VALUES (2, 2, '2022-04-04');
