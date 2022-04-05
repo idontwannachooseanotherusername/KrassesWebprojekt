@@ -20,20 +20,6 @@ serviceRouter.get('/hint/get/:id', function(request, response) {
     }
 });
 
-serviceRouter.get('/hint/all/', function(request, response) {
-    helper.log('Service Hint: Client requested all records');
-
-    const hintDao = new HintDao(request.app.locals.dbConnection);
-    try {
-        var result = hintDao.loadAll();
-        helper.log('Service Hint: Records loaded, count=' + result.length);
-        response.status(200).json(helper.jsonMsgOK(result));
-    } catch (ex) {
-        helper.logError('Service Hint: Error loading all records. Exception occured: ' + ex.message);
-        response.status(400).json(helper.jsonMsgError(ex.message));
-    }
-});
-
 serviceRouter.get('/hint/exists/:id', function(request, response) {
     helper.log('Service Hint: Client requested check, if record exists, id=' + request.params.id);
 

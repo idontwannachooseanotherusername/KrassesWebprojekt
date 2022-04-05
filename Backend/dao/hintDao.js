@@ -21,35 +21,8 @@ class HintDao {
             throw new Error('No Record found by id=' + id);
 
         result = helper.objectKeysToLower(result);
-
-        const challengeDao = new ChallengeDao();
-        result.challenge = challengeDao.loadById(result.challengeid);
         delete result.challengeid;
 
-        return result;
-    }
-
-    loadAll() {;
-        const challengeDao = new challengeDao(this._conn);
-        var challenges = challengeDao.loadAll();
-
-        var sql = 'SELECT * FROM Hint';
-        var statement = this._conn.prepare(sql);
-        var result = statement.all();
-
-        if (helper.isArrayEmpty(result)) 
-            return [];
-        return helper.arrayObjectKeysToLower(result);
-
-        for (var i = 0; i < result.length; i++) {
-            for (var element of challenges) {
-                if (element.id == result[i].challengeid){
-                    result[i].challenge = element;
-                    break;
-                }
-            }
-            delete result[i].challengeid;
-        }
         return result;
     }
 
