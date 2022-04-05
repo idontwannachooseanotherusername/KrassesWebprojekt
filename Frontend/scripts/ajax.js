@@ -137,6 +137,22 @@ function challenge_id(id){
         $('#output').html('Ein Fehler ist aufgetreten');
     });
 }
+function get_hint(id){
+    // TODO: Send challenge id with hint id!!!
+    $.ajax({
+        url: 'http://localhost:8001/wba2api/hint/get/' + id,
+        method: 'get',
+        dataType: 'json'
+    }).done(function (response) {
+        var hint = document.getElementsByClassName("hint-text")[id -1];
+        // hint.innerHTML = response.daten.
+        // ...
+    }).fail(function (jqXHR, statusText, error) {
+        console.log('Response Code: ' + jqXHR.status + ' - Fehlermeldung: ' + jqXHR.responseText);
+        alert.html('Ein Fehler ist aufgetreten');
+    });
+}
+
 function load_profile(id){
     $.ajax({
         url: 'http://localhost:8001/wba2api/user/get/' + id,
