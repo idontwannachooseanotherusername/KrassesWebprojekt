@@ -1,5 +1,5 @@
 const helper = require('../helper.js');
-const CountryDao = require('./challengeDao.js');
+const ChallengeDao = require('./challengeDao.js');
 
 class HintDao {
 
@@ -21,6 +21,7 @@ class HintDao {
 
         result = helper.objectKeysToLower(result);
 
+        const challengeDao = new ChallengeDao();
         result.challenge = challengeDao.loadById(result.challengeid);
         delete result.challengeid;
 
