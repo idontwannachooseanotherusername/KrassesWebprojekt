@@ -42,7 +42,7 @@ CREATE TABLE "Challengefile" (
 -- challengetag definition
 
 CREATE TABLE "Challengetag" (
-	challengeID INTEGER NOT NULL,
+	ChallengeID INTEGER NOT NULL,
 	TagID INTEGER NOT NULL,
 	CONSTRAINT challengetag_FK FOREIGN KEY (TagID) REFERENCES Tag(TagID),
 	CONSTRAINT challengetag_FK2 FOREIGN KEY (challengeID) REFERENCES challenge(ChallengeID)

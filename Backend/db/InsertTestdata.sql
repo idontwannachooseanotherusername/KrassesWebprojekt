@@ -5,10 +5,10 @@ INSERT INTO User (Username, Password, Bio, PicturePath, CountryID, Points, Delet
 INSERT INTO User (Username, Password, Bio, PicturePath, CountryID, Points, Deleted) VALUES ('User2', 'abcde', 'Great Bio', '../../Frontend/images/profile-1.png', 2, 2000, 0);
 INSERT INTO User (Username, Password, Bio, PicturePath, CountryID, Points, Deleted) VALUES ('User3-del', '', '', '', null, 0, 1);
 
-INSERT INTO Tag (PicturePath, Title) VALUES ('../../Frontend/images/icons/internet.png', 'Internet required');
-INSERT INTO Tag (PicturePath, Title) VALUES ('../../Frontend/images/icons/knowledge.png', 'Special knowledge');
-INSERT INTO Tag (PicturePath, Title) VALUES ('../../Frontend/images/icons/software.png', 'Special software');
-INSERT INTO Tag (PicturePath, Title) VALUES ('../../Frontend/images/icons/location.png', 'Physical location');
+INSERT INTO Tag (PicturePath, Title) VALUES ('images/icons/internet.png', 'Internet required');
+INSERT INTO Tag (PicturePath, Title) VALUES ('images/icons/knowledge.png', 'Special knowledge');
+INSERT INTO Tag (PicturePath, Title) VALUES ('images/icons/software.png', 'Special software');
+INSERT INTO Tag (PicturePath, Title) VALUES ('images/icons/location.png', 'Physical location');
 
 INSERT INTO Hint (Description, Cost, ChallengeID) VALUES ('Nothing', 0, 1);
 INSERT INTO Hint (Description, Cost, ChallengeID) VALUES ('Something', 20, 1);
