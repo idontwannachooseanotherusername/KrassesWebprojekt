@@ -24,6 +24,10 @@ a:link{
     color: white;
     text-decoration: none;
 }
+a:visited{
+    color: white;
+    text-decoration: none;
+}
 .noscript{
     text-align: center;
     background-color: darkred;
@@ -424,7 +428,7 @@ main .teaser{
     }
 }
 .login-form{
-    margin-top: 50px;
+    margin-top: 65px;
     text-align: center;
 }
 .login-submit{
