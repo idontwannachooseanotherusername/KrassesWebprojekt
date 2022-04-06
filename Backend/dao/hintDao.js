@@ -1,5 +1,5 @@
 const helper = require('../helper.js');
-const CountryDao = require('./challengeDao.js');
+const ChallengeDao = require('./challengeDao.js');
 
 class HintDao {
 
@@ -13,6 +13,7 @@ class HintDao {
 
     loadById(id) {
         var sql = 'SELECT * FROM Hint WHERE HintID=?';
+        // TODO: "Cannot read property 'prepare' of undefined" ???
         var statement = this._conn.prepare(sql);
         var result = statement.get(id);
 
@@ -20,45 +21,43 @@ class HintDao {
             throw new Error('No Record found by id=' + id);
 
         result = helper.objectKeysToLower(result);
-
-        result.challenge = challengeDao.loadById(result.challengeid);
         delete result.challengeid;
 
         return result;
     }
 
-    loadAll() {;
-        const challengeDao = new challengeDao(this._conn);
-        var challenges = challengeDao.loadAll();
-
-        var sql = 'SELECT * FROM Hint';
+    loadByChallengeId(classid, challengeid){
+        var sql = 'SELECT * FROM Hint WHERE ChallengeID=?';
         var statement = this._conn.prepare(sql);
-        var result = statement.all();
+        var result = statement.all(challengeid);
 
-        if (helper.isArrayEmpty(result)) 
-            return [];
-        return helper.arrayObjectKeysToLower(result);
+        if (helper.isUndefined(result) || result === [] || result == '') 
+            throw new Error('No Record found by id=' + classid);
 
-        for (var i = 0; i < result.length; i++) {
-            for (var element of challenges) {
-                if (element.id == result[i].challengeid){
-                    result[i].challenge = element;
-                    break;
-                }
+        // TODO: Set that hint was used
+
+        console.log(result);
+        for (var e of result){
+            if (e.Class == classid){
+                return helper.objectKeysToLower(e);
             }
-            delete result[i].challengeid;
         }
-        return result;
+        
+        throw new Error('No Record found by id=' + id);
     }
 
-    exists(id) {
-        var sql = 'SELECT COUNT(HintID) AS cnt FROM Hint WHERE HintID=?';
+    check(challengeid) {
+        var sql = 'SELECT * FROM Hint WHERE ChallengeID=?';
         var statement = this._conn.prepare(sql);
-        var result = statement.get(id);
+        var result = statement.all(challengeid);
 
-        if (result.cnt == 1) 
-            return true;
-        return false;
+        if (helper.isUndefined(result)) 
+            throw new Error('No Record found by id=' + classid);
+
+        result = helper.objectKeysToLower(result);
+        // TODO: Set that hint was used
+
+        return result;
     }
 
     create(description = '', cost = '',challengeid = null) {

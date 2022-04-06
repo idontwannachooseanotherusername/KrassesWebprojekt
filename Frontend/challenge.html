@@ -13,6 +13,8 @@
         <link rel="manifest" href="images/ico/site.webmanifest">
         <!-- -->
         <script type="text/javascript" src="scripts/main.js"></script>
+        <script type="text/javascript" src="scripts/ajax.js"></script>
+        <script type="text/javascript" src="scripts/jquery-3.6.0.min.js"></script>
     </head>
      
     <body>
@@ -41,91 +43,52 @@
                 </div>
             </nav>
         </header>
-        <main>
+        <main style="position: relative;">
             <section class="challenge-site">
                 <article class="challenge-attributes">
-                    <h2>Challengename</h2>
-                    <p>This is the short description, which is also visible in the challenges tab.</p>
-                    <div class="challenge-attribute level-1">
+                    <div class="challenge-attribute">
                         <h3>Difficulty</h3>
-                        <p>Level 1</p>
                     </div>
                     <div class="challenge-attribute">
                         <h3>Category</h3>
-                        <p>Math</p>
                     </div>
                     <div class="challenge-attribute">
                         <h3>Code</h3>
-                        <p>Vs5f2Kdv</p>
                     </div>
-                    <a href="profile.html">
+                    <a id="profile-link" href="profile.html">
                         <div class="challenge-attribute">
                             <h3>Creator</h3>
-                            <p>Username</p>
                         </div>
                     </a>
                     <div class="challenge-attribute">
                         <h3>Created</h3>
-                        <p>30.02.1780</p>
                     </div>
                     <div class="challenge-attribute">
                         <h3>Rating</h3>
-                        <p>⭐⭐⭐⭐⭐</p>
                     </div>
                 </article>
                 <article class="challenge-tags">
                     <div class="tag-wrapper">
                         <label for="toggle"></label>
                         <input type="checkbox" id="toggle">
-                        <div class="challenge-tag">
-                            <!--Icon for tag-->
-                            <img src="images/icons/software.png" title="Requires special software">
-                            <p>Requires special software</p>
-                        </div>
-                        <div class="challenge-tag">
-                            <!--Icon for tag-->
-                            <img src="images/icons/hardware.png" title="Requires special hardware">
-                            <p>Requires special hardware</p>
-                        </div>
-                        <div class="challenge-tag">
-                            <!--Icon for tag-->
-                            <img src="images/icons/internet.png" title="Requires internet access">
-                            <p>Requires internet access</p>
-                        </div>
-                        <div class="challenge-tag">
-                            <!--Icon for tag-->
-                            <img src="images/icons/knowlege.png" title="Requires special knowlege">
-                            <p>Requires internet access</p>
-                        </div>
-                        <div class="challenge-tag">
-                            <!--Icon for tag-->
-                            <img src="images/icons/location.png" title="Requires special location">
-                            <p>Requires internet access</p>
-                        </div>
                     </div>
                 </article>
                 <article class="challenge-information">
-                    <div class="challenge-text">
-                        <h3>Here is space for the actual challenge</h3>
-                        <p>
-                            E.g. a longer description and the riddle:</br>
-                            A bus driver was heading to town. He went right past a stop sign without stopping. Then, he turned left where there was a no left turn sign. Finally, he traveled down a one-way street opposing traffic, passed a policeman, and waved hello. He didn’t get a ticket. Why not? 
-                        </p>
-                        <div class="solution">
-                            <h3>Enter the solution password:</h3>
-                            <table>
-                                <tbody>
-                                    <tr>
-                                        <td>
-                                            <input class="form-element" type="password" placeholder="super secret password" required>
-                                        </td>
-                                        <td>
-                                            <div onClick="check_password()">✔️</div>
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
+                    <div class="solution">
+                        <h3>Enter the solution password:</h3>
+                        <table>
+                            <tbody>
+                                <tr>
+                                    <td>
+                                        <input class="form-element" type="password" placeholder="super secret password" required>
+                                    </td>
+                                    <td>
+                                        <div onClick="check_password()">✔️</div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
                     </div>
                     <div class="challenge-downloads">
                     </div>
@@ -133,25 +96,22 @@
                         <div onClick="get_hint(1)" class="hint hint-1">
                             <h4>Hint 1</h4>
                             <p class="hint-cost">This one is for free.</p>
-                            <p class="hint-text">
-                                Voluptatem maiores amet quae. Aliquid quia ut exercitationem voluptatibus ut. Iure aut velit nisi. Debitis minus qui ea. Dolore vel dolores consequatur illum labore harum et. Vel expedita quo autem et porro.
-Labore mollitia pariatur delectus. Minima eveniet vel consequatur ut. Tempore ut atque dolor neque voluptate amet quo aut.
-Veritatis autem occaecati maxime non nesciunt.
-                            </p>
+                            <p class="hint-text"></p>
+                            <p class="hint-unavailable">Unavailable</p>
                         </div>
                         <div onClick="get_hint(2)" class="hint hint-2">
                             <h4>Hint 2</h4>
                             <p class="hint-cost">Will reduce you reward by 20%</p>
-                            <p class="hint-text">
-                                Voluptatem maiores amet quae. Aliquid quia ut exercitationem voluptatibus ut. Iure aut velit nisi. Debitis minus qui ea. Dolore vel dolores consequatur illum labore harum et. Vel expedita quo autem et porro.
-Labore mollitia pariatur delectus. Minima eveniet vel consequatur ut. Tempore ut atque dolor neque voluptate amet quo aut.
-Veritatis autem occaecati maxime non nesciunt.
-                            </p>
+                            <p class="hint-text"></p>
+                            <p class="hint-unavailable">Unavailable</p>
                         </div>
                         <div onClick="get_hint(3)" class="hint hint-3">
                             <h4>Hint 3</h4>
-                            <p class="hint-cost">Unavailable</p>
+                            <p class="hint-cost">Will reduce you reward by 50%</p>
+                            <p class="hint-text"></p>
+                            <p class="hint-unavailable">Unavailable</p>
                         </div>
+                        <script>check_hints();</script>
                     </div>
                 </article>
                 <article class="challenge-comments">
@@ -203,19 +163,20 @@ Hic ullam alias qui aut quo qui laudantium dicta. Perferendis sed et eum veritat
                 </article>
             </section>
         </main>
+        <script>challenge_id()</script>
         <footer>
             <a class="btn-to-top" href="#">↑</a>
             <nav class="footer-menu">
                 <dl>
                     <dt>Legal</dt>
-                    <dd>Privacy<dd>
-                    <dd>Sth. else<dd>
-                    <dd>ToS<dd>
+                    <dd><a href="privacy.html">Privacy</a></dd>
+                    <dd><a href="tos.html">ToS</a></dd>
+                    <dd><a href="https://kavin.rocks">Secret</a></dd>
                 </dl>
                 <dl>
                     <dt>Contact</dt>
-                    <dd>Site problem<dd>
-                    <dd>Sth. else<dd>
+                    <dd><a href = "mailto: webmaster@mindbreaker.com?subject=Problem on mindbreaker.com">Site problem</a></dd>
+                    <dd><a href = "mailto: working@mindbreaker.com?subject=I want to work at MindBreaker!">We're hiring!</a></dd>
                 </dl>
             </nav>
             <p class="copyright">

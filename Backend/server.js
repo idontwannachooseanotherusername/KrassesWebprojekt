@@ -43,7 +43,6 @@ try {
     app.use(bodyParser.json());
     var root = '../Frontend';
     app.use(express.static(path.resolve(root)));
-    console.log('PATH:' + path.resolve(root + '/images'));
     app.use(function(request, response, next) {
         response.setHeader('Access-Control-Allow-Origin', '*'); 
         response.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE');
@@ -74,23 +73,23 @@ try {
     var serviceRouter = require('./services/difficulty.js');
     app.use(TOPLEVELPATH, serviceRouter);
 
-    //var serviceRouter = require('./services/challengefile.js');
-    //app.use(TOPLEVELPATH, serviceRouter);
+    var serviceRouter = require('./services/challengefile.js');
+    app.use(TOPLEVELPATH, serviceRouter);
 
-    //var serviceRouter = require('./services/challengetag.js');
-    //app.use(TOPLEVELPATH, serviceRouter);
+    var serviceRouter = require('./services/challengetag.js');
+    app.use(TOPLEVELPATH, serviceRouter);
 
-    //var serviceRouter = require('./services/challengecategory.js');
-    //app.use(TOPLEVELPATH, serviceRouter);
+    var serviceRouter = require('./services/challengecategory.js');
+    app.use(TOPLEVELPATH, serviceRouter);
 
-    //var serviceRouter = require('./services/solved.js');
-    //app.use(TOPLEVELPATH, serviceRouter);
+    var serviceRouter = require('./services/solved.js');
+    app.use(TOPLEVELPATH, serviceRouter);
 
     var serviceRouter = require('./services/challenge.js');
     app.use(TOPLEVELPATH, serviceRouter);
 
-    //var serviceRouter = require('./services/tag.js');
-    //app.use(TOPLEVELPATH, serviceRouter);
+    var serviceRouter = require('./services/tag.js');
+    app.use(TOPLEVELPATH, serviceRouter);
     
     //serviceRouter = require('./services/dateiuploadeinzeln.js');
     //app.use(TOPLEVELPATH, serviceRouter);

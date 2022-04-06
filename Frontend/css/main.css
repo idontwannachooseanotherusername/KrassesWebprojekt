@@ -24,6 +24,10 @@ a:link{
     color: white;
     text-decoration: none;
 }
+a:visited{
+    color: white;
+    text-decoration: none;
+}
 .noscript{
     text-align: center;
     background-color: darkred;
@@ -39,20 +43,23 @@ hr{
 .btn-primary{
     padding: 15px 35px;
     background-color: #00e1c2;
+    background-image: linear-gradient(150deg, #00e1c2, #00e1c2, #007969);
+    background-size: 300% 100%;
     border: none;
     border-radius: 3px;
     text-transform: uppercase;
     font-size: 0.7em;
     text-align: center;
     box-shadow: 0 0 9px #00000020;
-    transition: 0.3s;
+    transition: all ease-in-out 0.3s;
     cursor: pointer;
 }
 .btn-primary:hover{
     scale: 1.05;
     background-color: #007969;
+    background-position: 100% 0;
     color: white;
-    transition: 0.3s;
+    transition: all ease-in-out 0.3s;
 }
 .btn-secondary{
     padding: 15px 35px;
@@ -121,9 +128,11 @@ header{
 .login-button{
     background: #00e1c2;
     border-radius: 5px;
+    transition: 0.3s;
 }
 .login-button:hover{
-    font-weight: bold;
+    font-size: larger;
+    transition: 0.3s;
 }
 /*User profile picture when logged in*/
 .user-dropdown{
@@ -188,13 +197,14 @@ header{
 .front-image{
     position: absolute;
     right: 3%;
-    top: -95px;
-    width: 20%;
+    top: 40px;
+    width: 15%;
     opacity: .6;
     animation: fadein linear 1s;
+    max-width: 300px;
 }
 .top-image{
-    background-image: url("../images/image.jpg");
+    background-image: url("../images/main-banner.jpg");
     background-position: bottom;
     height: 700px;
     position: relative;
@@ -236,6 +246,10 @@ main{
 article{
     width: 80%;
     margin: 0 auto;
+}
+
+main .teaser{
+    margin-bottom: 70px;
 }
 
 /*---------- 3 ITEMS ----------*/
@@ -316,10 +330,12 @@ article{
     display: inline-block;
     max-height: 1000px;
     overflow: auto;
+    width: 100%;
 }
 @media only screen and (max-width: 800px) {
     .challenge-wrapper{
         display: revert;
+        padding: 0;
     }
 }
 .challenge{
@@ -412,7 +428,7 @@ article{
     }
 }
 .login-form{
-    margin-top: 50px;
+    margin-top: 65px;
     text-align: center;
 }
 .login-submit{

@@ -1,6 +1,7 @@
 const md5 = require('md5');
 const helper = require('../helper.js');
 const CountryDao = require('./countryDao.js');
+const ChallengeDao = require('./challengeDao.js');
 
 class UserDao {
 
@@ -14,6 +15,7 @@ class UserDao {
 
     loadById(id) {
         const countryDao = new CountryDao(this._conn);
+        const challengeDao = new ChallengeDao(this._conn);
 
         var sql = 'SELECT * FROM User WHERE UserID=?';
         var statement = this._conn.prepare(sql);
@@ -24,8 +26,56 @@ class UserDao {
 
         result = helper.objectKeysToLower(result);
 
-        result.country = countryDao.loadById(result.countryid).countryname;
+        // Countries can be empty(null)
+        if (result.countryid != null){
+            result.country = countryDao.loadById(result.countryid).countryname;
+        }
+        else{
+            result.country = null;
+        }
         delete result.countryid;
+
+        // Get last 10 solved challenges
+        var sql = 'SELECT * FROM Solved';
+        var statement = this._conn.prepare(sql);
+        var result_solved = statement.all();
+        var dt = helper.parseSQLDateTimeString(result_solved.ts);
+        result_solved.ts = helper.formatToGermanDateTime(dt)
+
+        if (helper.isArrayEmpty(result_solved)) 
+            return [];
+
+        result_solved = helper.arrayObjectKeysToLower(result_solved);
+        
+        var solved_list = [];
+        for (var solved of result_solved){
+            if (solved.userid == result.userid){
+                delete solved.userid;
+                solved.challengename = challengeDao.loadById(solved.challengeid).challengename;
+                solved_list.push(solved);
+
+                if (solved_list.length >= 10){break;}
+            }
+        }
+        result.solved = solved_list;
+
+        // Get last 10 created challenges
+        var created_list = [];
+        for (var e of challengeDao.loadAll()){
+            if (e.userid == result.userid){
+                created_list.push({
+                    challengeid: e.challengeid,
+                    challengename: e.challengename,
+                    ts: e.creationdate
+                });
+
+                if (created_list.length >= 10){break;}
+            }
+        }
+        result.created = created_list;
+
+        // Strip user password
+        delete result.password;
 
         return result;
     }
@@ -44,13 +94,18 @@ class UserDao {
         result = helper.arrayObjectKeysToLower(result);
 
         for (var i = 0; i < result.length; i++) {          
-            for (var element of countries) {
-                if (element.id == result[i].countryid.countryname) {
-                    result[i].country = element;
-                    break;
+            // Countries can be empty(null)
+            if (result[i].countryid != null){
+                for (var element of countries) {
+                    if (element.countryid == result[i].countryid.countryname) {
+                        result[i].country = element;
+                        break;
+                    }
                 }
+                delete result[i].countryid;
             }
-            delete result[i].countryid;
+            // Strip user password
+            delete result[i].password;
         }
         return result;
     }
