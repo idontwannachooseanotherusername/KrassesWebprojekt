@@ -43,7 +43,6 @@ try {
     app.use(bodyParser.json());
     var root = '../Frontend';
     app.use(express.static(path.resolve(root)));
-    console.log('PATH:' + path.resolve(root + '/images'));
     app.use(function(request, response, next) {
         response.setHeader('Access-Control-Allow-Origin', '*'); 
         response.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE');

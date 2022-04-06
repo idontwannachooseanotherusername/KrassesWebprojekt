@@ -26,14 +26,38 @@ class HintDao {
         return result;
     }
 
-    exists(id) {
-        var sql = 'SELECT COUNT(HintID) AS cnt FROM Hint WHERE HintID=?';
+    loadByChallengeId(classid, challengeid){
+        var sql = 'SELECT * FROM Hint WHERE ChallengeID=?';
         var statement = this._conn.prepare(sql);
-        var result = statement.get(id);
+        var result = statement.all(challengeid);
 
-        if (result.cnt == 1) 
-            return true;
-        return false;
+        if (helper.isUndefined(result) || result === [] || result == '') 
+            throw new Error('No Record found by id=' + classid);
+
+        // TODO: Set that hint was used
+
+        console.log(result);
+        for (var e of result){
+            if (e.Class == classid){
+                return helper.objectKeysToLower(e);
+            }
+        }
+        
+        throw new Error('No Record found by id=' + id);
+    }
+
+    check(challengeid) {
+        var sql = 'SELECT * FROM Hint WHERE ChallengeID=?';
+        var statement = this._conn.prepare(sql);
+        var result = statement.all(challengeid);
+
+        if (helper.isUndefined(result)) 
+            throw new Error('No Record found by id=' + classid);
+
+        result = helper.objectKeysToLower(result);
+        // TODO: Set that hint was used
+
+        return result;
     }
 
     create(description = '', cost = '',challengeid = null) {

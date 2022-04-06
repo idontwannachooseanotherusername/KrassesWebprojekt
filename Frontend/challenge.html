@@ -43,7 +43,7 @@
                 </div>
             </nav>
         </header>
-        <main>
+        <main style="position: relative;">
             <section class="challenge-site">
                 <article class="challenge-attributes">
                     <div class="challenge-attribute">
@@ -96,25 +96,22 @@
                         <div onClick="get_hint(1)" class="hint hint-1">
                             <h4>Hint 1</h4>
                             <p class="hint-cost">This one is for free.</p>
-                            <p class="hint-text">
-                                Voluptatem maiores amet quae. Aliquid quia ut exercitationem voluptatibus ut. Iure aut velit nisi. Debitis minus qui ea. Dolore vel dolores consequatur illum labore harum et. Vel expedita quo autem et porro.
-Labore mollitia pariatur delectus. Minima eveniet vel consequatur ut. Tempore ut atque dolor neque voluptate amet quo aut.
-Veritatis autem occaecati maxime non nesciunt.
-                            </p>
+                            <p class="hint-text"></p>
+                            <p class="hint-unavailable">Unavailable</p>
                         </div>
                         <div onClick="get_hint(2)" class="hint hint-2">
                             <h4>Hint 2</h4>
                             <p class="hint-cost">Will reduce you reward by 20%</p>
-                            <p class="hint-text">
-                                Voluptatem maiores amet quae. Aliquid quia ut exercitationem voluptatibus ut. Iure aut velit nisi. Debitis minus qui ea. Dolore vel dolores consequatur illum labore harum et. Vel expedita quo autem et porro.
-Labore mollitia pariatur delectus. Minima eveniet vel consequatur ut. Tempore ut atque dolor neque voluptate amet quo aut.
-Veritatis autem occaecati maxime non nesciunt.
-                            </p>
+                            <p class="hint-text"></p>
+                            <p class="hint-unavailable">Unavailable</p>
                         </div>
                         <div onClick="get_hint(3)" class="hint hint-3">
                             <h4>Hint 3</h4>
-                            <p class="hint-cost">Unavailable</p>
+                            <p class="hint-cost">Will reduce you reward by 50%</p>
+                            <p class="hint-text"></p>
+                            <p class="hint-unavailable">Unavailable</p>
                         </div>
+                        <script>check_hints();</script>
                     </div>
                 </article>
                 <article class="challenge-comments">
@@ -166,7 +163,7 @@ Hic ullam alias qui aut quo qui laudantium dicta. Perferendis sed et eum veritat
                 </article>
             </section>
         </main>
-        <script>challenge_id(1)</script>
+        <script>challenge_id()</script>
         <footer>
             <a class="btn-to-top" href="#">↑</a>
             <nav class="footer-menu">

@@ -20,14 +20,28 @@ serviceRouter.get('/hint/get/:id', function(request, response) {
     }
 });
 
-serviceRouter.get('/hint/exists/:id', function(request, response) {
-    helper.log('Service Hint: Client requested check, if record exists, id=' + request.params.id);
+serviceRouter.get('/hint/get-from-challenge/:class/:challengeid', function(request, response) {
+    helper.log('Service Hint: Client requested one record, from challengeid=' + request.params.challengeid);
 
     const hintDao = new HintDao(request.app.locals.dbConnection);
     try {
-        var result = hintDao.exists(request.params.id);
+        var result = hintDao.loadByChallengeId(request.params.class, request.params.challengeid);
+        helper.log('Service Hint: Record loaded');
+        response.status(200).json(helper.jsonMsgOK(result));
+    } catch (ex) {
+        helper.logError('Service Hint: Error loading record by id. Exception occured: ' + ex.message);
+        response.status(400).json(helper.jsonMsgError(ex.message));
+    }
+});
+
+serviceRouter.get('/hint/check/:id', function(request, response) {
+    helper.log('Service Hint: Client requested check, id=' + request.params.id);
+
+    const hintDao = new HintDao(request.app.locals.dbConnection);
+    try {
+        var result = hintDao.check(request.params.id);
         helper.log('Service Hint: Check if record exists by id=' + request.params.id + ', result=' + result);
-        response.status(200).json(helper.jsonMsgOK({ 'id': request.params.id, 'existiert': result }));
+        response.status(200).json(helper.jsonMsgOK(result));
     } catch (ex) {
         helper.logError('Service Hint: Error checking if record exists. Exception occured: ' + ex.message);
         response.status(400).json(helper.jsonMsgError(ex.message));
