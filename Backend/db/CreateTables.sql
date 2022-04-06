@@ -70,6 +70,7 @@ CREATE TABLE "Difficulty" (
 CREATE TABLE "Hint" (
 	"HintID"	INTEGER NOT NULL,
 	"Description"	TEXT NOT NULL,
+	"Class" INTEGER NOT NULL,
 	"Cost"	INTEGER NOT NULL,
 	"ChallengeID"  INTEGER NOT NULL,
 	PRIMARY KEY("HintID"),
