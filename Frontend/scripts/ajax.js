@@ -79,10 +79,14 @@ function load_profile(id){
         dataType: 'json'
     }).done(function (response) {
         console.log(response);
-        $(".user-name").html(response.daten.username);
+        $('.user-name').html(response.daten.username);
         $('#profile-description').html(response.daten.bio);
         $('#profile-country').html(response.daten.country);
         $('#profile-points').html(response.daten.points);
+    
+        // Pfade anpassen
+        $('.img-border').attr("src", "images/profile-3.png")
+        $('.background').css("background-image", "url(respose.daten.picturepath)");
         
     }).fail(function (jqXHR, statusText, error) {
         console.log('Response Code: ' + jqXHR.status + ' - Fehlermeldung: ' + jqXHR.responseText);
