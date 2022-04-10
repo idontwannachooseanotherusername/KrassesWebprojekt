@@ -48,23 +48,23 @@
                     <h1>Create your challenge</h1>
                 </article>
                 <article class="challenge-information">
-                    <form>
-                        <label for="level"><h2>Challengename</h2></label>
-                        <input type="text" placeholder="Challengename" required></br>
+                    <form action="wba2api/challenge" method="post">
+                        <label for="challengename"><h2>Challengename</h2></label>
+                        <input id="challengename" name="challengename" type="text" placeholder="Challengename" required></br>
                         <label for="difficulty"><h2>Difficulty</h2></label>
-                        <input id="difficulty" type="number" max="9" min="1" required></br>
+                        <input id="difficulty" name="difficulty" type="number" max="9" min="1" required></br>
                         <label for="category"><h2>Category</h2></label>
-                        <select id="category" type="text" required>
-                            <option value="other" selected>Other</option>
-                            <option value="math">Math</option>
-                            <option value="trivia">Trivia</option>
-                            <option value="logic">Logic</option>
-                            <option value="coding">Coding</option>
-                            <option value="cryptography">Cryptography</option>
-                            <option value="visual">Visual</option>
-                            <option value="auditorial">Auditorial</option>
-                            <option value="computer">Computer</option>
-                            <option value="physical">Physical</option>
+                        <select id="category" name="category" required>
+                            <option value="0" selected>Other</option>
+                            <option value="1">Math</option>
+                            <option value="2">Trivia</option>
+                            <option value="3">Logic</option>
+                            <option value="4">Coding</option>
+                            <option value="5">Cryptography</option>
+                            <option value="6">Visual</option>
+                            <option value="7">Auditorial</option>
+                            <option value="8">Computer</option>
+                            <option value="9">Physical</option>
                         </select>
                         <label><h2>Tags</h2></label>
                         <input id="tag-r-int" type="checkbox">
@@ -79,7 +79,10 @@
                         <label for="tag-loc">Requires special location</label>
                         </br>
                         <label for="description"><h2>Description</h2></label>
+
+                        
                         <!--https://webdeasy.de/en/program-wysiwyg-editor/-->
+                        <!--
                         <div class="wp-webdeasy-comment-editor">
                             <div class="toolbar">
                                 <div class="line">
@@ -179,9 +182,7 @@
                                     data-tag-name="ol"
                                     title="Insert ordered list"
                                     >
-                                    <img alt="ordered list"
-                                        src="https://img.icons8.com/fluency-systems-filled/48/000000/numbered-list.png"
-                                    />
+                                        <img alt="ordered list" src="https://img.icons8.com/fluency-systems-filled/48/000000/numbered-list.png"/>
                                     </span>
                                     <span
                                     class="editor-btn icon"
@@ -272,9 +273,9 @@
                                     </div>
                                     </div>
                                 </div>
-                                <div class="content-area" id="description">
+                                <div class="content-area">
                                     <div class="visuell-view" contenteditable></div>
-                                    <textarea class="html-view"></textarea>
+                                    <textarea id="description" class="html-view"></textarea>
                                 </div>
                             </div>
                             <div class="modal">
@@ -283,11 +284,7 @@
                                         <div class="close">✖</div>
                                             <div class="modal-content" id="modalCreateLink">
                                                 <h3>Insert Link</h3>
-                                                <input
-                                                    type="text"
-                                                    id="linkValue"
-                                                    placeholder="Link (example: https://example.com)"
-                                                />
+                                                <input type="text" id="linkValue"placeholder="Link (example: https://example.com)"/>
                                                 <div class="row">
                                                     <input type="checkbox" id="new-tab" />
                                                     <label for="new-tab">Open in new Tab?</label>
@@ -296,20 +293,21 @@
                                     </div>
                                 </div>
                             </div>
+                        -->
                         <div class="hints">
                             <h2>Hints</h2>
                             <label for="hint-1"><h3>Hint 1</h3></label>
-                            <textarea id="hint-1"></textarea>
+                            <textarea id="hint-1" name="hint-1"></textarea>
                             <label for="hint-2"><h3>Hint 2</h3></label>
-                            <textarea id="hint-2"></textarea>
+                            <textarea id="hint-2" name="hint-2"></textarea>
                             <label for="hint-3"><h3>Hint 3</h3></label>
-                            <textarea id="hint-3"></textarea>
+                            <textarea id="hint-3" name="hint-3"></textarea>
                         </div>
                         <h2>Files</h2>
                         <label id="fileupload" for="files">Click here to upload files.</label>
-                        <input id="files" type="file" multiple></input><br>
+                        <input id="files" name="files" type="file" multiple></input><br>
                         <label for="password"><h2>Solution password</h2></label>
-                        <input id="password" type="text" placeholder="super secret password" required></input>
+                        <input id="password" name="password" type="text" placeholder="super secret password" required></input>
                         <br><br>
                         <button type="submit" class="btn-primary">Save</button>
                     </form>

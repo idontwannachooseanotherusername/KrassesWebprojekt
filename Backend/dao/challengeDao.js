@@ -1,6 +1,7 @@
 const helper = require('../helper.js');
 const DifficultyDao = require('./difficultyDao.js');
 const ChallengeTagDao = require('./challengetagDao.js');
+const CategoryDao = require('./categoryDao.js');
 
 class ChallengeDao {
 
@@ -81,12 +82,17 @@ class ChallengeDao {
         return false;
     }
 
-    create(challengename = '', description = '', creationdate = '', solution = '', difficultyid = null) {
-        const difficultyDao = new DifficultyDao(this._conn);
+    create(challengename = 'Challengename', difficultyid = 1, categoryid = 0, tags = [], description = '', hint1= '', hint2 = '', hint3 = '', password = '', creationdate = '') {
+        // const difficultyDao = new DifficultyDao(this._conn);
+        // const categoryDao = new CategoryDao(this._conn);
+
+        // TODO: Remove placeholder
+        var userid = '1';
         
-        var sql = 'INSERT INTO Person (Challengename, Description, CreationDate, Solution, CountryID) VALUES (?,?,?,?,?)';
+        var sql = 'INSERT INTO Challenge (ChallengeName, DifficultyID, CategoryID, Description, CreationDate, Solution, UserID) VALUES (?,?,?,?,?,?,?)';
         var statement = this._conn.prepare(sql);
-        var params = [challengename, description, helper.formatToSQLDateTime(creationdate), solution, difficultyDao.loadById(result.difficultyid)];
+
+        var params = [challengename, Number(difficultyid), Number(categoryid), description, helper.formatToSQLDateTime(creationdate), password, Number(userid)];
         var result = statement.run(params);
 
         if (result.changes != 1) 

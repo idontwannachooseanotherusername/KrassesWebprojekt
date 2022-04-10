@@ -25,8 +25,8 @@ INSERT INTO Country (CountryName) VALUES ('Uganda');
 INSERT INTO Challengecategory (ChallengeID, CategoryID) VALUES (1, 1);
 INSERT INTO Challengecategory (ChallengeID, CategoryID) VALUES (2, 2);
 
-INSERT INTO Challenge (ChallengeName, DifficultyID, Description, CreationDate, Solution, UserID) VALUES ('Challenge1', 1, 'This is some really long <b>text</b', '2021-03-27', 'password', 2);
-INSERT INTO Challenge (ChallengeName, DifficultyID, Description, CreationDate, Solution, UserID) VALUES ('Challenge2', 2, 'Super interesting description', '2021-03-27', '', 1);
+INSERT INTO Challenge (ChallengeName, DifficultyID, CategoryID, Description, CreationDate, Solution, UserID) VALUES ('Challenge1', 1, 1, 'This is some really long <b>text</b', '2021-03-27', 'password', 2);
+INSERT INTO Challenge (ChallengeName, DifficultyID, CategoryID, Description, CreationDate, Solution, UserID) VALUES ('Challenge2', 2, 2, 'Super interesting description', '2021-03-27', '', 1);
 
 
 INSERT INTO Challengetag (ChallengeID, TagID) VALUES (1, 1);

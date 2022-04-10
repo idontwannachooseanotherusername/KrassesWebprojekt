@@ -11,13 +11,15 @@ CREATE TABLE "Challenge" (
 	ChallengeID INTEGER NOT NULL,
 	ChallengeName TEXT NOT NULL,
 	DifficultyID INTEGER DEFAULT 1 NOT NULL,
+	CategoryID INTEGER NOT NULL,
 	Description TEXT,
 	CreationDate TEXT NOT NULL,
 	Solution TEXT NOT NULL,
 	UserID INTEGER NOT NULL,
 	CONSTRAINT challenge_PK PRIMARY KEY (ChallengeID),
 	CONSTRAINT challenge_FK FOREIGN KEY (DifficultyID) REFERENCES Difficulty(DifficultyID),
-	CONSTRAINT challenge_FK2 FOREIGN KEY (UserID) REFERENCES User(UserID)
+	CONSTRAINT challenge_FK2 FOREIGN KEY (UserID) REFERENCES User(UserID),
+	CONSTRAINT challenge_FK3 FOREIGN KEY (CategoryID) REFERENCES Category(CategoryID)
 );
 
 -- challengecategory definition
