@@ -58,7 +58,7 @@ function challenge_all(){
         }
     }).fail(function (jqXHR, statusText, error) {
         console.log('Response Code: ' + jqXHR.status + ' - Fehlermeldung: ' + jqXHR.responseText);
-        $('#output').html('Ein Fehler ist aufgetreten');
+        $('#output').html('An error occured.');
     });
 }
 function challenge_id(){
@@ -133,7 +133,7 @@ function challenge_id(){
 
     }).fail(function (jqXHR, statusText, error) {
         //console.log('Response Code: ' + jqXHR.status + ' - Fehlermeldung: ' + jqXHR.responseText);
-        //$('#output').html('Ein Fehler ist aufgetreten');
+        //$('#output').html('An error occured.');
 
         var site = document.getElementsByClassName("challenge-site")[0];
         var error = document.createElement("div");
@@ -163,14 +163,15 @@ function check_hints(){
     }).done(function (response) {    
         var unavailable = document.getElementsByClassName("hint-unavailable");
         var texts = document.getElementsByClassName("hint-text");
+        var hints = document.getElementsByClassName("hint");
         for (let e in response.daten){
             texts[response.daten[e].Class - 1].innerHTML = "Voluptatem maiores amet quae. Aliquid quia ut exercitationem voluptatibus ut. Iure aut velit nisi.";
             unavailable[response.daten[e].Class - 1].innerHTML = "";
+            hints[response.daten[e].Class - 1].onclick = function() {get_hint(response.daten[e].Class)};
         }
-
     }).fail(function (jqXHR, statusText, error) {
         console.log('Response Code: ' + jqXHR.status + ' - Fehlermeldung: ' + jqXHR.responseText);
-        alert.html('Ein Fehler ist aufgetreten');
+        alert('An error occured.');
     });
 
 }
@@ -219,7 +220,7 @@ function get_hint(id){
                     text.innerHTML = response.daten.description;;
                 }).fail(function (jqXHR, statusText, error) {
                     console.log('Response Code: ' + jqXHR.status + ' - Fehlermeldung: ' + jqXHR.responseText);
-                    alert.html('Ein Fehler ist aufgetreten');
+                    alert('An error occured.');
                 });
             }
         }
@@ -258,6 +259,6 @@ function load_profile(id){
         }  
     }).fail(function (jqXHR, statusText, error) {
         console.log('Response Code: ' + jqXHR.status + ' - Fehlermeldung: ' + jqXHR.responseText);
-        alert.html('Ein Fehler ist aufgetreten');
+        alert('An error occured.');
     });
 }
