@@ -234,10 +234,17 @@ function load_profile(id){
         dataType: 'json'
     }).done(function (response) {
         console.log(response);
-        $(".user-name").html(response.daten.username);
+        $('.user-name').html(response.daten.username);
         $('#profile-description').html(response.daten.bio);
         $('#profile-country').html(response.daten.country);
         $('#profile-points').html(response.daten.points);
+
+    
+        // Pfade anpassen
+        $('.img-border').attr("src", "images/profile-3.png")
+        $('.background').css("background-image", "url(respose.daten.picturepath)");
+        
+
 
         // solved and created challenges
         var solved = document.getElementById("profile-solved");
@@ -257,6 +264,7 @@ function load_profile(id){
             li2.appendChild(a2);
             created.appendChild(li2);
         }  
+
     }).fail(function (jqXHR, statusText, error) {
         console.log('Response Code: ' + jqXHR.status + ' - Fehlermeldung: ' + jqXHR.responseText);
         alert('An error occured.');
