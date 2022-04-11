@@ -252,18 +252,25 @@ function load_profile(id){
         for (var i = 0; i < response.daten.solved.length; i++){
             var li = document.createElement("li");
             var a = document.createElement("a");
-            a.href = "challenge.html";
+            a.href = "challenge.html?id=" + response.daten.solved[i].challengeid;
             a.innerHTML = '(' + response.daten.solved[i].challengeid + ') ' + response.daten.solved[i].challengename;
             li.appendChild(a);
             solved.appendChild(li);
+        }
+        for (var i = 0; i < response.daten.created.length; i++){
+            var li = document.createElement("li");
+            var a = document.createElement("a");
+            a.href = "challenge.html?id=" + response.daten.created[i].challengeid;
+            a.innerHTML = '(' + response.daten.created[i].challengeid + ') ' + response.daten.created[i].challengename;
+            li.appendChild(a);
+            created.appendChild(li);
+        }
 
-            var li2 = document.createElement("li");
-            var a2 = document.createElement("a");
-            a2.href = "challenge.html";
-            a2.innerHTML = '(' + response.daten.created[i].challengeid + ') ' + response.daten.created[i].challengename;
-            li2.appendChild(a2);
-            created.appendChild(li2);
-        }  
+        var h_solved = document.getElementById("solved-heading");
+        h_solved.innerHTML = `Created Challenges (${response.daten.solved.length})`;
+        var h_created = document.getElementById("created-heading");
+        h_created.innerHTML = `Created Challenges (${response.daten.created.length})`;
+
 
     }).fail(function (jqXHR, statusText, error) {
         console.log('Response Code: ' + jqXHR.status + ' - Fehlermeldung: ' + jqXHR.responseText);
