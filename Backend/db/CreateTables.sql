@@ -95,6 +95,7 @@ CREATE TABLE "User" (
 	"Username"	TEXT NOT NULL,
 	"Password"	TEXT NOT NULL,
 	"Bio"	TEXT,
+	"BannerPath"    TEXT,
 	"PicturePath"	TEXT,
 	"CountryID"	INTEGER,
 	"Points"	INTEGER NOT NULL DEFAULT 0,

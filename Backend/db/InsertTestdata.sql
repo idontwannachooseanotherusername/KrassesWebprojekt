@@ -1,9 +1,9 @@
 INSERT INTO Category (Title) VALUES ('Math');
 INSERT INTO Category (Title) VALUES ('Logic'); 
 
-INSERT INTO User (Username, Password, Bio, PicturePath, CountryID, Points, Deleted) VALUES ('User1', '123456', 'Nothing to see here', '', 1, 1000, 0);
-INSERT INTO User (Username, Password, Bio, PicturePath, CountryID, Points, Deleted) VALUES ('User2', 'abcde', 'Great Bio', '../../Frontend/images/profile-1.png', 2, 2000, 0);
-INSERT INTO User (Username, Password, Bio, PicturePath, CountryID, Points, Deleted) VALUES ('User3-del', '', '', '', null, 0, 1);
+INSERT INTO User (Username, Password, Bio, PicturePath, BannerPath, CountryID, Points, Deleted) VALUES ('User1', '123456', 'Nothing to see here', '', '', 1, 1000, 0);
+INSERT INTO User (Username, Password, Bio, PicturePath, BannerPath, CountryID, Points, Deleted) VALUES ('User2', 'abcde', 'Great Bio', 'images/profile-1.png', 'images/profile-1.png', 2, 2000, 0);
+INSERT INTO User (Username, Password, Bio, PicturePath, BannerPath, CountryID, Points, Deleted) VALUES ('User3-del', '', '', '', '', null, 0, 1);
 
 INSERT INTO Tag (PicturePath, Title) VALUES ('images/icons/internet.png', 'Internet required');
 INSERT INTO Tag (PicturePath, Title) VALUES ('images/icons/knowledge.png', 'Special knowledge');
