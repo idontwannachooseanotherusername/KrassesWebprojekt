@@ -100,7 +100,7 @@ CREATE TABLE "User" (
 	"CountryID"	INTEGER,
 	"Points"	INTEGER NOT NULL DEFAULT 0,
 	"Deleted"   INTEGER NOT NULL DEFAULT 0,
-	PRIMARY KEY("UserID" AUTOINCREMENT)
+	PRIMARY KEY("UserID")
 );
 
 -- Solved definition 
