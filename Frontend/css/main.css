@@ -567,11 +567,13 @@ input, textarea, select, .form-element{
 }
 
 .background{
-    background-image: url("../images/image.jpg");
-    background-position: bottom;
+    background-image: url("images/image.jpg");
+    background-position: center;
     height: 270px;
     position: relative;
     margin-bottom: 80px;
+    background-repeat: no-repeat;
+    background-size: 100%;
 }
 
 .background div{

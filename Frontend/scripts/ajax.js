@@ -242,7 +242,7 @@ function load_profile(id){
     
         // Pfade anpassen
         $('.img-border').attr("src", "images/profile-3.png")
-        $('.background').css("background-image", "url(respose.daten.picturepath)");
+        $('.background').css("background-image", `url(${response.daten.picturepath})`);
         
 
 
