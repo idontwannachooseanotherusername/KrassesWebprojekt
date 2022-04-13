@@ -99,33 +99,25 @@ serviceRouter.get('/user/access', function(request, response) {
 });
 
 serviceRouter.post('/user', function(request, response) {
-    helper.log('Service User: Client requested creation of new record');
+    helper.log('Service User: Client requested creation of new record or login');
+
+    console.log(request)
 
     var errorMsgs=[];
     if (helper.isUndefined(request.body.username)) 
         errorMsgs.push('username missing');
-    if (helper.isUndefined(request.body.passwort)) 
+    if (helper.isUndefined(request.body.password)) 
         errorMsgs.push('passwort missing');
-    if (helper.isUndefined(request.body.bio)) 
-        request.body.bio = ''
-    if (helper.isUndefined(request.body.picturepath)) 
-        request.body.picturepath = ''
-    if (helper.isUndefined(request.body.bannerpath)) 
-        request.body.bannerpath = ''
-    if (helper.isUndefined(request.body.countryid)) 
-        request.body.countryid = null  //TODO: best solution?
     if (errorMsgs.length > 0) {
         helper.log('Service User: Creation not possible, data missing');
         response.status(400).json(helper.jsonMsgError('Creation not possible, data missing: ' + helper.concatArray(errorMsgs)));
         return;
     }
 
-    // Init accounts with 0 coins
-    request.body.coins = 0
-
     const userDao = new UserDao(request.app.locals.dbConnection);
     try {
-        var result = userDao.create(request.body.username, request.body.password, request.body.bio, request.picturepath, request.bannerpath, request.countryid, request.coins);
+        // TODO: Log in if user already exists
+        var result = userDao.create(request.body.username, request.body.password);
         helper.log('Service User: Record inserted');
         response.status(200).json(helper.jsonMsgOK(result));
     } catch (ex) {

@@ -120,12 +120,12 @@ class UserDao {
         return false;
     }
 
-    create(username = '', password = '', bio = '', picturepath = '', bannerpath = '', countryid = null, points = 0) {
+    create(username = '', password = '', bio = '', picturepath = '', bannerpath = '', countryid = null, points = 0, deleted = 0) {
         const countryDao = new CountryDao(this._conn);
         
-        var sql = 'INSERT INTO Person (Username, Password, Bio, PicturePath, BannerPath, CountryID, Points) VALUES (?,?,?,?,?,?,?)';
+        var sql = 'INSERT INTO User (Username, Password, Bio, PicturePath, BannerPath, CountryID, Points, Deleted) VALUES (?,?,?,?,?,?,?,?)';
         var statement = this._conn.prepare(sql);
-        var params = [username, md5(password), bio, picturepath, countryDao.loadById(result.countryid), points];
+        var params = [username, md5(password), bio, picturepath, bannerpath, countryid, points, deleted];
         var result = statement.run(params);
 
         if (result.changes != 1) 

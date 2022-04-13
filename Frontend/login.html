@@ -44,12 +44,12 @@
                 <div class="form-wrapper">
                     <h2>Log in / Sign up</h2>
                     Enter Username and Password to Log in / Sign up
-                    <form class="login-form" action="" method="post">
+                    <form class="login-form" id="login-form" action="wba2api/user" method="post" onsubmit="formSubmit()">
                         <label for="uname"><b>Username</b></label></br>
-                        <input type="text" placeholder="Enter Username" id="uname" required>
+                        <input type="text" placeholder="Enter Username" id="uname" name="username" required>
                         </br>
                         <label for="psw"><b>Password</b></label></br>
-                        <input type="password" placeholder="Enter Password" id="psw" required>
+                        <input type="password" placeholder="Enter Password" id="psw" name="password" required>
                         <button class="login-submit btn-primary" type="submit">Log in / Sign up</button>
                         <p style="opacity: 0.6;">by creating an account you acknowledge.</p>
                     </form>
