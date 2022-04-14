@@ -1,6 +1,4 @@
 IMPORTANT
-- How to handle challengepassword? Do not send when getting challenge!
-- Get list of created and solved challenges of a user
 
 Overall Ideas:
 - Secure Passwords with sha256 and salt
