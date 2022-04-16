@@ -53,6 +53,7 @@ hr{
     box-shadow: 0 0 9px #00000020;
     transition: all ease-in-out 0.3s;
     cursor: pointer;
+    font-weight: bold;
 }
 .btn-primary:hover{
     scale: 1.05;
@@ -480,7 +481,7 @@ input, textarea, select, .form-element{
 .profile form select{
     width: 83%;
 }
-.profile form select option{
+select option{
     background: #212121;
     color: white;
 }
@@ -567,15 +568,12 @@ input, textarea, select, .form-element{
 }
 
 .background{
-    background-image: url("images/image.jpg");
-    background-position: center;
+    background-image: url("../images/image.jpg");
+    background-position: bottom;
     height: 270px;
     position: relative;
     margin-bottom: 80px;
-    background-repeat: no-repeat;
-    background-size: 100%;
 }
-
 .background div{
     text-align: center;
     margin: 0;
