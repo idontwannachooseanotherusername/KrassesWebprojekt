@@ -64,19 +64,3 @@ function starupdate(slider){
 /*
 document.getElementsByClassName("hint").addEventListener("click", displayDate);
 */
-
-// Redirect after Login
-/*
-function formSubmit(){
-    $.ajax({
-        url: 'http://localhost:8001/wba2api/hint/get-from-challenge/' + id + '/' + challengeid,
-        method: 'get',
-        dataType: 'json'
-    }).done(function (response) {
-        window.location.replace("profile.html");
-    }).fail(function (jqXHR, statusText, error) {
-        console.log('Response Code: ' + jqXHR.status + ' - Fehlermeldung: ' + jqXHR.responseText);
-        alert('An error occured.');
-    });
-}
-*/

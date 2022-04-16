@@ -14,6 +14,8 @@
 
         <script type="text/javascript" src="scripts/main.js"></script>
         <script type="text/javascript" src="scripts/editor.js"></script>
+        <script type="text/javascript" src="scripts/ajax.js"></script>
+        <script type="text/javascript" src="scripts/jquery-3.6.0.min.js"></script>
     </head>
      
     <body>
@@ -48,7 +50,7 @@
                     <h1>Create your challenge</h1>
                 </article>
                 <article class="challenge-information">
-                    <form action="wba2api/challenge" method="post">
+                    <form id="challengecreator" onsubmit="return submitChallenge()">
                         <label for="challengename"><h2>Challengename</h2></label>
                         <input id="challengename" name="challengename" type="text" placeholder="Challengename" required></br>
                         <label for="difficulty"><h2>Difficulty</h2></label>

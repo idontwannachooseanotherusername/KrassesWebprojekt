@@ -283,3 +283,35 @@ function load_profile(id){
         alert('An error occured.');
     });
 }
+
+// Create challenge
+function submitChallenge(){
+    $.ajax({
+        url: 'http://localhost:8001/wba2api/challenge',
+        method: 'post',
+        dataType: 'json',
+        data: $('form').serialize()
+    }).done(function (response) {
+        window.location.replace("challenge.html?id=" + response.daten.challengeid);
+    }).fail(function (jqXHR, statusText, error) {
+        console.log('Response Code: ' + jqXHR.status + ' - Fehlermeldung: ' + jqXHR.responseText);
+        alert('An error occured.');
+    });
+    return false;
+}
+
+// Create user
+function submitUser(){
+    $.ajax({
+        url: 'http://localhost:8001/wba2api/user',
+        method: 'post',
+        dataType: 'json',
+        data: $('form').serialize()
+    }).done(function (response) {
+        window.location.replace("profile.html");
+    }).fail(function (jqXHR, statusText, error) {
+        console.log('Response Code: ' + jqXHR.status + ' - Fehlermeldung: ' + jqXHR.responseText);
+        alert('An error occured.');
+    });
+    return false;
+}
