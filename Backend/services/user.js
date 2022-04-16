@@ -101,8 +101,6 @@ serviceRouter.get('/user/access', function(request, response) {
 serviceRouter.post('/user', function(request, response) {
     helper.log('Service User: Client requested creation of new record or login');
 
-    console.log(request)
-
     var errorMsgs=[];
     if (helper.isUndefined(request.body.username)) 
         errorMsgs.push('username missing');

@@ -12,6 +12,8 @@
         <link rel="manifest" href="images/ico/site.webmanifest">
         <!-- -->
         <script type="text/javascript" src="scripts/main.js"></script>
+        <script type="text/javascript" src="scripts/ajax.js"></script>
+        <script type="text/javascript" src="scripts/jquery-3.6.0.min.js"></script>
     </head>
     <body>
         <noscript>
@@ -44,7 +46,7 @@
                 <div class="form-wrapper">
                     <h2>Log in / Sign up</h2>
                     Enter Username and Password to Log in / Sign up
-                    <form class="login-form" id="login-form" action="wba2api/user" method="post" onsubmit="formSubmit()">
+                    <form class="login-form" id="login-form" onsubmit="return submitUser()">
                         <label for="uname"><b>Username</b></label></br>
                         <input type="text" placeholder="Enter Username" id="uname" name="username" required>
                         </br>

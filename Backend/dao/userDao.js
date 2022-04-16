@@ -122,6 +122,8 @@ class UserDao {
 
     create(username = '', password = '', bio = '', picturepath = '', bannerpath = '', countryid = null, points = 0, deleted = 0) {
         const countryDao = new CountryDao(this._conn);
+
+        // TODO: Check if user already exists
         
         var sql = 'INSERT INTO User (Username, Password, Bio, PicturePath, BannerPath, CountryID, Points, Deleted) VALUES (?,?,?,?,?,?,?,?)';
         var statement = this._conn.prepare(sql);
