@@ -1,34 +1,33 @@
-IMPORTANT
-- How to handle challengepassword? Do not send when getting challenge!
-- Get list of created and solved challenges of a user
+TODO (In this order)
+- Store solution passwords of challenges hashed! (MD5, nobody really cares)
+- Implement json Webtoken
+ -> Check if user exists when logging in otherwise create new user and log it in
+- Implement solution password button and checking of password
+- Finish implementing challengecreator
+ -> Add file upload functionality
+ -> Implement what is listed under KEEP IN MIND (Create entries in extra tables)
+ -> Implement challenge editing
+- Add File upload to challengecreator
+- Implement profile editing
+- function challenge_id() in ajax.js: Combine data in backend, not in frontend!
+  (even if it works for now)
+- Implement challenge deletion
+ -> Add challenge deletion button
+ -> Add js to ask user if deletion is really wanted
+ -> Look at entries under KEEP IN MIND
 
-Overall Ideas:
-- Secure Passwords with sha256 and salt
+NICE TO HAVE
+- Implement comment writing
+- Implement rating when writing a comment (user can only write one comment)
+- Implement comment editing
+- 
 
-Overall Small TODOs:
-- Fix Fileupload width in Challengecreator
-
-Searchsystem
--Dificulty
--Category
-
-Profile
--Pic+Bio
--Uploads
--Favorites
-
-Global leaderboard
-- Yeah, that's it
-
-Upload System/Framework
--Title
--Description
--File(s)
--Hints
---Hint + Pointcost
-
-Evaluationsystem
-
-Pointsystem
-
-Relevant Fixes
+KEEP IN MIND
+- Login form is used for loging in AND signing upload
+- When creating a challenge a lot of entries have to be made in other tables
+ -> ChallengeTag
+ -> ChallengeFile
+ -> ...
+- These entries also need to get deleted if challenge gets deleted!
+- Uploaded files should be renamed to their hash value to avoid name conflicts
+  and to make sure we aren't saving the same image over and over again
