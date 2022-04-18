@@ -1,7 +1,8 @@
 TODO (In this order)
-- Store solution passwords of challenges hashed! (MD5, nobody really cares)
 - Implement json Webtoken
- -> Check if user exists when logging in otherwise create new user and log it in
+ -> (DONE) Check if user exists when logging in otherwise create new user and log it in
+ -> Create json web token
+ -> redirect user to his own profile or challenges page (undecided)
 - Implement solution password button and checking of password
 - Finish implementing challengecreator
  -> Add file upload functionality
@@ -9,8 +10,6 @@ TODO (In this order)
  -> Implement challenge editing
 - Add File upload to challengecreator
 - Implement profile editing
-- function challenge_id() in ajax.js: Combine data in backend, not in frontend!
-  (even if it works for now)
 - Implement challenge deletion
  -> Add challenge deletion button
  -> Add js to ask user if deletion is really wanted
