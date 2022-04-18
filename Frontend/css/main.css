@@ -40,7 +40,7 @@ hr{
 }
 
 /*---------- BUTTONS ----------*/
-.btn-primary{
+.btn-primary, .login-button{
     padding: 15px 35px;
     background-color: #00e1c2;
     background-image: linear-gradient(150deg, #00e1c2, #00e1c2, #007969);
@@ -55,7 +55,7 @@ hr{
     cursor: pointer;
     font-weight: bold;
 }
-.btn-primary:hover{
+.btn-primary:hover, .login-button:hover{
     scale: 1.05;
     background-color: #007969;
     background-position: 100% 0;
@@ -125,7 +125,7 @@ header{
     width: 100%;
     position: relative;
 }
-/*Login button in navigation*/
+/*Login button in navigation
 .login-button{
     background: #00e1c2;
     border-radius: 5px;
@@ -134,7 +134,7 @@ header{
 .login-button:hover{
     font-size: larger;
     transition: 0.3s;
-}
+}*/
 /*User profile picture when logged in*/
 .user-dropdown{
     position: relative;
@@ -913,8 +913,6 @@ footer .btn-to-top:hover{
 .errorsite table{
     margin-left: auto;
     margin-right: auto;
-
-
 }
 .errorsite .errorcode{
     background: #00e1c2;
