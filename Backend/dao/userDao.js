@@ -120,10 +120,30 @@ class UserDao {
         return false;
     }
 
+    username_exists(username=''){
+        var sql = 'SELECT * FROM User WHERE Username=?';
+        var statement = this._conn.prepare(sql);
+        var result = statement.get(username);
+
+        if (result == undefined){return false};
+        return helper.arrayObjectKeysToLower(result);
+    }
+
     create(username = '', password = '', bio = '', picturepath = '', bannerpath = '', countryid = null, points = 0, deleted = 0) {
         const countryDao = new CountryDao(this._conn);
 
-        // TODO: Check if user already exists
+        // Login user if username exists and pw matches
+        var user = this.username_exists(username);
+        if (user != false){
+            if (md5(password) === user.Password){
+                // TODO: Json web token
+                return;
+            }
+            else{
+                // TODO: Do not throw error, show string in frontend that pw does not match
+                throw new Error('No user found with username: ' + username);
+            }
+        }
         
         var sql = 'INSERT INTO User (Username, Password, Bio, PicturePath, BannerPath, CountryID, Points, Deleted) VALUES (?,?,?,?,?,?,?,?)';
         var statement = this._conn.prepare(sql);
