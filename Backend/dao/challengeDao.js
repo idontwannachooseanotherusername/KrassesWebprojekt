@@ -2,7 +2,7 @@ const helper = require('../helper.js');
 const DifficultyDao = require('./difficultyDao.js');
 const ChallengeTagDao = require('./challengetagDao.js');
 const CategoryDao = require('./categoryDao.js');
-// const UserDao = require('./userDao.js');
+const md5 = require('md5');
 
 class ChallengeDao {
 
@@ -18,28 +18,34 @@ class ChallengeDao {
         const difficultyDao = new DifficultyDao(this._conn);
         const challengetagDao = new ChallengeTagDao(this._conn);
         const categoryDao = new CategoryDao(this._conn);
-        // const userDao = new UserDao(this_comm);
 
         var sql = 'SELECT * FROM Challenge WHERE ChallengeID=?';
         var statement = this._conn.prepare(sql);
-        var result = statement.get(id);
+        var result = statement.get(id);    
 
         if (helper.isUndefined(result)) 
             throw new Error('No Record found by id=' + id);
-
         result = helper.objectKeysToLower(result);
 
+        // Get username
+        var sql = 'SELECT * FROM User WHERE UserID=?';
+        var statement = this._conn.prepare(sql);
+        var user = statement.get(result.userid);
+
+        if (helper.isUndefined(user)) 
+            throw new Error('No user found by id=' + id);
+            user = helper.objectKeysToLower(user);
+        
         var dt = helper.parseSQLDateTimeString(result.creationdate);
         result.creationdate = helper.formatToGermanDateTime(dt)
 
         // Resolve ids
+        result.username = user.username;
         result.difficulty = difficultyDao.loadById(result.difficultyid);
         delete result.difficultyid;
         result.tags = challengetagDao.loadByParent(result.challengeid);
         result.category = categoryDao.loadById(result.categoryid).title;
         delete result.categoryid;
-        // result.username = userDao.loadById(result.userid).username;
-        // delete result.userid;
 
         // Do not leak challenge pw
         delete result.solution;
@@ -87,16 +93,13 @@ class ChallengeDao {
     }
 
     create(challengename = 'Challengename', difficultyid = 1, categoryid = 0, tags = [], description = '', hint1= '', hint2 = '', hint3 = '', password = '', creationdate = '') {
-        // const difficultyDao = new DifficultyDao(this._conn);
-        // const categoryDao = new CategoryDao(this._conn);
-
         // TODO: Remove placeholder
         var userid = '1';
         
         var sql = 'INSERT INTO Challenge (ChallengeName, DifficultyID, CategoryID, Description, CreationDate, Solution, UserID) VALUES (?,?,?,?,?,?,?)';
         var statement = this._conn.prepare(sql);
 
-        var params = [challengename, Number(difficultyid), Number(categoryid), description, helper.formatToSQLDateTime(creationdate), password, Number(userid)];
+        var params = [challengename, Number(difficultyid), Number(categoryid), description, helper.formatToSQLDateTime(creationdate), md5(password), Number(userid)];
         var result = statement.run(params);
 
         if (result.changes != 1) 

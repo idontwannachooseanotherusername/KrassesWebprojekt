@@ -71,60 +71,50 @@ function challenge_id(){
         method: 'get',
         dataType: 'json'
     }).done(function (response) {
-
         // Heading
         var challenge = document.getElementsByClassName("challenge-attributes")[0];
         var title = document.createElement("h1");
         title.innerHTML = response.daten.challengename;
         challenge.insertBefore(title, challenge.firstChild);
 
-        // Get user from id
-        $.ajax({
-            url: 'http://localhost:8001/wba2api/user/get/' + response.daten.userid,
-            method: 'get',
-            dataType: 'json'
-        }).done(function (response_user) {
-            response.daten.username = response_user.daten.username;
+        // Attributes
+        var attributes = document.getElementsByClassName("challenge-attribute");
+        attributes[0].className = "challenge-attribute level-" + response.daten.difficulty.level;
+        var level = document.createElement("p");
+        level.innerHTML = "Level " + response.daten.difficulty.level;
+        attributes[0].appendChild(level);
+        var cat = document.createElement("p");
+        cat.innerHTML = response.daten.category;
+        attributes[1].appendChild(cat);
+        var code = document.createElement("p");
+        code.innerHTML = response.daten.challengeid;
+        attributes[2].appendChild(code);
+        var link = document.getElementById("profile-link");
+        link.href = "profile.html?id=" + response.daten.userid;
+        var username = document.createElement("p");
+        username.innerHTML = response.daten.username;
+        attributes[3].appendChild(username);
+        var date = document.createElement("p");
+        date.innerHTML = response.daten.creationdate;  // TODO: Only date, not time
+        attributes[4].appendChild(date);
+        var rating = document.createElement("p");
+        rating.innerHTML = "⭐".repeat(response.daten.rating);
+        attributes[5].appendChild(rating);
 
-            // Attributes
-            var attributes = document.getElementsByClassName("challenge-attribute");
-            attributes[0].className = "challenge-attribute level-" + response.daten.difficulty.level;
-            var level = document.createElement("p");
-            level.innerHTML = "Level " + response.daten.difficulty.level;
-            attributes[0].appendChild(level);
-            var cat = document.createElement("p");
-            cat.innerHTML = response.daten.category;
-            attributes[1].appendChild(cat);
-            var code = document.createElement("p");
-            code.innerHTML = response.daten.challengeid;
-            attributes[2].appendChild(code);
-            var link = document.getElementById("profile-link");
-            link.href = "profile.html?id=" + response.daten.userid;
-            var username = document.createElement("p");
-            username.innerHTML = response.daten.username;
-            attributes[3].appendChild(username);
-            var date = document.createElement("p");
-            date.innerHTML = response.daten.creationdate;  // TODO: Only date, not time
-            attributes[4].appendChild(date);
-            var rating = document.createElement("p");
-            rating.innerHTML = "⭐".repeat(response.daten.rating);
-            attributes[5].appendChild(rating);
+        // Tags
+        var wrapper = document.getElementsByClassName("tag-wrapper")[0];
+        for (var i = 0; i < response.daten.tags.length; i++){
+            var tag = document.createElement("div");
+            tag.className = "challenge-tag";
+            var img = document.createElement("img");
+            img.src = response.daten.tags[i].picturepath;
+            img.title = response.daten.tags[i].title;
+            var description = document.createElement("p");
+            description.innerHTML = response.daten.tags[i].title;
 
-            // Tags
-            var wrapper = document.getElementsByClassName("tag-wrapper")[0];
-            for (var i = 0; i < response.daten.tags.length; i++){
-                var tag = document.createElement("div");
-                tag.className = "challenge-tag";
-                var img = document.createElement("img");
-                img.src = response.daten.tags[i].picturepath;
-                img.title = response.daten.tags[i].title;
-                var description = document.createElement("p");
-                description.innerHTML = response.daten.tags[i].title;
-
-                tag.appendChild(img);
-                tag.appendChild(description);
-                wrapper.appendChild(tag);
-            }
+            tag.appendChild(img);
+            tag.appendChild(description);
+            wrapper.appendChild(tag);
 
             // challenge body
             var challenge = document.getElementsByClassName("challenge-information")[0];
@@ -132,12 +122,8 @@ function challenge_id(){
             description.className = "challenge-text";
             description.innerHTML = response.daten.description;
             challenge.prepend(description);
+        }
             // TODO: Files!
-
-        }).fail(function (jqXHR, statusText, error) {
-            console.log('Response Code: ' + jqXHR.status + ' - Fehlermeldung: ' + jqXHR.responseText);
-            alert('An error occured.');
-        });
     }).fail(function (jqXHR, statusText, error) {
         //console.log('Response Code: ' + jqXHR.status + ' - Fehlermeldung: ' + jqXHR.responseText);
         //$('#output').html('An error occured.');
