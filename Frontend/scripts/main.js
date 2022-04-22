@@ -64,3 +64,9 @@ function starupdate(slider){
 /*
 document.getElementsByClassName("hint").addEventListener("click", displayDate);
 */
+
+// document.getElementByID("logout").addEventListener("click", logout);
+function logout(){
+    document.cookie="Token=deleted;max-age=0";
+    window.location.replace("index.html");
+}
