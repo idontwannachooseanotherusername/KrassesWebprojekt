@@ -114,10 +114,9 @@ serviceRouter.post('/user', function(request, response) {
 
     const userDao = new UserDao(request.app.locals.dbConnection);
     try {
-        // TODO: Log in if user already exists
         var result = userDao.create(request.body.username, request.body.password);
-        helper.log('Service User: Record inserted');
-        response.status(200).json(helper.jsonMsgOK(result));
+        helper.log('Service User: User logged in.');
+        response.status(200).json(helper.jsonMsgOK(result));  // result = Webtoken
     } catch (ex) {
         helper.logError('Service User: Error creating new record. Exception occured: ' + ex.message);
         response.status(400).json(helper.jsonMsgError(ex.message));

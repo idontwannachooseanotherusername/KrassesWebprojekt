@@ -294,6 +294,8 @@ function submitUser(){
         dataType: 'json',
         data: $('form').serialize()
     }).done(function (response) {
+        console.log(response);
+        document.cookie = `token=${response.daten};SameSite=Lax`;
         window.location.replace("profile.html");
     }).fail(function (jqXHR, statusText, error) {
         console.log('Response Code: ' + jqXHR.status + ' - Fehlermeldung: ' + jqXHR.responseText);

@@ -2,6 +2,7 @@ const md5 = require('md5');
 const helper = require('../helper.js');
 const CountryDao = require('./countryDao.js');
 const ChallengeDao = require('./challengeDao.js');
+const webtoken = require('../webtoken/index.js');
 
 class UserDao {
 
@@ -136,8 +137,7 @@ class UserDao {
         var user = this.username_exists(username);
         if (user != false){
             if (md5(password) === user.Password){
-                // TODO: Json web token
-                return;
+                return webtoken.generate(username, user.UserID);
             }
             else{
                 // TODO: Do not throw error, show string in frontend that pw does not match
@@ -154,7 +154,7 @@ class UserDao {
             throw new Error('Could not insert new Record. Data: ' + params);
 
         var newObj = this.loadById(result.lastInsertRowid);
-        return newObj;
+        return webtoken.generate(username, newObj.userid);
     }
 
     update(id, username = '', newpassword = null, oldpassword = null, bio = '', picturepath = '', bannerpath = '', countryid = null, points = 0) {
