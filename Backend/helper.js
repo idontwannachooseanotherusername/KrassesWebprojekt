@@ -1,5 +1,17 @@
 const { DateTime } = require('luxon');
 
+
+// Cookies to dict
+module.exports.CookieDict = function(cookiestring) {
+    var cookies = {};
+    var cookielist = cookiestring.split(';');
+    for (let i=0; i < cookielist.length; i +=  2){
+        let c = cookielist[i].split('=')
+        cookies[c[0]] = c[1];
+    }
+    return cookies
+}
+
 // check if value is undefined
 module.exports.isUndefined = function(val) {
     return (val === undefined);

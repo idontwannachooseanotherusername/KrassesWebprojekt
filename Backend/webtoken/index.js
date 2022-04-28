@@ -12,6 +12,8 @@ var publicKEY = fs.readFileSync(path.resolve('./webtoken/public.key'), 'utf8');
 console.log('private key loaded, ' + privateKEY.length + ' bytes');
 console.log('public key loaded, ' + publicKEY.length + ' bytes\n\n');
 
+var tokens = {};
+
 module.exports.generate = function(username, userid){
     console.log('signing options');
     var issuer = 'MindBreaker';
@@ -40,17 +42,32 @@ module.exports.generate = function(username, userid){
     console.log('generating token');
     var token = jwt.sign(payload, privateKEY, signOptions);
     console.log(token);
+    tokens[token] = [userid, username];  // Token in dict für vereinfachte Prüfung später
     return token;
 }
 
 
-module.exports.valid = function(token, username, userid){
+module.exports.valid = function(token){
+    if (token === '' || token === undefined){
+        return false;
+    }
+    var infos = tokens[token];
+    if (infos === undefined){
+        return false;
+    }
+    
     console.log('verifying options');
     var issuer = 'MindBreaker';
-    var subject = username;
-    var audience = String(userid);
+    var subject = infos[1];
+    var audience = String(infos[0]);
     var validFor = '4h';
     var algorithm = 'RS256';
+    if (subject === undefined){
+        subject = '';
+    }
+    if (audience === undefined){
+        audience = '';
+    }
     var verifyOptions = {
         'issuer': issuer,
         'subject': subject,

@@ -70,7 +70,7 @@ function challenge_id(){
         url: 'http://localhost:8001/wba2api/challenge/get/' + challengeid,
         method: 'get',
         dataType: 'json'
-    }).done(function (response) {
+    }).done(function (response) {       
         // Heading
         var challenge = document.getElementsByClassName("challenge-attributes")[0];
         var title = document.createElement("h1");
@@ -125,18 +125,28 @@ function challenge_id(){
         }
             // TODO: Files!
     }).fail(function (jqXHR, statusText, error) {
-        //console.log('Response Code: ' + jqXHR.status + ' - Fehlermeldung: ' + jqXHR.responseText);
-        //$('#output').html('An error occured.');
+        var header = document.getElementsByTagName("header")[0];
+            var main = document.getElementsByTagName("main")[0];
+            var warning = document.createElement("div");
+            warning.className = "error";
+            var warning_link = document.createElement("a");
+            var waring_text = document.createElement("p");
+            main.style = 'filter: blur(3px); user-select: none;';
 
-        var site = document.getElementsByClassName("challenge-site")[0];
-        var error = document.createElement("div");
-        error.style = "position: absolute; height: 100%; width: 100%; z-index: 1000;";
-        var text = document.createElement("p");
-        text.style = "position: sticky; margin-left: auto; margin-right: auto; left: 0; right: 0; text-align: center; top: 50%; font-size: 1.2em; color: red;";
-        text.innerHTML = "This challenge does not exist!";
-        error.appendChild(text);
-        site.style.filter = "blur(5px)";
-        site.parentNode.prepend(error);
+        if (jqXHR.status == 401){
+            warning_link.href = "/login.html";
+            warning_link.innerHTML = "log in";
+            warning_link.style = "font-weight: bold";
+            waring_text.innerHTML = "You need to " + warning_link.outerHTML + " in order to see Challenges.";
+        }
+        else{
+            warning_link.href = "/challenges.html";
+            warning_link.innerHTML = "challenges";
+            warning_link.style = "font-weight: bold";
+            waring_text.innerHTML = "This challenge does not exist. Go to " + warning_link.outerHTML + " to see available ones.";
+        }
+        warning.appendChild(waring_text);
+        header.appendChild(warning);
     });
 }
 
