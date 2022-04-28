@@ -1,12 +1,17 @@
 TODO (In this order)
 - Implement json Webtoken
  -> (DONE) Check if user exists when logging in otherwise create new user and log it in
- -> Create json web token
- -> redirect user to his own profile or challenges page (undecided)
+ -> (DONE) Create json web token
+ -> (DONE) redirect user to his own profile or challenges page (undecided)
+ -> (DONE) Check for token when viewing a challenge
+ -> Check for token when getting hints
+ -> Check for token when editing profile
+ -> More checking needed?
 - Implement solution password button and checking of password
 - Finish implementing challengecreator
  -> Add file upload functionality
  -> Implement what is listed under KEEP IN MIND (Create entries in extra tables)
+ -> Bring back Description Editor
  -> Implement challenge editing
 - Add File upload to challengecreator
 - Implement profile editing
