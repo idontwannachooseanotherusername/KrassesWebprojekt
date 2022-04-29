@@ -1,5 +1,7 @@
 // const { result } = require("lodash");
 
+const { divide } = require("lodash");
+
 function challenge_all(){    
     $.ajax({
         url: 'http://localhost:8001/wba2api/challenge/all',
@@ -132,16 +134,19 @@ function challenge_id(){
             var warning_link = document.createElement("a");
             var waring_text = document.createElement("p");
             main.style = 'filter: blur(3px); user-select: none;';
+            var block_div = document.createElement("div");
+            block_div.style = "height: 100%; position: absolute; width: 100%;";
+            main.prepend(block_div);
 
         if (jqXHR.status == 401){
             warning_link.href = "/login.html";
-            warning_link.innerHTML = "log in";
+            warning_link.innerHTML = "LOG IN";
             warning_link.style = "font-weight: bold";
             waring_text.innerHTML = "You need to " + warning_link.outerHTML + " in order to see Challenges.";
         }
         else{
             warning_link.href = "/challenges.html";
-            warning_link.innerHTML = "challenges";
+            warning_link.innerHTML = "CHALLENGES";
             warning_link.style = "font-weight: bold";
             waring_text.innerHTML = "This challenge does not exist. Go to " + warning_link.outerHTML + " to see available ones.";
         }
@@ -221,8 +226,13 @@ function get_hint(id){
                     hint.lastChild.remove();
                     text.innerHTML = response.daten.description;;
                 }).fail(function (jqXHR, statusText, error) {
-                    console.log('Response Code: ' + jqXHR.status + ' - Fehlermeldung: ' + jqXHR.responseText);
-                    alert('An error occured.');
+                    if (jqXHR.status == 401){
+                        alert('Not logged in!');
+                    }
+                    else{
+                        console.log('Response Code: ' + jqXHR.status + ' - Fehlermeldung: ' + jqXHR.responseText);
+                        alert('An error occured.');
+                    }
                 });
             }
         }

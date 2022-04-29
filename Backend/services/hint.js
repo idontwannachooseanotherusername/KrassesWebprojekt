@@ -23,6 +23,12 @@ serviceRouter.get('/hint/get/:id', function(request, response) {
 serviceRouter.get('/hint/get-from-challenge/:class/:challengeid', function(request, response) {
     helper.log('Service Hint: Client requested one record, from challengeid=' + request.params.challengeid);
 
+    if (!helper.UserHasAccess(request.headers.cookie)){
+        helper.logError('Service Hint: User not logged in.');
+        response.status(401).json(helper.jsonMsgError('You need to be logged in to do that.'));
+        return;
+    }
+
     const hintDao = new HintDao(request.app.locals.dbConnection);
     try {
         var result = hintDao.loadByChallengeId(request.params.class, request.params.challengeid);
