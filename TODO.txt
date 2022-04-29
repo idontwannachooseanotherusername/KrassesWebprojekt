@@ -4,9 +4,13 @@ TODO (In this order)
  -> (DONE) Create json web token
  -> (DONE) redirect user to his own profile or challenges page (undecided)
  -> (DONE) Check for token when viewing a challenge
- -> Check for token when getting hints
+ -> (DONE) Check for token when getting hints
  -> Check for token when editing profile
+ -> Check for token wehen creating new challenge
+     -> redirect to login page when klicking on create and not logged in.
  -> More checking needed?
+- Remove Login Button when logged in -> Replace it with what?
+- Only show profile picture with dropdown when logged in
 - Implement solution password button and checking of password
 - Finish implementing challengecreator
  -> Add file upload functionality
@@ -15,7 +19,7 @@ TODO (In this order)
  -> Implement challenge editing
 - Add File upload to challengecreator
 - Implement profile editing
-- Implement challenge deletion
+- Implement challenge deletionw
  -> Add challenge deletion button
  -> Add js to ask user if deletion is really wanted
  -> Look at entries under KEEP IN MIND
