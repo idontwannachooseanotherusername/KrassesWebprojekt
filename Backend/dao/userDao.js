@@ -14,19 +14,6 @@ class UserDao {
         return this._conn;
     }
 
-    hasAccess(cookiestring){
-        var cookies = helper.CookieDict(cookiestring);
-        if (!'token' in cookies){
-            return false;
-        }
-        if (webtoken.valid(cookies['token'])){
-            return true
-        }
-        else{
-            return false;
-        }
-    }
-
     loadById(id) {
         const countryDao = new CountryDao(this._conn);
         const challengeDao = new ChallengeDao(this._conn);

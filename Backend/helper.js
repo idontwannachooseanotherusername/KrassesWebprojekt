@@ -1,4 +1,5 @@
 const { DateTime } = require('luxon');
+const webtoken = require('./webtoken/index.js');
 
 
 // Cookies to dict
@@ -10,6 +11,23 @@ module.exports.CookieDict = function(cookiestring) {
         cookies[c[0]] = c[1];
     }
     return cookies
+}
+
+// Check if user has access
+module.exports.UserHasAccess = function(cookiestring){
+    if (cookiestring === undefined || cookiestring === ''){
+        return false;
+    }
+    var cookies = this.CookieDict(cookiestring);
+    if (!'token' in cookies){
+        return false;
+    }
+    if (webtoken.valid(cookies['token'])){
+        return true
+    }
+    else{
+        return false;
+    }
 }
 
 // check if value is undefined

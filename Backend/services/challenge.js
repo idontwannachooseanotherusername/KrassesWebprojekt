@@ -11,8 +11,7 @@ helper.log('- Service Challenge');
 serviceRouter.get('/challenge/get/:id', function(request, response) {
     helper.log('Service Challenge: Client requested one record, id=' + request.params.id);
 
-    const userDao = new UserDao(request.app.locals.dbConnection);
-    if (!userDao.hasAccess(request.headers.cookie)){
+    if (!helper.UserHasAccess(request.headers.cookie)){
         helper.logError('Service Challenge: User not logged in.');
         response.status(401).json(helper.jsonMsgError('You need to be logged in to do that.'));
         return;
