@@ -67,6 +67,6 @@ document.getElementsByClassName("hint").addEventListener("click", displayDate);
 
 // document.getElementByID("logout").addEventListener("click", logout);
 function logout(){
-    document.cookie="Token=deleted;max-age=0";
+    document.cookie="token=deleted;expires=Sun, 01 Jan 1970 01:00:00 UTC";
     window.location.replace("index.html");
 }
