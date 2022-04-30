@@ -54,8 +54,7 @@ function challenge_all(){
             wrapper.appendChild(link);
         }
     }).fail(function (jqXHR, statusText, error) {
-        console.log('Response Code: ' + jqXHR.status + ' - Fehlermeldung: ' + jqXHR.responseText);
-        $('#output').html('An error occured.');
+        check_access(jqXHR, "challenge", "access", "challenges.html");
     });
 }
 
@@ -127,31 +126,7 @@ function challenge_id(){
         }
             // TODO: Files!
     }).fail(function (jqXHR, statusText, error) {
-        var header = document.getElementsByTagName("header")[0];
-            var main = document.getElementsByTagName("main")[0];
-            var warning = document.createElement("div");
-            warning.className = "error";
-            var warning_link = document.createElement("a");
-            var waring_text = document.createElement("p");
-            main.style = 'filter: blur(3px); user-select: none;';
-            var block_div = document.createElement("div");
-            block_div.style = "height: 100%; position: absolute; width: 100%;";
-            main.prepend(block_div);
-
-        if (jqXHR.status == 401){
-            warning_link.href = "/login.html";
-            warning_link.innerHTML = "LOG IN";
-            warning_link.style = "font-weight: bold";
-            waring_text.innerHTML = "You need to " + warning_link.outerHTML + " in order to see Challenges.";
-        }
-        else{
-            warning_link.href = "/challenges.html";
-            warning_link.innerHTML = "CHALLENGES";
-            warning_link.style = "font-weight: bold";
-            waring_text.innerHTML = "This challenge does not exist. Go to " + warning_link.outerHTML + " to see available ones.";
-        }
-        warning.appendChild(waring_text);
-        header.appendChild(warning);
+        check_access(jqXHR, "challenge", "access", "challenges.html");
     });
 }
 
@@ -179,7 +154,6 @@ function check_hints(){
         }
     }).fail(function (jqXHR, statusText, error) {
     });
-
 }
 
 function get_hint(id){
@@ -249,12 +223,9 @@ function load_profile(id){
         $('#profile-country').html(response.daten.country);
         $('#profile-points').html(response.daten.points);
 
-    
         // Pfade anpassen
         $('.img-border').attr("src", "images/profile-3.png")
         $('.background').css("background-image", `url(${response.daten.picturepath})`);
-        
-
 
         // solved and created challenges
         var solved = document.getElementById("profile-solved");
@@ -281,7 +252,6 @@ function load_profile(id){
         var h_created = document.getElementById("created-heading");
         h_created.innerHTML = `Created Challenges (${response.daten.created.length})`;
 
-
     }).fail(function (jqXHR, statusText, error) {
         console.log('Response Code: ' + jqXHR.status + ' - Fehlermeldung: ' + jqXHR.responseText);
         alert('An error occured.');
@@ -298,8 +268,7 @@ function submitChallenge(){
     }).done(function (response) {
         window.location.replace("challenge.html?id=" + response.daten.challengeid);
     }).fail(function (jqXHR, statusText, error) {
-        console.log('Response Code: ' + jqXHR.status + ' - Fehlermeldung: ' + jqXHR.responseText);
-        alert('An error occured.');
+        check_access(jqXHR, "challenge", "create");
     });
     return false;
 }
@@ -320,4 +289,38 @@ function submitUser(){
         alert('An error occured.');
     });
     return false;
+}
+
+// User not logged in 
+function check_access(jqXHR, resource = 'asset', intention = 'access', link_to = 'login.html', alert_msg = 'An error occured.'){
+    var header = document.getElementsByTagName("header")[0];
+    var main = document.getElementsByTagName("main")[0];
+    var warning = document.createElement("div");
+    warning.className = "error";
+    var warning_link = document.createElement("a");
+    warning_link.style = "font-weight: bold";
+    var waring_text = document.createElement("p");
+    main.style = 'filter: blur(3px); user-select: none;';
+    var block_div = document.createElement("div");
+    block_div.style = "height: 100%; position: absolute; width: 100%;";
+    main.prepend(block_div); 
+    
+    if (jqXHR.status == 401){
+        warning_link.href = 'login.html';
+        warning_link.innerHTML = "LOG IN";
+        waring_text.innerHTML = `You need to ${warning_link.outerHTML } in order to ${intention} this ${resource}.`;
+        warning.appendChild(waring_text);
+        header.appendChild(warning);
+    }
+    else if (jqXHR.status == 404){
+        warning_link.href = link_to;
+        warning_link.innerHTML = resource.toUpperCase() + "S";
+        waring_text.innerHTML = `This ${resource} does not exist. Go to ${warning_link.outerHTML} to see available ones.`;
+        warning.appendChild(waring_text);
+        header.appendChild(warning);
+    }
+    else{
+        console.log('Response Code: ' + jqXHR.status + ' - Fehlermeldung: ' + jqXHR.responseText);
+        alert(alert_msg);
+    }
 }
