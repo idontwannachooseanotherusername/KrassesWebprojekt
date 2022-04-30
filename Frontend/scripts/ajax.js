@@ -1,6 +1,6 @@
 // const { result } = require("lodash");
 
-const { divide } = require("lodash");
+// const { divide } = require("lodash");
 
 function challenge_all(){    
     $.ajax({
@@ -178,8 +178,6 @@ function check_hints(){
             hints[response.daten[e].Class - 1].onclick = function() {get_hint(response.daten[e].Class)};
         }
     }).fail(function (jqXHR, statusText, error) {
-        console.log('Response Code: ' + jqXHR.status + ' - Fehlermeldung: ' + jqXHR.responseText);
-        alert('An error occured.');
     });
 
 }
