@@ -25,7 +25,7 @@ serviceRouter.get('/challenge/get/:id', function(request, response) {
         response.status(200).json(helper.jsonMsgOK(result));
     } catch (ex) {
         helper.logError('Service Challenge: Error loading record by id. Exception occured: ' + ex.message);
-        response.status(400).json(helper.jsonMsgError(ex.message));
+        response.status(404).json(helper.jsonMsgError(ex.message));
     }
 });
 
@@ -60,6 +60,12 @@ serviceRouter.get('/challenge/exists/:id', function(request, response) {
 serviceRouter.post('/challenge', function(request, response) {
     helper.log('Service Challenge: Client requested creation of new record');
     console.log(request.body);
+
+    if (!helper.UserHasAccess(request.headers.cookie)){
+        helper.logError('Service Challenge: User not logged in.');
+        response.status(401).json(helper.jsonMsgError('You need to be logged in to do that.'));
+        return;
+    }
 
     var errorMsgs=[];
     if (helper.isUndefined(request.body.challengename)) 
