@@ -10,7 +10,7 @@ TODO (In this order)
      -> redirect to login page when klicking on create and not logged in.
  -> More checking needed?
 - Remove Login Button when logged in -> Replace it with what?
-- Only show profile picture with dropdown when logged in
+- (DONE) Only show profile picture with dropdown when logged in
 - Implement solution password button and checking of password
 - Finish implementing challengecreator
  -> Add file upload functionality
@@ -23,6 +23,7 @@ TODO (In this order)
  -> Add challenge deletion button
  -> Add js to ask user if deletion is really wanted
  -> Look at entries under KEEP IN MIND
+- Block Login page when already logged in
 
 NICE TO HAVE
 - Implement comment writing
