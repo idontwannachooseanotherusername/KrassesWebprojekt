@@ -3,7 +3,7 @@ const webtoken = require('./webtoken/index.js');
 
 
 // Cookies to dict
-module.exports.CookieDict = function(cookiestring) {
+module.exports.CookieDict = function(cookiestring='') {
     var cookies = {};
     var cookielist = cookiestring.split(';');
     for (let i=0; i < cookielist.length; i +=  2){
@@ -11,6 +11,15 @@ module.exports.CookieDict = function(cookiestring) {
         cookies[c[0]] = c[1];
     }
     return cookies
+}
+
+// Get userid from token
+module.exports.IdFromToken = function(cookiestring){
+    var cookies = this.CookieDict(cookiestring);
+    if (cookies === undefined || !'token' in cookies){
+        return undefined;
+    }
+    return webtoken.GetUserID(cookies['token']);
 }
 
 // Check if user has access

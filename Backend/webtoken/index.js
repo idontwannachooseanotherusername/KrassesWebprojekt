@@ -14,6 +14,16 @@ console.log('public key loaded, ' + publicKEY.length + ' bytes\n\n');
 
 var tokens = {};
 
+module.exports.GetUserID = function(token){
+    var infos = tokens[token];
+    if (infos === undefined){
+        return undefined;
+    }
+    else{
+        return infos[0];
+    }
+}
+
 module.exports.generate = function(username, userid){
     console.log('signing options');
     var issuer = 'MindBreaker';
