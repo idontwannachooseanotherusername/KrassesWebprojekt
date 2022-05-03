@@ -4,7 +4,7 @@
 
 function challenge_all(){    
     $.ajax({
-        url: 'http://localhost:8001/wba2api/challenge/all',
+        url: 'wba2api/challenge/all',
         method: 'get',
         dataType: 'json'
     }).done(function (response) {
@@ -68,7 +68,7 @@ function challenge_id(){
         }
 
     $.ajax({
-        url: 'http://localhost:8001/wba2api/challenge/get/' + challengeid,
+        url: 'wba2api/challenge/get/' + challengeid,
         method: 'get',
         dataType: 'json'
     }).done(function (response) {       
@@ -140,7 +140,7 @@ function check_hints(){
             break;
     }
     $.ajax({
-        url: 'http://localhost:8001/wba2api/hint/check/' + challengeid,
+        url: 'wba2api/hint/check/' + challengeid,
         method: 'get',
         dataType: 'json'
     }).done(function (response) {    
@@ -191,7 +191,7 @@ function get_hint(id){
                         break;
                 }
                 $.ajax({
-                    url: 'http://localhost:8001/wba2api/hint/get-from-challenge/' + id + '/' + challengeid,
+                    url: 'wba2api/hint/get-from-challenge/' + id + '/' + challengeid,
                     method: 'get',
                     dataType: 'json'
                 }).done(function (response) {
@@ -213,7 +213,7 @@ function get_hint(id){
 
 function load_profile(id){
     $.ajax({
-        url: 'http://localhost:8001/wba2api/user/get/' + id,
+        url: 'wba2api/user/get/' + id,
         method: 'get',
         dataType: 'json'
     }).done(function (response) {
@@ -261,7 +261,7 @@ function load_profile(id){
 // Create challenge
 function submitChallenge(){
     $.ajax({
-        url: 'http://localhost:8001/wba2api/challenge',
+        url: 'wba2api/challenge',
         method: 'post',
         dataType: 'json',
         data: $('form').serialize()
@@ -273,22 +273,98 @@ function submitChallenge(){
     return false;
 }
 
-// Create user
+// Create user or log in
 function submitUser(){
     $.ajax({
-        url: 'http://localhost:8001/wba2api/user',
+        url: 'wba2api/user',
         method: 'post',
         dataType: 'json',
         data: $('form').serialize()
     }).done(function (response) {
         console.log(response);
         document.cookie = `token=${response.daten};SameSite=Lax`;
-        window.location.replace("profile.html");
+        window.location.replace("challenges.html");
     }).fail(function (jqXHR, statusText, error) {
         console.log('Response Code: ' + jqXHR.status + ' - Fehlermeldung: ' + jqXHR.responseText);
         alert('An error occured.');
     });
     return false;
+}
+
+// Check user login to hide or show certain links
+function login_check(){
+    $.ajax({
+        url: 'wba2api/login_check',
+        method: 'get',
+        dataType: 'json'
+    }).done(function (response) {
+        // Get user infos
+        var user_points = 0;
+        var user_image = '';
+        var user_name = '';
+
+        $.ajax({
+            url: 'wba2api/user/get/' + String(response.daten),
+            method: 'get',
+            dataType: 'json',
+        }).done(function (response2) {
+            user_points = response2.daten.points;
+            user_image = response2.daten.picturepath;
+            if (user_image == ''){
+                user_image = '/images/Kachel.png';
+            }
+            user_name = response2.daten.username;
+
+            // Create usericon with dropdown
+        var menu_bar = document.getElementsByClassName("wrapper")[0];
+        var image_wrapper = document.createElement('div');
+        image_wrapper.className = "pb-image-wrapper";
+        var image = document.createElement('img');
+        image.id = "pb";
+        image.src = user_image;
+        image.onclick = function() {show_dropdown();};
+        image_wrapper.append(image);
+        menu_bar.append(image_wrapper);
+
+        var list = document.createElement('dl');
+        list.id = "menu-dropdown";
+        list.className = "dropdown";
+        var user = document.createElement('dt');
+        var br = document.createElement('br');
+        user.className = "dropdown-entry";
+        user.innerHTML = `Signed in as ${br.outerHTML} ${user_name}`;
+        list.appendChild(user);
+        list.appendChild(create_list_entry("dropdown-entry seperator points", user_points));
+        list.appendChild(create_list_entry("dropdown-entry seperator", "Create", "challengecreator.html"));
+        list.appendChild(create_list_entry("dropdown-entry", "Settings", "profile-edit.html"));
+        list.appendChild(create_list_entry("dropdown-entry", "Account", "profile-edit.html"));
+        list.appendChild(create_list_entry("dropdown-entry", "Logout", "", function() { logout(); }));
+        menu_bar.appendChild(list);
+
+        // Remove login button (replace with what?) TODO!
+        }).fail(function (jqXHR, statusText, error) {
+        });
+    }).fail(function (jqXHR, statusText, error) {
+        // User not logged in -> Don't create links
+    });
+}
+
+function create_list_entry(classes = "", text = "", ref = undefined, click = undefined){
+    var entry = document.createElement('dd');
+    entry.className = classes;
+    if (ref !== undefined){
+        var link = document.createElement('a');
+        link.href = ref;
+        link.innerHTML = text;
+        entry.append(link);
+    }
+    else {
+        entry.innerHTML = text;
+    }
+    if (click !== undefined){
+        entry.onclick = click;
+    }
+    return entry;
 }
 
 // User not logged in 

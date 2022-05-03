@@ -61,12 +61,13 @@ function starupdate(slider){
     stars.innerHTML = "Rating ".concat("⭐".repeat(slider.value))
 }
 
-/*
-document.getElementsByClassName("hint").addEventListener("click", displayDate);
-*/
-
-// document.getElementByID("logout").addEventListener("click", logout);
 function logout(){
     document.cookie="token=deleted;expires=Sun, 01 Jan 1970 01:00:00 UTC";
     window.location.replace("index.html");
 }
+
+// Onload functions
+window.addEventListener("load", function(){
+    login_check();
+});
+    
