@@ -1,6 +1,8 @@
 const md5 = require('md5');
 const helper = require('../helper.js');
 const CountryDao = require('./countryDao.js');
+const ChallengeDao = require('./challengeDao.js');
+const webtoken = require('../webtoken/index.js');
 
 class UserDao {
 
@@ -14,6 +16,7 @@ class UserDao {
 
     loadById(id) {
         const countryDao = new CountryDao(this._conn);
+        const challengeDao = new ChallengeDao(this._conn);
 
         var sql = 'SELECT * FROM User WHERE UserID=?';
         var statement = this._conn.prepare(sql);
@@ -34,32 +37,43 @@ class UserDao {
         delete result.countryid;
 
         // Get last 10 solved challenges
-        var sql = 'SELECT * FROM Solved WHERE UserID=?';
+        var sql = 'SELECT * FROM Solved';
         var statement = this._conn.prepare(sql);
-        var result_soved = statement.get(id);
+        var result_solved = statement.all();
+        var dt = helper.parseSQLDateTimeString(result_solved.ts);
+        result_solved.ts = helper.formatToGermanDateTime(dt)
+
+        if (helper.isArrayEmpty(result_solved)) 
+            return [];
+
+        result_solved = helper.arrayObjectKeysToLower(result_solved);
         
-        if (helper.isUndefined(result_soved)) {
-            result.solved = [];
-        }
-        else{
-            result.solved = result_soved;  // TODO: Only first 10 or so
-        }
+        var solved_list = [];
+        for (var solved of result_solved){
+            if (solved.userid == result.userid){
+                delete solved.userid;
+                solved.challengename = challengeDao.loadById(solved.challengeid).challengename;
+                solved_list.push(solved);
 
-        // Get created challenges
-        var sql = 'SELECT * FROM Challenge WHERE UserID=?';
-        var statement = this._conn.prepare(sql);
-        var result_created = statement.get(id);
-
-        if (helper.isUndefined(result_created)) {
-            result.created = [];
-        }
-        else{
-            var created = []
-            for (var i; i < result_created.length; i++){
-                this.created[i] = result_created[i].challengeid;
+                if (solved_list.length >= 10){break;}
             }
-            result.created = created;
         }
+        result.solved = solved_list;
+
+        // Get last 10 created challenges
+        var created_list = [];
+        for (var e of challengeDao.loadAll()){
+            if (e.userid == result.userid){
+                created_list.push({
+                    challengeid: e.challengeid,
+                    challengename: e.challengename,
+                    ts: e.creationdate
+                });
+
+                if (created_list.length >= 10){break;}
+            }
+        }
+        result.created = created_list;
 
         // Strip user password
         delete result.password;
@@ -84,7 +98,7 @@ class UserDao {
             // Countries can be empty(null)
             if (result[i].countryid != null){
                 for (var element of countries) {
-                    if (element.id == result[i].countryid.countryname) {
+                    if (element.countryid == result[i].countryid.countryname) {
                         result[i].country = element;
                         break;
                     }
@@ -107,19 +121,40 @@ class UserDao {
         return false;
     }
 
-    create(username = '', password = '', bio = '', picturepath = '', bannerpath = '', countryid = null, points = 0) {
-        const countryDao = new CountryDao(this._conn);
-        
-        var sql = 'INSERT INTO Person (Username, Password, Bio, PicturePath, BannerPath, CountryID, Points) VALUES (?,?,?,?,?,?,?)';
+    username_exists(username=''){
+        var sql = 'SELECT * FROM User WHERE Username=?';
         var statement = this._conn.prepare(sql);
-        var params = [username, md5(password), bio, picturepath, countryDao.loadById(result.countryid), points];
+        var result = statement.get(username);
+
+        if (result == undefined){return false};
+        return helper.arrayObjectKeysToLower(result);
+    }
+
+    create(username = '', password = '', bio = '', picturepath = '', bannerpath = '', countryid = null, points = 0, deleted = 0) {
+        const countryDao = new CountryDao(this._conn);
+
+        // Login user if username exists and pw matches
+        var user = this.username_exists(username);
+        if (user != false){
+            if (md5(password) === user.Password){
+                return webtoken.generate(username, user.UserID);
+            }
+            else{
+                // TODO: Do not throw error, show string in frontend that pw does not match
+                throw new Error('No user found with username: ' + username);
+            }
+        }
+        
+        var sql = 'INSERT INTO User (Username, Password, Bio, PicturePath, BannerPath, CountryID, Points, Deleted) VALUES (?,?,?,?,?,?,?,?)';
+        var statement = this._conn.prepare(sql);
+        var params = [username, md5(password), bio, picturepath, bannerpath, countryid, points, deleted];
         var result = statement.run(params);
 
         if (result.changes != 1) 
             throw new Error('Could not insert new Record. Data: ' + params);
 
         var newObj = this.loadById(result.lastInsertRowid);
-        return newObj;
+        return webtoken.generate(username, newObj.userid);
     }
 
     update(id, username = '', newpassword = null, oldpassword = null, bio = '', picturepath = '', bannerpath = '', countryid = null, points = 0) {

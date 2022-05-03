@@ -2,12 +2,21 @@ const helper = require('../helper.js');
 const ChallengeDao = require('../dao/challengeDao.js');
 const express = require('express');
 const req = require('express/lib/request');
+const UserDao = require('../dao/userDao.js');
 var serviceRouter = express.Router();
 
 helper.log('- Service Challenge');
 
+
 serviceRouter.get('/challenge/get/:id', function(request, response) {
     helper.log('Service Challenge: Client requested one record, id=' + request.params.id);
+
+    if (!helper.UserHasAccess(request.headers.cookie)){
+        helper.logError('Service Challenge: User not logged in.');
+        response.status(401).json(helper.jsonMsgError('You need to be logged in to do that.'));
+        return;
+    }
+    console.log(request);
 
     const challengeDao = new ChallengeDao(request.app.locals.dbConnection);
     try {
@@ -16,7 +25,7 @@ serviceRouter.get('/challenge/get/:id', function(request, response) {
         response.status(200).json(helper.jsonMsgOK(result));
     } catch (ex) {
         helper.logError('Service Challenge: Error loading record by id. Exception occured: ' + ex.message);
-        response.status(400).json(helper.jsonMsgError(ex.message));
+        response.status(404).json(helper.jsonMsgError(ex.message));
     }
 });
 
@@ -50,16 +59,25 @@ serviceRouter.get('/challenge/exists/:id', function(request, response) {
 
 serviceRouter.post('/challenge', function(request, response) {
     helper.log('Service Challenge: Client requested creation of new record');
+    console.log(request.body);
+
+    if (!helper.UserHasAccess(request.headers.cookie)){
+        helper.logError('Service Challenge: User not logged in.');
+        response.status(401).json(helper.jsonMsgError('You need to be logged in to do that.'));
+        return;
+    }
 
     var errorMsgs=[];
     if (helper.isUndefined(request.body.challengename)) 
         errorMsgs.push('name missing');
+    if (helper.isUndefined(request.body.category)) 
+        request.body.category = 'Other';
     if (helper.isUndefined(request.body.description)) 
         request.body.description = '';
     if (helper.isUndefined(request.body.difficulty)) 
         errorMsgs.push('difficulty missing');
-    if (!helper.isNumeric(request.body.solution)) 
-        errorMsgs.push('solution missing');
+    if (helper.isUndefined(request.body.password))
+        errorMsgs.push('password missing');
     if (errorMsgs.length > 0) {
         helper.log('Service Challenge: Creation not possible, data missing');
         response.status(400).json(helper.jsonMsgError('Creation not possible, missing data: ' + helper.concatArray(errorMsgs)));
@@ -67,11 +85,13 @@ serviceRouter.post('/challenge', function(request, response) {
     }
 
     // Set current time as creationtime
-    request.body.creationdate = new Date().toLocaleString();
+    request.body.creationdate = helper.getNow();
 
     const challengeDao = new ChallengeDao(request.app.locals.dbConnection);
+    var b = request.body;
+    console.log(b);
     try {
-        var result = challengeDao.create(request.body.challengename, request.body.difficulty, request.body.description, request.body.creationdate, request.body.solution);
+        var result = challengeDao.create(b.challengename, b.difficulty, b.categoryid, b.tags, b.description, b.hint1, b.hint2, b.hint3, b.password, b.creationdate);
         helper.log('Service Challenge: Record inserted');
         response.status(200).json(helper.jsonMsgOK(result));
     } catch (ex) {

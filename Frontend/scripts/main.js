@@ -19,40 +19,6 @@ function invert(){
     }
 }
 
-/* Click on hint */
-function get_hint(level){
-    var selector = "hint-".concat(level).concat(" hint-text");
-    var hint = document.getElementsByClassName("hint-".concat(level))[0];
-    var text = hint.querySelector('.hint-text');
-    if (text != undefined){
-        /*Hint already visible*/
-        if (text.style.filter == "revert"){
-            return
-        }
-        /*First click*/
-        else if (text.classList.contains("confirm") == false){
-            let warning = document.createElement("p");
-            warning.innerHTML = "Are you sure? Click again.";
-            warning.style.color = "orange";
-            hint.appendChild(warning);
-            text.classList.add("confirm");
-            warning.classList.add("warning");
-        }
-        /*Second click*/
-        else{
-            text.style.filter = "revert";
-            let warning = hint.querySelector(".warning")
-            if (warning != undefined){
-                warning.remove();
-                hint.classList.remove("confirm")
-                
-                /*Get hint from server here*/
-                text.innerHTML = "Hint from server."
-            }
-        }
-    }
-}
-
 /* Usermenu dropdown */
 function show_dropdown(x=false){
     var drop = document.getElementById("menu-dropdown");
@@ -95,6 +61,13 @@ function starupdate(slider){
     stars.innerHTML = "Rating ".concat("⭐".repeat(slider.value))
 }
 
-/*
-document.getElementsByClassName("hint").addEventListener("click", displayDate);
-*/
+function logout(){
+    document.cookie="token=deleted;expires=Sun, 01 Jan 1970 01:00:00 UTC";
+    window.location.replace("index.html");
+}
+
+// Onload functions
+window.addEventListener("load", function(){
+    login_check();
+});
+    

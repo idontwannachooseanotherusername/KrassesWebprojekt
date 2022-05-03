@@ -1,4 +1,43 @@
 const { DateTime } = require('luxon');
+const webtoken = require('./webtoken/index.js');
+
+
+// Cookies to dict
+module.exports.CookieDict = function(cookiestring='') {
+    var cookies = {};
+    var cookielist = cookiestring.split(';');
+    for (let i=0; i < cookielist.length; i +=  2){
+        let c = cookielist[i].split('=')
+        cookies[c[0]] = c[1];
+    }
+    return cookies
+}
+
+// Get userid from token
+module.exports.IdFromToken = function(cookiestring){
+    var cookies = this.CookieDict(cookiestring);
+    if (cookies === undefined || !'token' in cookies){
+        return undefined;
+    }
+    return webtoken.GetUserID(cookies['token']);
+}
+
+// Check if user has access
+module.exports.UserHasAccess = function(cookiestring){
+    if (cookiestring === undefined || cookiestring === ''){
+        return false;
+    }
+    var cookies = this.CookieDict(cookiestring);
+    if (!'token' in cookies){
+        return false;
+    }
+    if (webtoken.valid(cookies['token'])){
+        return true
+    }
+    else{
+        return false;
+    }
+}
 
 // check if value is undefined
 module.exports.isUndefined = function(val) {

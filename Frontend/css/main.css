@@ -40,7 +40,7 @@ hr{
 }
 
 /*---------- BUTTONS ----------*/
-.btn-primary{
+.btn-primary, .login-button{
     padding: 15px 35px;
     background-color: #00e1c2;
     background-image: linear-gradient(150deg, #00e1c2, #00e1c2, #007969);
@@ -53,8 +53,9 @@ hr{
     box-shadow: 0 0 9px #00000020;
     transition: all ease-in-out 0.3s;
     cursor: pointer;
+    font-weight: bold;
 }
-.btn-primary:hover{
+.btn-primary:hover, .login-button:hover{
     scale: 1.05;
     background-color: #007969;
     background-position: 100% 0;
@@ -123,16 +124,6 @@ header{
 .main-menu .wrapper{
     width: 100%;
     position: relative;
-}
-/*Login button in navigation*/
-.login-button{
-    background: #00e1c2;
-    border-radius: 5px;
-    transition: 0.3s;
-}
-.login-button:hover{
-    font-size: larger;
-    transition: 0.3s;
 }
 /*User profile picture when logged in*/
 .user-dropdown{
@@ -480,7 +471,7 @@ input, textarea, select, .form-element{
 .profile form select{
     width: 83%;
 }
-.profile form select option{
+select option{
     background: #212121;
     color: white;
 }
@@ -901,7 +892,6 @@ footer .btn-to-top:hover{
 
 
 /*---------- Errorsite ----------*/
-
 .errorsite{
     text-align: center;
     width: 100%;   
@@ -912,8 +902,6 @@ footer .btn-to-top:hover{
 .errorsite table{
     margin-left: auto;
     margin-right: auto;
-
-
 }
 .errorsite .errorcode{
     background: #00e1c2;
@@ -928,4 +916,13 @@ footer .btn-to-top:hover{
 }
 .errorsite th{
    padding-top: 100px;
+}
+
+/*---------- EXTRA ----------*/
+.error{
+    padding: 15px;
+    text-align: center;
+    background-color: darkred;
+    color: white;
+    margin-bottom: 40px;
 }

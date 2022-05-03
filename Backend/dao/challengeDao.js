@@ -1,5 +1,8 @@
 const helper = require('../helper.js');
 const DifficultyDao = require('./difficultyDao.js');
+const ChallengeTagDao = require('./challengetagDao.js');
+const CategoryDao = require('./categoryDao.js');
+const md5 = require('md5');
 
 class ChallengeDao {
 
@@ -13,21 +16,36 @@ class ChallengeDao {
 
     loadById(id) {
         const difficultyDao = new DifficultyDao(this._conn);
+        const challengetagDao = new ChallengeTagDao(this._conn);
+        const categoryDao = new CategoryDao(this._conn);
 
         var sql = 'SELECT * FROM Challenge WHERE ChallengeID=?';
         var statement = this._conn.prepare(sql);
-        var result = statement.get(id);
+        var result = statement.get(id);    
 
         if (helper.isUndefined(result)) 
             throw new Error('No Record found by id=' + id);
-
         result = helper.objectKeysToLower(result);
 
+        // Get username
+        var sql = 'SELECT * FROM User WHERE UserID=?';
+        var statement = this._conn.prepare(sql);
+        var user = statement.get(result.userid);
+
+        if (helper.isUndefined(user)) 
+            throw new Error('No user found by id=' + id);
+            user = helper.objectKeysToLower(user);
+        
         var dt = helper.parseSQLDateTimeString(result.creationdate);
         result.creationdate = helper.formatToGermanDateTime(dt)
 
+        // Resolve ids
+        result.username = user.username;
         result.difficulty = difficultyDao.loadById(result.difficultyid);
         delete result.difficultyid;
+        result.tags = challengetagDao.loadByParent(result.challengeid);
+        result.category = categoryDao.loadById(result.categoryid).title;
+        delete result.categoryid;
 
         // Do not leak challenge pw
         delete result.solution;
@@ -49,6 +67,7 @@ class ChallengeDao {
         result = helper.arrayObjectKeysToLower(result);
 
         for (var i = 0; i < result.length; i++) {
+            // Get difficulty level
             for (var element of difficulties) {
                 if (element.difficultyid == result[i].difficultyid) {
                     result[i].difficulty = element.level;
@@ -56,8 +75,9 @@ class ChallengeDao {
                 }
             }
             delete result[i].difficultyid;
+            
             // Do not leak challenge pw
-            delete result.solution;
+            delete result[i].solution;
         }
         return result;
     }
@@ -72,12 +92,14 @@ class ChallengeDao {
         return false;
     }
 
-    create(challengename = '', description = '', creationdate = '', solution = '', difficultyid = null) {
-        const difficultyDao = new DifficultyDao(this._conn);
+    create(challengename = 'Challengename', difficultyid = 1, categoryid = 0, tags = [], description = '', hint1= '', hint2 = '', hint3 = '', password = '', creationdate = '') {
+        // TODO: Remove placeholder
+        var userid = '1';
         
-        var sql = 'INSERT INTO Person (Challengename, Description, CreationDate, Solution, CountryID) VALUES (?,?,?,?,?)';
+        var sql = 'INSERT INTO Challenge (ChallengeName, DifficultyID, CategoryID, Description, CreationDate, Solution, UserID) VALUES (?,?,?,?,?,?,?)';
         var statement = this._conn.prepare(sql);
-        var params = [challengename, description, helper.formatToSQLDateTime(creationdate), solution, difficultyDao.loadById(result.difficultyid)];
+
+        var params = [challengename, Number(difficultyid), Number(categoryid), description, helper.formatToSQLDateTime(creationdate), md5(password), Number(userid)];
         var result = statement.run(params);
 
         if (result.changes != 1) 

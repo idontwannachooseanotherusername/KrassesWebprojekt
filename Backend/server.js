@@ -43,7 +43,6 @@ try {
     app.use(bodyParser.json());
     var root = '../Frontend';
     app.use(express.static(path.resolve(root)));
-    console.log('PATH:' + path.resolve(root + '/images'));
     app.use(function(request, response, next) {
         response.setHeader('Access-Control-Allow-Origin', '*'); 
         response.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE');
@@ -55,6 +54,9 @@ try {
     // binding endpoints
     const TOPLEVELPATH = '/wba2api';
     helper.log('Binding enpoints, top level Path at ' + TOPLEVELPATH);
+
+    var serviceRouter = require('./services/login_check.js');
+    app.use(TOPLEVELPATH, serviceRouter);
     
     var serviceRouter = require('./services/user.js');
     app.use(TOPLEVELPATH, serviceRouter);
@@ -99,7 +101,9 @@ try {
     //app.use(TOPLEVELPATH, serviceRouter);
 
     // send default error message if no matching endpoint found
+    // TODO differentiate between api calls and calls to html sites
     app.use(function (request, response) {
+        console.log(request.body);
         response.status(404)
         response.sendFile('/errorsite.html', {'root': root});
         helper.log('Error occured, 404, resource not found');

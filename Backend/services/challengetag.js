@@ -6,11 +6,11 @@ var serviceRouter = express.Router();
 helper.log('- Service Challengetag');
 
 serviceRouter.get('/challengetag/get/:id', function(request, response) {
-    helper.log('Service Challengetag: Client requested one record, id=' + request.params.id);
+    helper.log('Service Challengetag: Client requested records, with categoryid=' + request.params.id);
 
     const challengetagDao = new ChallengetagDao(request.app.locals.dbConnection);
     try {
-        var result = challengetagDao.loadById(request.params.id);
+        var result = challengetagDao.loadByChallengeId(request.params.id);
         helper.log('Service Challengetag: Record loaded');
         response.status(200).json(helper.jsonMsgOK(result));
     } catch (ex) {

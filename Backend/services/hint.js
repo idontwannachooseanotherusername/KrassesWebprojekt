@@ -20,28 +20,40 @@ serviceRouter.get('/hint/get/:id', function(request, response) {
     }
 });
 
-serviceRouter.get('/hint/all/', function(request, response) {
-    helper.log('Service Hint: Client requested all records');
+serviceRouter.get('/hint/get-from-challenge/:class/:challengeid', function(request, response) {
+    helper.log('Service Hint: Client requested one record, from challengeid=' + request.params.challengeid);
+
+    if (!helper.UserHasAccess(request.headers.cookie)){
+        helper.logError('Service Hint: User not logged in.');
+        response.status(401).json(helper.jsonMsgError('You need to be logged in to do that.'));
+        return;
+    }
 
     const hintDao = new HintDao(request.app.locals.dbConnection);
     try {
-        var result = hintDao.loadAll();
-        helper.log('Service Hint: Records loaded, count=' + result.length);
+        var result = hintDao.loadByChallengeId(request.params.class, request.params.challengeid);
+        helper.log('Service Hint: Record loaded');
         response.status(200).json(helper.jsonMsgOK(result));
     } catch (ex) {
-        helper.logError('Service Hint: Error loading all records. Exception occured: ' + ex.message);
+        helper.logError('Service Hint: Error loading record by id. Exception occured: ' + ex.message);
         response.status(400).json(helper.jsonMsgError(ex.message));
     }
 });
 
-serviceRouter.get('/hint/exists/:id', function(request, response) {
-    helper.log('Service Hint: Client requested check, if record exists, id=' + request.params.id);
+serviceRouter.get('/hint/check/:id', function(request, response) {
+    helper.log('Service Hint: Client requested check, id=' + request.params.id);
+
+    if (!helper.UserHasAccess(request.headers.cookie)){
+        helper.logError('Service Hint: User not logged in.');
+        response.status(401).json(helper.jsonMsgError('You need to be logged in to do that.'));
+        return;
+    }
 
     const hintDao = new HintDao(request.app.locals.dbConnection);
     try {
-        var result = hintDao.exists(request.params.id);
+        var result = hintDao.check(request.params.id);
         helper.log('Service Hint: Check if record exists by id=' + request.params.id + ', result=' + result);
-        response.status(200).json(helper.jsonMsgOK({ 'id': request.params.id, 'existiert': result }));
+        response.status(200).json(helper.jsonMsgOK(result));
     } catch (ex) {
         helper.logError('Service Hint: Error checking if record exists. Exception occured: ' + ex.message);
         response.status(400).json(helper.jsonMsgError(ex.message));

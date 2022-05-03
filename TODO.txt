@@ -1,34 +1,42 @@
-IMPORTANT
-- How to handle challengepassword? Do not send when getting challenge!
-- Get list of created and solved challenges of a user
+TODO (In this order)
+- Implement json Webtoken
+ -> (DONE) Check if user exists when logging in otherwise create new user and log it in
+ -> (DONE) Create json web token
+ -> (DONE) redirect user to his own profile or challenges page (undecided)
+ -> (DONE) Check for token when viewing a challenge
+ -> (DONE) Check for token when getting hints
+ -> Check for token when editing profile
+ -> Check for token wehen creating new challenge
+     -> redirect to login page when klicking on create and not logged in.
+ -> More checking needed?
+- Remove Login Button when logged in -> Replace it with what?
+- (DONE) Only show profile picture with dropdown when logged in
+- Implement solution password button and checking of password
+- Finish implementing challengecreator
+ -> Add file upload functionality
+ -> Implement what is listed under KEEP IN MIND (Create entries in extra tables)
+ -> Bring back Description Editor
+ -> Implement challenge editing
+- Add File upload to challengecreator
+- Implement profile editing
+- Implement challenge deletionw
+ -> Add challenge deletion button
+ -> Add js to ask user if deletion is really wanted
+ -> Look at entries under KEEP IN MIND
+- Block Login page when already logged in
 
-Overall Ideas:
-- Secure Passwords with sha256 and salt
+NICE TO HAVE
+- Implement comment writing
+- Implement rating when writing a comment (user can only write one comment)
+- Implement comment editing
+- 
 
-Overall Small TODOs:
-- Fix Fileupload width in Challengecreator
-
-Searchsystem
--Dificulty
--Category
-
-Profile
--Pic+Bio
--Uploads
--Favorites
-
-Global leaderboard
-- Yeah, that's it
-
-Upload System/Framework
--Title
--Description
--File(s)
--Hints
---Hint + Pointcost
-
-Evaluationsystem
-
-Pointsystem
-
-Relevant Fixes
+KEEP IN MIND
+- Login form is used for loging in AND signing upload
+- When creating a challenge a lot of entries have to be made in other tables
+ -> ChallengeTag
+ -> ChallengeFile
+ -> ...
+- These entries also need to get deleted if challenge gets deleted!
+- Uploaded files should be renamed to their hash value to avoid name conflicts
+  and to make sure we aren't saving the same image over and over again
