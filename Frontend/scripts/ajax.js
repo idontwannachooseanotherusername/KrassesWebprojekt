@@ -337,7 +337,7 @@ function login_check(){
         list.appendChild(create_list_entry("dropdown-entry seperator points", user_points));
         list.appendChild(create_list_entry("dropdown-entry seperator", "Create", "challengecreator.html"));
         list.appendChild(create_list_entry("dropdown-entry", "Settings", "profile-edit.html"));
-        list.appendChild(create_list_entry("dropdown-entry", "Account", "profile-edit.html"));
+        list.appendChild(create_list_entry("dropdown-entry", "Account", "profile.html"));
         list.appendChild(create_list_entry("dropdown-entry", "Logout", "", function() { logout(); }));
         menu_bar.appendChild(list);
 
