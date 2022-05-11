@@ -12,16 +12,10 @@ var publicKEY = fs.readFileSync(path.resolve('./webtoken/public.key'), 'utf8');
 console.log('private key loaded, ' + privateKEY.length + ' bytes');
 console.log('public key loaded, ' + publicKEY.length + ' bytes\n\n');
 
-var tokens = {};
+// var tokens = {};
 
 module.exports.GetUserID = function(token){
-    var infos = tokens[token];
-    if (infos === undefined){
-        return undefined;
-    }
-    else{
-        return infos[0];
-    }
+    return 1;
 }
 
 module.exports.generate = function(username, userid){
@@ -52,7 +46,7 @@ module.exports.generate = function(username, userid){
     console.log('generating token');
     var token = jwt.sign(payload, privateKEY, signOptions);
     console.log(token);
-    tokens[token] = [userid, username];  // Token in dict für vereinfachte Prüfung später
+    // tokens[token] = [userid, username];  // Token in dict für vereinfachte Prüfung später
     return token;
 }
 
@@ -61,15 +55,21 @@ module.exports.valid = function(token){
     if (token === '' || token === undefined){
         return false;
     }
+
+    /*
     var infos = tokens[token];
     if (infos === undefined){
         return false;
-    }
+    }*/
+    var token_dict = {};
+    var token_list = token.split('.');
+    var buffer = Buffer.from(token_list[1], 'base64');
+    token_dict = JSON.parse(buffer.toString('utf-8'));// dekodieren
     
     console.log('verifying options');
     var issuer = 'MindBreaker';
-    var subject = infos[1];
-    var audience = String(infos[0]);
+    var subject = token_dict.userName;
+    var audience = token_dict.aud;
     var validFor = '4h';
     var algorithm = 'RS256';
     if (subject === undefined){
