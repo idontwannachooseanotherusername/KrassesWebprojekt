@@ -4,8 +4,9 @@
 
 function challenge_all(){    
     $.ajax({
-        url: 'wba2api/challenge/all',
+        url: 'http://localhost:8001/wba2api/challenge/all',
         method: 'get',
+        xhrFields: { withCredentials: true },
         dataType: 'json'
     }).done(function (response) {
         var wrapper = document.getElementsByClassName('challenge-wrapper')[0];
@@ -68,8 +69,9 @@ function challenge_id(){
         }
 
     $.ajax({
-        url: 'wba2api/challenge/get/' + challengeid,
+        url: 'http://localhost:8001/wba2api/challenge/get/' + challengeid,
         method: 'get',
+        xhrFields: { withCredentials: true },
         dataType: 'json'
     }).done(function (response) {       
         // Heading
@@ -140,8 +142,9 @@ function check_hints(){
             break;
     }
     $.ajax({
-        url: 'wba2api/hint/check/' + challengeid,
+        url: 'http://localhost:8001/wba2api/hint/check/' + challengeid,
         method: 'get',
+        xhrFields: { withCredentials: true },
         dataType: 'json'
     }).done(function (response) {    
         var unavailable = document.getElementsByClassName("hint-unavailable");
@@ -191,8 +194,9 @@ function get_hint(id){
                         break;
                 }
                 $.ajax({
-                    url: 'wba2api/hint/get-from-challenge/' + id + '/' + challengeid,
+                    url: 'http://localhost:8001/wba2api/hint/get-from-challenge/' + id + '/' + challengeid,
                     method: 'get',
+                    xhrFields: { withCredentials: true },
                     dataType: 'json'
                 }).done(function (response) {
                     hint.lastChild.remove();
@@ -213,8 +217,9 @@ function get_hint(id){
 
 function load_profile(id){
     $.ajax({
-        url: 'wba2api/user/get/' + id,
+        url: 'http://localhost:8001/wba2api/user/get/' + id,
         method: 'get',
+        xhrFields: { withCredentials: true },
         dataType: 'json'
     }).done(function (response) {
         console.log(response);
@@ -261,7 +266,7 @@ function load_profile(id){
 // Create challenge
 function submitChallenge(){
     $.ajax({
-        url: 'wba2api/challenge',
+        url: 'http://localhost:8001/wba2api/challenge',
         method: 'post',
         dataType: 'json',
         data: $('form').serialize()
@@ -276,13 +281,13 @@ function submitChallenge(){
 // Create user or log in
 function submitUser(){
     $.ajax({
-        url: 'wba2api/user',
+        url: 'http://localhost:8001/wba2api/user',
         method: 'post',
         dataType: 'json',
         data: $('form').serialize()
     }).done(function (response) {
         console.log(response);
-        document.cookie = `token=${response.daten};SameSite=Lax`;
+        document.cookie = `token=${response.daten};SameSite=Lax;`;
         window.location.replace("challenges.html");
     }).fail(function (jqXHR, statusText, error) {
         console.log('Response Code: ' + jqXHR.status + ' - Fehlermeldung: ' + jqXHR.responseText);
@@ -294,8 +299,9 @@ function submitUser(){
 // Check user login to hide or show certain links
 function login_check(){
     $.ajax({
-        url: 'wba2api/login_check',
+        url: 'http://localhost:8001/wba2api/login_check',
         method: 'get',
+        xhrFields: { withCredentials: true },
         dataType: 'json'
     }).done(function (response) {
         // Get user infos
@@ -304,7 +310,7 @@ function login_check(){
         var user_name = '';
 
         $.ajax({
-            url: 'wba2api/user/get/' + String(response.daten),
+            url: 'http://localhost:8001/wba2api/user/get/' + String(response.daten),
             method: 'get',
             dataType: 'json',
         }).done(function (response2) {

@@ -41,8 +41,6 @@ try {
     app.use(cors());
     app.use(bodyParser.urlencoded({ extended: true}));
     app.use(bodyParser.json());
-    var root = '../Frontend';
-    app.use(express.static(path.resolve(root)));
     app.use(function(request, response, next) {
         response.setHeader('Access-Control-Allow-Origin', '*'); 
         response.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE');
@@ -104,10 +102,7 @@ try {
     // TODO differentiate between api calls and calls to html sites
     app.use(function (request, response) {
         console.log(request.body);
-        response.status(404)
-        response.sendFile('/errorsite.html', {'root': root});
-        helper.log('Error occured, 404, resource not found');
-        //response.status(404).json(helper.jsonMsgError('Resource not found'));
+        response.status(404).json(helper.jsonMsgError('Resource not found'));
     });
 
 
