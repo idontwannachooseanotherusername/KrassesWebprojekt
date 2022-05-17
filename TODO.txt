@@ -10,7 +10,6 @@ TODO (In this order)
  -> Check for token wehen creating new challenge
      -> redirect to login page when klicking on create and not logged in.
  -> More checking needed?
-- Start Frontend and Backend as seperate Servers
 - Maybe decide whether to use jQuery or plain js
 - When getting challenge via ajax: Pass category as object and not only as id
 - Remove Login Button when logged in -> Replace it with what?
@@ -23,10 +22,16 @@ TODO (In this order)
  -> Implement challenge editing
 - Add File upload to challengecreator
 - Implement profile editing
-- Implement challenge deletionw
- -> Add challenge deletion button
- -> Add js to ask user if deletion is really wanted
- -> Look at entries under KEEP IN MIND
+- Implement challenge deletion
+ -> (DONE) Add challenge deletion button
+ -> (DONE) Add js to ask user if deletion is really wanted
+ -> Look at entries under KEEP IN MIND (Currently: "Could not delete Record by id=x. Reason: FOREIGN KEY constraint failed")
+- Implement challenge editing
+ -> (DONE) Add challenge edit button
+ -> Redirect to challenge Editor
+ -> load current information into fields
+ -> update db entries on saving
+ -> keep in mind stuff
 - Block Login page when already logged in
 
 NICE TO HAVE
@@ -37,7 +42,7 @@ NICE TO HAVE
 
 KEEP IN MIND
 - Login form is used for loging in AND signing upload
-- When creating a challenge a lot of entries have to be made in other tables
+- When creating (or changing) a challenge a lot of entries have to be made in other tables
  -> ChallengeTag
  -> ChallengeFile
  -> ...
