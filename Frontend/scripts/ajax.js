@@ -1,6 +1,3 @@
-// const { result } = require("lodash");
-
-// const { divide } = require("lodash");
 
 function challenge_all(){    
     $.ajax({
@@ -59,14 +56,19 @@ function challenge_all(){
     });
 }
 
+function get_url_params(){
+    var paramstring = window.location.href.split('?')[1];
+    var params = {};
+    for (p of paramstring.split('&')){
+        var p_split = p.split('=');
+        params[p_split[0]] = p_split[1];
+    }
+    return params;
+}
+
 function challenge_id(){
-    var items = location.search.substr(1).split("&");
-        for (var index = 0; index < items.length; index++) {
-            tmp = items[index].split("=");
-            if (tmp[0] === 'id')
-                var challengeid = decodeURIComponent(tmp[1]);
-                break;
-        }
+    var challengeid = get_url_params().id;
+    if (challengeid === undefined) {return};
 
     $.ajax({
         url: 'http://localhost:8001/wba2api/challenge/get/' + challengeid,
@@ -125,22 +127,20 @@ function challenge_id(){
             description.className = "challenge-text";
             description.innerHTML = response.daten.description;
             challenge.prepend(description);
+
         }
-            // TODO: Files!
+        // TODO: Files!
+
+        c_challenge_tools();
     }).fail(function (jqXHR, statusText, error) {
         check_access(jqXHR, "challenge", "access", "challenges.html");
     });
 }
 
 function check_hints(){
-    // Get challenge id
-    var items = location.search.substr(1).split("&");
-    for (var index = 0; index < items.length; index++) {
-        tmp = items[index].split("=");
-        if (tmp[0] === 'id')
-            var challengeid = decodeURIComponent(tmp[1]);
-            break;
-    }
+    var challengeid = get_url_params().id;
+    if (challengeid === undefined) {return};
+
     $.ajax({
         url: 'http://localhost:8001/wba2api/hint/check/' + challengeid,
         method: 'get',
@@ -186,13 +186,8 @@ function get_hint(id){
                 hint.classList.remove("confirm")
                 
                 /*Get hint from server*/
-                var items = location.search.substr(1).split("&");
-                for (var index = 0; index < items.length; index++) {
-                    tmp = items[index].split("=");
-                    if (tmp[0] === 'id')
-                        var challengeid = decodeURIComponent(tmp[1]);
-                        break;
-                }
+                var challengeid = get_url_params().id;
+                if (challengeid === undefined) {return};
                 $.ajax({
                     url: 'http://localhost:8001/wba2api/hint/get-from-challenge/' + id + '/' + challengeid,
                     method: 'get',
@@ -317,7 +312,7 @@ function login_check(){
             user_points = response2.daten.points;
             user_image = response2.daten.picturepath;
             if (user_image == ''){
-                user_image = '/images/Kachel.png';
+                user_image = '/images/Logo.png';
             }
             user_name = response2.daten.username;
 
@@ -405,4 +400,47 @@ function check_access(jqXHR, resource = 'asset', intention = 'access', link_to =
         console.log('Response Code: ' + jqXHR.status + ' - Fehlermeldung: ' + jqXHR.responseText);
         alert(alert_msg);
     }
+}
+
+// Challenge
+function c_challenge_tools(){
+    if (false){  // TODO: Check if user is challenge author
+        return
+    }
+    
+    var tools = document.createElement("article");
+    tools.className = "challenge-tools";
+    var delete_button = document.createElement("div");
+    delete_button.className = "btn-delete btn-challenge";
+    delete_button.innerHTML = "delete";
+    var edit_button = document.createElement("div");
+    edit_button.className = "btn-primary btn-challenge";
+    edit_button.innerHTML = "edit";
+    delete_button.onclick = function() {delete_challenge();}
+    edit_button.onclick = function() {edit_challenge();}
+    var text = document.getElementsByClassName("challenge-site")[0];
+    tools.appendChild(edit_button);
+    tools.appendChild(delete_button);
+    text.appendChild(tools);
+}
+
+function delete_challenge(){
+    var challengeid = get_url_params().id;
+    if (challengeid === undefined) {return};
+
+    if (! window.confirm('Are you sure?')){
+        return;
+    }
+
+    $.ajax({
+        url: 'http://localhost:8001/wba2api/challenge/' + challengeid,
+        method: 'delete',
+        xhrFields: { withCredentials: true },
+        dataType: 'json'
+    }).done(function (response) {    
+        alert("Challenge deleted successfully!");
+        window.location.replace("index.html");
+    }).fail(function (jqXHR, statusText, error) {
+        alert("Error deleting challenge!\n\n" + error);
+    });
 }
