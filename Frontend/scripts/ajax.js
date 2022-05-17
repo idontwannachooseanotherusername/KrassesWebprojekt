@@ -321,7 +321,7 @@ function login_check(){
             }
             user_name = response2.daten.username;
 
-            // Create usericon with dropdown
+        // Create usericon with dropdown
         var menu_bar = document.getElementsByClassName("wrapper")[0];
         var image_wrapper = document.createElement('div');
         image_wrapper.className = "pb-image-wrapper";
@@ -352,6 +352,10 @@ function login_check(){
         });
     }).fail(function (jqXHR, statusText, error) {
         // User not logged in -> Don't create links
+        var login_button = document.getElementsByClassName('login-button')[0];
+        if (login_button !== undefined){
+            login_button.style = "display:initial";
+        }
     });
 }
 

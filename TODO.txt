@@ -13,7 +13,7 @@ TODO (In this order)
 - Start Frontend and Backend as seperate Servers
 - Maybe decide whether to use jQuery or plain js
 - When getting challenge via ajax: Pass category as object and not only as id
-- Remove Login Button when logged in -> Replace it with what?
+- (DONE) Remove Login Button when logged in -> Replace it with what?
 - (DONE) Only show profile picture with dropdown when logged in
 - Implement solution password button and checking of password
 - Finish implementing challengecreator
