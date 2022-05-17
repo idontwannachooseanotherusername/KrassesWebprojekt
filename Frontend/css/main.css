@@ -40,6 +40,9 @@ hr{
 }
 
 /*---------- BUTTONS ----------*/
+.login-button.login-button{
+    display: none;
+}
 .btn-primary, .login-button{
     padding: 15px 35px;
     background-color: #00e1c2;
