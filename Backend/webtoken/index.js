@@ -12,10 +12,15 @@ var publicKEY = fs.readFileSync(path.resolve('./webtoken/public.key'), 'utf8');
 console.log('private key loaded, ' + privateKEY.length + ' bytes');
 console.log('public key loaded, ' + publicKEY.length + ' bytes\n\n');
 
-// var tokens = {};
+module.exports.GetTokenDict = function(token){
+    var token_dict = {};
+    var token_list = token.split('.');
+    var buffer = Buffer.from(token_list[1], 'base64');
+    return JSON.parse(buffer.toString('utf-8'));
+}
 
 module.exports.GetUserID = function(token){
-    return 1;
+    return this.GetTokenDict(token).id;
 }
 
 module.exports.generate = function(username, userid){
@@ -56,16 +61,7 @@ module.exports.valid = function(token){
         return false;
     }
 
-    /*
-    var infos = tokens[token];
-    if (infos === undefined){
-        return false;
-    }*/
-    var token_dict = {};
-    var token_list = token.split('.');
-    var buffer = Buffer.from(token_list[1], 'base64');
-    token_dict = JSON.parse(buffer.toString('utf-8'));// dekodieren
-    
+    var token_dict = this.GetTokenDict(token);
     console.log('verifying options');
     var issuer = 'MindBreaker';
     var subject = token_dict.userName;
