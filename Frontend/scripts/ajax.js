@@ -291,6 +291,32 @@ function submitUser(){
     return false;
 }
 
+function user_logged_in(){
+    $.ajax({
+        url: 'http://localhost:8001/wba2api/login_check',
+        method: 'get',
+        xhrFields: { withCredentials: true },
+        dataType: 'json'
+    }).done(function (response) {
+        return true;
+    }).fail(function (jqXHR, statusText, error) {
+        return false;
+    });
+}
+
+function get_user_id(){
+    $.ajax({
+        url: 'http://localhost:8001/wba2api/login_check',
+        method: 'get',
+        xhrFields: { withCredentials: true },
+        dataType: 'json'
+    }).done(function (response) {
+        return response.daten;
+    }).fail(function (jqXHR, statusText, error) {
+        return undefined;
+    });
+}
+
 // Check user login to hide or show certain links
 function login_check(){
     $.ajax({
@@ -447,8 +473,11 @@ function delete_challenge(){
 }
 
 function load_profile_editor(){
+    var userid = get_user_id();
+    if (userid === undefined){return;}
+
     $.ajax({
-        url: 'http://localhost:8001/wba2api/user/get/1',
+        url: 'http://localhost:8001/wba2api/user/get/' + userid,
         method: 'get',
         dataType: 'json'
     }).done(function (response) {    
@@ -458,4 +487,8 @@ function load_profile_editor(){
         document.getElementById("profile-country").value = response.daten.country;
     }).fail(function (jqXHR, statusText, error) {
     });
+}
+
+function save_profile_editor(){
+
 }
