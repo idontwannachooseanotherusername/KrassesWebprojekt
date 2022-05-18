@@ -22,10 +22,6 @@ TODO (In this order)
  -> Implement challenge editing
 - Add File upload to challengecreator
 - Implement profile editing
-- Implement challenge deletion
- -> (DONE) Add challenge deletion button
- -> (DONE) Add js to ask user if deletion is really wanted
- -> Look at entries under KEEP IN MIND (Currently: "Could not delete Record by id=x. Reason: FOREIGN KEY constraint failed")
 - Implement challenge editing
  -> (DONE) Add challenge edit button
  -> Redirect to challenge Editor
@@ -46,6 +42,7 @@ KEEP IN MIND
  -> ChallengeTag
  -> ChallengeFile
  -> ...
-- These entries also need to get deleted if challenge gets deleted!
+- (DONE) These entries also need to get deleted if challenge gets deleted!
+ -> Fixed with ON DELETE CASCADE
 - Uploaded files should be renamed to their hash value to avoid name conflicts
   and to make sure we aren't saving the same image over and over again
