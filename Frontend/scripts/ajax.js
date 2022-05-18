@@ -443,7 +443,7 @@ function delete_challenge(){
         dataType: 'json'
     }).done(function (response) {    
         alert("Challenge deleted successfully!");
-        window.location.replace("index.html");
+        window.location.replace("challenges.html");
     }).fail(function (jqXHR, statusText, error) {
         alert("Error deleting challenge!\n\n" + error);
     });
