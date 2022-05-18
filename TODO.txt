@@ -7,8 +7,8 @@ TODO (In this order)
  -> (DONE) Check for token when getting hints
  -> (DONE) Remove dict in webtoken.js
  -> Check for token when editing profile
- -> Check for token wehen creating new challenge
-     -> redirect to login page when klicking on create and not logged in.
+ -> Check for token when creating new challenge
+     -> redirect to login page when clicking on create and not logged in.
  -> More checking needed?
 - Maybe decide whether to use jQuery or plain js
 - When getting challenge via ajax: Pass category as object and not only as id
