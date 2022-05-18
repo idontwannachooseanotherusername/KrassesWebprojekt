@@ -431,10 +431,7 @@ function c_challenge_tools(){
 function delete_challenge(){
     var challengeid = get_url_params().id;
     if (challengeid === undefined) {return};
-
-    if (! window.confirm('Are you sure?')){
-        return;
-    }
+    if (! window.confirm('Are you sure?')){return;}
 
     $.ajax({
         url: 'http://localhost:8001/wba2api/challenge/' + challengeid,
@@ -446,5 +443,19 @@ function delete_challenge(){
         window.location.replace("challenges.html");
     }).fail(function (jqXHR, statusText, error) {
         alert("Error deleting challenge!\n\n" + error);
+    });
+}
+
+function load_profile_editor(){
+    $.ajax({
+        url: 'http://localhost:8001/wba2api/user/get/1',
+        method: 'get',
+        dataType: 'json'
+    }).done(function (response) {    
+        // Fill available data
+        document.getElementById("profile-name").value = response.daten.username;
+        document.getElementById("profile-bio").value = response.daten.bio;
+        document.getElementById("profile-country").value = response.daten.country;
+    }).fail(function (jqXHR, statusText, error) {
     });
 }
