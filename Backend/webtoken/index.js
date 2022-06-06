@@ -12,23 +12,22 @@ var publicKEY = fs.readFileSync(path.resolve('./webtoken/public.key'), 'utf8');
 console.log('private key loaded, ' + privateKEY.length + ' bytes');
 console.log('public key loaded, ' + publicKEY.length + ' bytes\n\n');
 
-var tokens = {};
+module.exports.GetTokenDict = function(token){
+    var token_dict = {};
+    var token_list = token.split('.');
+    var buffer = Buffer.from(token_list[1], 'base64');
+    return JSON.parse(buffer.toString('utf-8'));
+}
 
 module.exports.GetUserID = function(token){
-    var infos = tokens[token];
-    if (infos === undefined){
-        return undefined;
-    }
-    else{
-        return infos[0];
-    }
+    return this.GetTokenDict(token).id;
 }
 
 module.exports.generate = function(username, userid){
     console.log('signing options');
     var issuer = 'MindBreaker';
-    var subject = username;
-    var audience = String(userid);
+    var subject = String(userid);
+    var audience = "localhost:8001";
     var validFor = '4h';
     var algorithm = 'RS256';
     var signOptions = {
@@ -44,7 +43,6 @@ module.exports.generate = function(username, userid){
     var payload = {
         'id': userid,
         'loggedIn': true,
-        'userName': username
     };
     console.log(payload);
     console.log('\n\n');
@@ -52,7 +50,7 @@ module.exports.generate = function(username, userid){
     console.log('generating token');
     var token = jwt.sign(payload, privateKEY, signOptions);
     console.log(token);
-    tokens[token] = [userid, username];  // Token in dict für vereinfachte Prüfung später
+    // tokens[token] = [userid, username];  // Token in dict für vereinfachte Prüfung später
     return token;
 }
 
@@ -61,15 +59,12 @@ module.exports.valid = function(token){
     if (token === '' || token === undefined){
         return false;
     }
-    var infos = tokens[token];
-    if (infos === undefined){
-        return false;
-    }
-    
+
+    var token_dict = this.GetTokenDict(token);
     console.log('verifying options');
     var issuer = 'MindBreaker';
-    var subject = infos[1];
-    var audience = String(infos[0]);
+    var subject = token_dict.sub;
+    var audience = token_dict.aud;
     var validFor = '4h';
     var algorithm = 'RS256';
     if (subject === undefined){

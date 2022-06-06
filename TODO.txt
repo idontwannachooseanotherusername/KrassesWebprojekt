@@ -5,25 +5,47 @@ TODO (In this order)
  -> (DONE) redirect user to his own profile or challenges page (undecided)
  -> (DONE) Check for token when viewing a challenge
  -> (DONE) Check for token when getting hints
+ -> (DONE) Remove dict in webtoken.js
  -> Check for token when editing profile
- -> Check for token wehen creating new challenge
-     -> redirect to login page when klicking on create and not logged in.
+ -> Check for token when creating new challenge
+     -> redirect to login page when clicking on create and not logged in.
  -> More checking needed?
-- Remove Login Button when logged in -> Replace it with what?
-- (DONE) Only show profile picture with dropdown when logged in
+
+- Implement challenge filter
+ -> Level selection
+ -> Name / ID search
+ -> category (Replace text with IDs in HTML and add all Categories to DB)
+ -> Filter should already work while typing (Nice to have)
+
 - Implement solution password button and checking of password
+ -> Coins getting added
+ -> Challenge makred as solved
+ -> Visual feedback in challenges.html and challenge.html (Little star icon or something similar)
+
 - Finish implementing challengecreator
  -> Add file upload functionality
  -> Implement what is listed under KEEP IN MIND (Create entries in extra tables)
  -> Bring back Description Editor
  -> Implement challenge editing
-- Add File upload to challengecreator
+ -> Add File upload to challengecreator
+
 - Implement profile editing
-- Implement challenge deletionw
- -> Add challenge deletion button
- -> Add js to ask user if deletion is really wanted
- -> Look at entries under KEEP IN MIND
+ -> (DONE) Values of country selections as id?!
+ -> Where did the option for changing banner and pb go? RESTORE
+ -> 
+
+- Implement challenge editing
+ -> (DONE) Add challenge edit button
+ -> Redirect to challenge Editor
+ -> load current information into fields
+ -> update db entries on saving
+ -> keep in mind stuff
 - Block Login page when already logged in
+
+- Maybe decide whether to use jQuery or plain js
+- When getting challenge via ajax: Pass category as object and not only as id
+- (DONE) Remove Login Button when logged in -> Replace it with what?
+- (DONE) Only show profile picture with dropdown when logged in
 
 NICE TO HAVE
 - Implement comment writing
@@ -33,10 +55,11 @@ NICE TO HAVE
 
 KEEP IN MIND
 - Login form is used for loging in AND signing upload
-- When creating a challenge a lot of entries have to be made in other tables
+- When creating (or changing) a challenge a lot of entries have to be made in other tables
  -> ChallengeTag
  -> ChallengeFile
  -> ...
-- These entries also need to get deleted if challenge gets deleted!
+- (DONE) These entries also need to get deleted if challenge gets deleted!
+ -> Fixed with ON DELETE CASCADE
 - Uploaded files should be renamed to their hash value to avoid name conflicts
   and to make sure we aren't saving the same image over and over again

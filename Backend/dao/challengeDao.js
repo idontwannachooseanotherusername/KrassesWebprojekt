@@ -27,7 +27,7 @@ class ChallengeDao {
             throw new Error('No Record found by id=' + id);
         result = helper.objectKeysToLower(result);
 
-        // Get username
+        // Get userdata
         var sql = 'SELECT * FROM User WHERE UserID=?';
         var statement = this._conn.prepare(sql);
         var user = statement.get(result.userid);
@@ -40,7 +40,13 @@ class ChallengeDao {
         result.creationdate = helper.formatToGermanDateTime(dt)
 
         // Resolve ids
-        result.username = user.username;
+        result.user = {
+            username: user.username,
+            userid: user.userid,
+            userimage: user.picturepath
+        }
+        delete result.userid;
+
         result.difficulty = difficultyDao.loadById(result.difficultyid);
         delete result.difficultyid;
         result.tags = challengetagDao.loadByParent(result.challengeid);
@@ -56,6 +62,8 @@ class ChallengeDao {
     loadAll() {
         const difficultyDao = new DifficultyDao(this._conn);
         var difficulties = difficultyDao.loadAll();
+        const challengetagDao = new ChallengeTagDao(this._conn);
+        const categoryDao = new CategoryDao(this._conn);
 
         var sql = 'SELECT * FROM Challenge';
         var statement = this._conn.prepare(sql);
@@ -76,6 +84,31 @@ class ChallengeDao {
             }
             delete result[i].difficultyid;
             
+            // Get userdata
+            var sql = 'SELECT * FROM User WHERE UserID=?';
+            var statement = this._conn.prepare(sql);
+            var user = statement.get(result[i].userid);
+
+            if (helper.isUndefined(user)) 
+                throw new Error('No user found by id=' + id);
+            
+            user = helper.objectKeysToLower(user);
+            var dt = helper.parseSQLDateTimeString(result[i].creationdate);
+            result[i].creationdate = helper.formatToGermanDateTime(dt)
+
+            // Resolve ids
+            if (helper.isEmpty(user.picturepath)) {user.picturepath = helper.defaultData("profile");}
+            result[i].user = {
+                username: user.username,
+                userid: user.userid,
+                userimage: user.picturepath
+            }
+            delete result[i].userid;
+
+            result[i].tags = challengetagDao.loadByParent(result[i].challengeid);
+            result[i].category = categoryDao.loadById(result[i].categoryid).title;
+            delete result[i].categoryid;
+
             // Do not leak challenge pw
             delete result[i].solution;
         }

@@ -4,6 +4,8 @@ const webtoken = require('./webtoken/index.js');
 
 // Cookies to dict
 module.exports.CookieDict = function(cookiestring='') {
+    if(this.isEmpty(cookiestring)){return;}
+    
     var cookies = {};
     var cookielist = cookiestring.split(';');
     for (let i=0; i < cookielist.length; i +=  2){
@@ -37,6 +39,27 @@ module.exports.UserHasAccess = function(cookiestring){
     else{
         return false;
     }
+}
+
+// Default image paths
+module.exports.defaultData = function(data) {
+    path = "/images/default_data/";
+    switch(data.toLowerCase()){
+        case "banner":
+            return path + "default_banner.png";
+        case "profile":
+            return path + "default_profile.png";
+        case "bio":
+            return "Empty void.";
+        case "country":
+            return "Planet Earth";
+        default:
+            return "";
+    }
+}
+
+module.exports.isEmpty = function(val){
+    return (val === undefined || val === "" || val === null || val === '');
 }
 
 // check if value is undefined

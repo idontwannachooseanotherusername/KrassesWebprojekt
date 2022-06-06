@@ -25,16 +25,21 @@
                 </div>
             </nav>
         </header>
-        <section class="background bg-image"></section>
-            <div class="profile-header">
-                <div class="profile-picture ">
-                    <img class="img-border" src="images/Logo.png">
-                </div>
-                <p class="user-name">
-                    Username
-                </p>
-            </div>
         <main>
+            <div id="loading">
+                <img id="loading-image" class="spin" src="images/loading3.png">
+            </div>
+            <section class="profile-banner">
+                <div class="background bg-image"></div>
+                <div class="profile-header">
+                    <div class="profile-picture ">
+                        <img class="img-border" src="">
+                    </div>
+                    <p class="user-name">
+                        Username
+                    </p>
+                </div>
+            </section>
             <section class="profile">
                 <article class="profile-info">
                     <h2>Bio</h2>
@@ -52,7 +57,7 @@
                 </article>
             </section>
         </main>
-        <script>load_profile(2)</script>
+        <script>load_profile()</script>
         <footer>
             <a class="btn-to-top" href="#">↑</a>
             <nav class="footer-menu">

@@ -16,10 +16,10 @@ CREATE TABLE "Challenge" (
 	CreationDate TEXT NOT NULL,
 	Solution TEXT NOT NULL,
 	UserID INTEGER NOT NULL,
-	CONSTRAINT challenge_PK PRIMARY KEY (ChallengeID),
-	CONSTRAINT challenge_FK FOREIGN KEY (DifficultyID) REFERENCES Difficulty(DifficultyID),
-	CONSTRAINT challenge_FK2 FOREIGN KEY (UserID) REFERENCES User(UserID),
-	CONSTRAINT challenge_FK3 FOREIGN KEY (CategoryID) REFERENCES Category(CategoryID)
+	PRIMARY KEY (ChallengeID),
+	FOREIGN KEY (DifficultyID) REFERENCES Difficulty(DifficultyID),
+	FOREIGN KEY (UserID) REFERENCES User(UserID),
+	FOREIGN KEY (CategoryID) REFERENCES Category(CategoryID)
 );
 
 -- challengecategory definition
@@ -27,8 +27,8 @@ CREATE TABLE "Challenge" (
 CREATE TABLE "Challengecategory" (
 	ChallengeID INTEGER NOT NULL,
 	CategoryID INTEGER NOT NULL,
-	CONSTRAINT challengecategory_FK FOREIGN KEY (ChallengeID) REFERENCES Challenge(ChallengeID),
-	CONSTRAINT challengecategory_FK2 FOREIGN KEY (CategoryID) REFERENCES Challenge(ChallengeID)
+	FOREIGN KEY (ChallengeID) REFERENCES Challenge(ChallengeID) ON DELETE CASCADE,
+	FOREIGN KEY (CategoryID) REFERENCES Category(CategoryID)
 );
 
 -- challengepicture definition
@@ -37,8 +37,8 @@ CREATE TABLE "Challengefile" (
 	FileID INTEGER NOT NULL,
 	ChallengeID INTEGER NOT NULL,
 	FilePath TEXT NOT NULL,
-	CONSTRAINT challengefile_FK PRIMARY KEY (FileID),
-	CONSTRAINT challengefile_FK2 FOREIGN KEY (ChallengeID) REFERENCES Challenge(ChallengeID)
+	PRIMARY KEY (FileID),
+	FOREIGN KEY (ChallengeID) REFERENCES Challenge(ChallengeID) ON DELETE CASCADE
 );
 
 -- challengetag definition
@@ -46,8 +46,8 @@ CREATE TABLE "Challengefile" (
 CREATE TABLE "Challengetag" (
 	ChallengeID INTEGER NOT NULL,
 	TagID INTEGER NOT NULL,
-	CONSTRAINT challengetag_FK FOREIGN KEY (TagID) REFERENCES Tag(TagID),
-	CONSTRAINT challengetag_FK2 FOREIGN KEY (challengeID) REFERENCES challenge(ChallengeID)
+	FOREIGN KEY (TagID) REFERENCES Tag(TagID) ON DELETE CASCADE,
+	FOREIGN KEY (ChallengeID) REFERENCES challenge(ChallengeID) ON DELETE CASCADE
 );
 
 -- Country definition
@@ -76,7 +76,7 @@ CREATE TABLE "Hint" (
 	"Cost"	INTEGER NOT NULL,
 	"ChallengeID"  INTEGER NOT NULL,
 	PRIMARY KEY("HintID"),
-	CONSTRAINT hint_FK FOREIGN KEY (ChallengeID) REFERENCES Challenge(ChallengeID)
+	FOREIGN KEY (ChallengeID) REFERENCES Challenge(ChallengeID) ON DELETE CASCADE
 );
 
 -- Tag definition 
@@ -101,6 +101,7 @@ CREATE TABLE "User" (
 	"Points"	INTEGER NOT NULL DEFAULT 0,
 	"Deleted"   INTEGER NOT NULL DEFAULT 0,
 	PRIMARY KEY("UserID")
+	FOREIGN KEY (CountryID) REFERENCES Country(CountryID)
 );
 
 -- Solved definition 
@@ -111,7 +112,7 @@ CREATE TABLE "Solved" (
 	"ChallengeID"	INTEGER NOT NULL,
 	"TS"	TEXT NOT NULL,
 	PRIMARY KEY("SolvedID"),
-	CONSTRAINT solved_FK FOREIGN KEY (ChallengeID) REFERENCES Challenge(ChallengeID)
+	FOREIGN KEY (ChallengeID) REFERENCES Challenge(ChallengeID) ON DELETE CASCADE
 );
 
 -- Userhints definition
@@ -119,6 +120,6 @@ CREATE TABLE "Solved" (
 CREATE TABLE "Userhints" (
     "UserID" INTEGER NOT NULL,
     "HintID" INTEGER NOT NULL,
-    CONSTRAINT userhints_FK FOREIGN KEY (UserID) REFERENCES User(UserID),
-    CONSTRAINT userhints_FK2 FOREIGN KEY (HintID) REFERENCES Hint(HintID)
+    FOREIGN KEY (UserID) REFERENCES User(UserID),
+    FOREIGN KEY (HintID) REFERENCES Hint(HintID) ON DELETE CASCADE
 );

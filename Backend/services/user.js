@@ -116,6 +116,7 @@ serviceRouter.post('/user', function(request, response) {
     try {
         var result = userDao.create(request.body.username, request.body.password);
         helper.log('Service User: User logged in.');
+        // response.cookie('token', result)
         response.status(200).json(helper.jsonMsgOK(result));  // result = Webtoken
     } catch (ex) {
         helper.logError('Service User: Error creating new record. Exception occured: ' + ex.message);
@@ -123,34 +124,48 @@ serviceRouter.post('/user', function(request, response) {
     }
 });
 
-serviceRouter.put('/user', function(request, response) {
-    helper.log('Service User: Client requested update of existing record');
+serviceRouter.put('/user/update/:id', function(request, response) {
+    helper.log('Service User: Client requested update of id=' + request.params.id);
+
+    if (!helper.UserHasAccess(request.headers.cookie)){
+        helper.logError('Service User: User not logged in.');
+        response.status(401).json(helper.jsonMsgError('You need to be logged in to do that.'));
+        return;
+    }
+
+    console.log(request.body);
 
     var errorMsgs=[];
-    if (helper.isUndefined(request.body.username)) 
-        errorMsgs.push('username missing');
-    if (helper.isUndefined(request.body.passwort)) 
-        errorMsgs.push('passwort missing');
-    if (helper.isUndefined(request.body.bio)) 
-        request.body.bio = ''
-    if (helper.isUndefined(request.body.picturepath)) 
-        request.body.picturepath = ''
-    if (helper.isUndefined(request.body.bannerpath)) 
-        request.body.bannerpath = ''
-    if (helper.isUndefined(request.body.countryid)) 
-        request.body.countryid = null  //TODO: best solution?
-    if (helper.isUndefined(request.body.coins)) 
-        request.body.coins = 0
+    if (!(helper.isEmpty(request.body.pw_old) || helper.isEmpty(request.body.pw_new) || helper.isEmpty(request.body.pw_new2))){
+        if (helper.isEmpty(request.body.pw_old)){
+            errorMsgs.push("Old password missing");
+        }
+        if (helper.isEmpty(request.body.pw_new)){
+            errorMsgs.push("New password missing");
+        }
+        if (helper.isEmpty(request.body.pw_new2)){
+            errorMsgs.push("Password confirmation missing");
+        }
+        if (request.body.pw_new !== request.body.pw_new2){
+            errorMsgs.push("Password confirmation does not match");
+        }
+    }
     if (errorMsgs.length > 0) {
-        helper.log('Service User: Creation not possible, data missing');
-        response.status(400).json(helper.jsonMsgError('Creation not possible, data missing: ' + helper.concatArray(errorMsgs)));
+        helper.log('Service User: Creation not possible, data missing or wrong.');
+        response.status(400).json(helper.jsonMsgError('Update not possible: ' + helper.concatArray(errorMsgs)));
         return;
     }
 
     const userDao = new UserDao(request.app.locals.dbConnection);
     try {
-        var result = userDao.update(request.body.id, request.body.username, request.body.newpassword, request.body.oldpassword, request.body.bio, request.picturepath, request.bannerpath, request.countryid, request.coins);
-        helper.log('Service User: Record updated, id=' + request.body.id);
+        if((helper.isEmpty(request.body.pw_old))){ // profile data
+            var result = userDao.update_data(request.params.id, request.body.username, request.body.bio, request.body.picturepath, request.body.bannerpath, request.body.country);
+            helper.log('Service User: Record updated, id=' + request.body.id);
+        }
+        else{  // profile pw
+            var result = userDao.update_password(request.params.id, request.body.newpassword, request.body.oldpassword);
+            helper.log('Service User: Record updated, id=' + request.body.id);
+        }
         response.status(200).json(helper.jsonMsgOK(result));
     } catch (ex) {
         helper.logError('Service User: Error updating record by id. Exception occured: ' + ex.message);

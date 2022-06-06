@@ -27,14 +27,18 @@ class UserDao {
 
         result = helper.objectKeysToLower(result);
 
-        // Countries can be empty(null)
-        if (result.countryid != null){
+        // Country and bio
+        if (!helper.isEmpty(result.bio)){
             result.country = countryDao.loadById(result.countryid).countryname;
         }
         else{
-            result.country = null;
+            result.country = helper.defaultData("country");
         }
         delete result.countryid;
+
+        if (helper.isEmpty(result.bio)){
+            result.bio = helper.defaultData("bio");
+        }
 
         // Get last 10 solved challenges
         var sql = 'SELECT * FROM Solved';
@@ -77,6 +81,10 @@ class UserDao {
 
         // Strip user password
         delete result.password;
+
+        // Add default images
+        if (helper.isEmpty(result.bannerpath)) {result.bannerpath = helper.defaultData("banner");}
+        if (helper.isEmpty(result.picturepath)) {result.picturepath = helper.defaultData("profile");}
 
         return result;
     }
@@ -157,28 +165,35 @@ class UserDao {
         return webtoken.generate(username, newObj.userid);
     }
 
-    update(id, username = '', newpassword = null, oldpassword = null, bio = '', picturepath = '', bannerpath = '', countryid = null, points = 0) {
-        if (helper.isNull(newpassword)) {
-            var sql = 'UPDATE User SET Username=?,Bio=?,PicturePath=?,BannerPath=?,CountryID=?,Points=? WHERE UserID=?';
-            var params = [username, bio, picturepath, bannerpath, countryid, points, id];
-        } else{
-            var sql = 'UPDATE User SET Username=?,Password=?,Bio=?,PicturePath=?,BannerPath=?,CountryID=?,Points=? WHERE UserID=?';
-            var result_t = this.loadById(id) // Check if old passwords match
-            if (result_t.password == md5(oldpassword)){
-                var params = [username, md5(newpassword), bio, picturepath, bannerpath, countryid, points, id];
-            }
-            else{
-                throw new Error('Old passwords do not match - userid:' + id);
-            }
-        }
+    update_data(id, username = '', bio = '', picturepath = '', bannerpath = '', countryid = '') {
+        var old_data = this.loadById(id);
+        if (helper.isEmpty(username)){username = old_data.username;}
+        if (helper.isEmpty(bio)){bio = old_data.bio;}
+        if (helper.isEmpty(bannerpath)){bannerpath = old_data.bannerpath;}
+        if (helper.isEmpty(countryid)){countryid = old_data.countryid;}
+
+        var sql = 'UPDATE User SET Username=?,Bio=?,PicturePath=?,BannerPath=?,CountryID=? WHERE UserID=?';
+        var params = [username, bio, picturepath, bannerpath, countryid, id];
         var statement = this._conn.prepare(sql);
         var result = statement.run(params);
 
         if (result.changes != 1) 
-            throw new Error('Could not update existing Record. Data: ' + params);
+            throw new Error('Could not update existing Record with given data: ' + params);
+    }
 
-        var updatedObj = this.loadById(id);
-        return updatedObj;
+    update_password(id, newpassword, oldpassword){
+        var sql = 'UPDATE User SET Password=? WHERE UserID=?';
+        if (this.loadById(id).password == md5(oldpassword)){  // Check if old password matches
+            var params = [ md5(newpassword), id];
+        }
+        else{
+            throw new Error('Old passwords do not match - userid:' + id);
+        }
+
+        var statement = this._conn.prepare(sql);
+        var result = statement.run(params);
+        if (result.changes != 1) 
+            throw new Error('Could not update existing Record with given data: ' + params);
     }
 
     delete(id) {
