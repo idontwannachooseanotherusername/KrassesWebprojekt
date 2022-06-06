@@ -14,7 +14,7 @@ TODO (In this order)
 - Implement challenge filter
  -> Level selection
  -> Name / ID search
- -> category
+ -> category (Replace text with IDs in HTML and add all Categories to DB)
  -> Filter should already work while typing (Nice to have)
 
 - Implement solution password button and checking of password
@@ -30,7 +30,7 @@ TODO (In this order)
  -> Add File upload to challengecreator
 
 - Implement profile editing
- -> Values of country selections as id?!
+ -> (DONE) Values of country selections as id?!
  -> Where did the option for changing banner and pb go? RESTORE
  -> 
 
