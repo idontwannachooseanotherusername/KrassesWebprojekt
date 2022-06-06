@@ -1,3 +1,4 @@
+const { fail } = require("assert");
 
 function challenge_all(){    
     $.ajax({
@@ -271,6 +272,8 @@ function load_profile(){
             console.log('Response Code: ' + jqXHR.status + ' - Fehlermeldung: ' + jqXHR.responseText);
             alert('An error occured.');
         });
+    }).fail(function (jqXHR, statusText, error) {
+        window.location.replace("login.html");
     });
 }
 
@@ -512,6 +515,7 @@ function load_profile_editor(){
         }).fail(function (jqXHR, statusText, error) {
         });
     }).fail(function (jqXHR, statusText, error) {
+        window.location.replace("login.html");
     });
     return false;
 }

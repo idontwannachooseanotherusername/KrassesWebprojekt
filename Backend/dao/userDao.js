@@ -165,7 +165,7 @@ class UserDao {
         return webtoken.generate(username, newObj.userid);
     }
 
-    update_data(id, username = '', bio = '', picturepath = '', bannerpath = '', countryid = undefined) {
+    update_data(id, username = '', bio = '', picturepath = '', bannerpath = '', countryid = '') {
         var old_data = this.loadById(id);
         if (helper.isEmpty(username)){username = old_data.username;}
         if (helper.isEmpty(bio)){bio = old_data.bio;}

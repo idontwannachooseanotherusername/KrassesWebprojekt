@@ -159,7 +159,7 @@ serviceRouter.put('/user/update/:id', function(request, response) {
     const userDao = new UserDao(request.app.locals.dbConnection);
     try {
         if((helper.isEmpty(request.body.pw_old))){ // profile data
-            var result = userDao.update_data(request.params.id, request.body.username, request.body.bio, request.picturepath, request.bannerpath, request.countryid, request.coins);
+            var result = userDao.update_data(request.params.id, request.body.username, request.body.bio, request.body.picturepath, request.body.bannerpath, request.body.country);
             helper.log('Service User: Record updated, id=' + request.body.id);
         }
         else{  // profile pw
