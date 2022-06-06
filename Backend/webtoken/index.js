@@ -26,8 +26,8 @@ module.exports.GetUserID = function(token){
 module.exports.generate = function(username, userid){
     console.log('signing options');
     var issuer = 'MindBreaker';
-    var subject = username;
-    var audience = String(userid);
+    var subject = String(userid);
+    var audience = "localhost:8001";
     var validFor = '4h';
     var algorithm = 'RS256';
     var signOptions = {
@@ -43,7 +43,6 @@ module.exports.generate = function(username, userid){
     var payload = {
         'id': userid,
         'loggedIn': true,
-        'userName': username
     };
     console.log(payload);
     console.log('\n\n');
@@ -64,7 +63,7 @@ module.exports.valid = function(token){
     var token_dict = this.GetTokenDict(token);
     console.log('verifying options');
     var issuer = 'MindBreaker';
-    var subject = token_dict.userName;
+    var subject = token_dict.sub;
     var audience = token_dict.aud;
     var validFor = '4h';
     var algorithm = 'RS256';
