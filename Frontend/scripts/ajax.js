@@ -506,6 +506,9 @@ function load_profile_editor(){
             document.getElementById("profile-name").value = response.daten.username;
             document.getElementById("profile-bio").value = response.daten.bio;
             document.getElementById("profile-country").value = response.daten.country;
+            $('.img-border').attr("src", `${response.daten.picturepath}`);
+            $('.background').css("background-image", `url(${response.daten.bannerpath})`);
+            $("#loading").hide();
         }).fail(function (jqXHR, statusText, error) {
         });
     }).fail(function (jqXHR, statusText, error) {

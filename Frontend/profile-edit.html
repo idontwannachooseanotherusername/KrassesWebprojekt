@@ -25,36 +25,32 @@
                 </div>
             </nav>
         </header>
-        <section class="background bg-image">
-            <form class="change-banner">
-                <label for="profile-banner">✏️</label></br>
-                <input type="file" class="btn-primary" id="profile-banner">
-            </form>
-        </section>
-            <div class="profile-header">
-                <div class="profile-picture ">
-                    <img class="img-border" src="images/Logo.png">
-                        <form class="change-picture">
-                            <label for="profile-pic">✏️</label></br>
-                            <input type="file" class="btn-primary" id="profile-pic">
-                        </form>
-                </div>
-                <p class="user-name">
-                    Username
-                </p>
-            </div>
         <main>
+            <div id="loading">
+                <img id="loading-image" class="spin" src="images/loading3.png">
+            </div>
+            <section class="profile-banner">
+                <div class="background bg-image"></div>
+                <div class="profile-header">
+                    <div class="profile-picture ">
+                        <img class="img-border" src="">
+                    </div>
+                    <p class="user-name">
+                        Username
+                    </p>
+                </div>
+            </section>
             <section class="profile">
                 <article class="profile-customize">
                     <h2>Customize your profile</h2>
-                    <form id="change-profile" class="change-profile" action="" method="post">
+                    <form id="change-profile" class="change-profile" action="" method="post" onsubmit="return save_profile_editor()">
                         <label for="profile-name"><b>Username</b></label></br>
                         <input type="text" id="profile-name"></br>
                         <label for="profile-bio"><b>Bio</b></label></br>
                         <textarea form="change-profile" type="text" id="profile-bio" placeholder="Tell us something about yourself." cols="50" rows="6"></textarea></br>
                         <label for="profile-country"><b>Country</b></label></br>
                         <select id="profile-country">
-                            <option value = "" selected>Select country</option>
+                            <option value = "" selected disabled>Select country</option>
                             <option value="Afghanistan">Afghanistan</option>
                             <option value="Albania">Albania</option>
                             <option value="Algeria">Algeria</option>
