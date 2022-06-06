@@ -4,6 +4,8 @@ const webtoken = require('./webtoken/index.js');
 
 // Cookies to dict
 module.exports.CookieDict = function(cookiestring='') {
+    if(this.isEmpty(cookiestring)){return;}
+    
     var cookies = {};
     var cookielist = cookiestring.split(';');
     for (let i=0; i < cookielist.length; i +=  2){
@@ -54,6 +56,10 @@ module.exports.defaultDataPath = function(data) {
         default:
             return "";
     }
+}
+
+module.exports.isEmpty = function(val){
+    return (val === undefined || val === "" || val === null);
 }
 
 // check if value is undefined

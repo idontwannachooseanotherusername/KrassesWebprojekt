@@ -45,11 +45,12 @@
                     <h2>Customize your profile</h2>
                     <form id="change-profile" class="change-profile" action="" method="post" onsubmit="return save_profile_editor()">
                         <label for="profile-name"><b>Username</b></label></br>
-                        <input type="text" id="profile-name"></br>
+                        <input type="text" id="profile-name" name="username"></br>
                         <label for="profile-bio"><b>Bio</b></label></br>
-                        <textarea form="change-profile" type="text" id="profile-bio" placeholder="Tell us something about yourself." cols="50" rows="6"></textarea></br>
+                        <textarea form="change-profile" type="text" id="profile-bio" name="bio" placeholder="Tell us something about yourself." cols="50" rows="6"></textarea></br>
                         <label for="profile-country"><b>Country</b></label></br>
-                        <select id="profile-country">
+                        <select id="profile-country" name="country">
+                            <!-- TODO: Values as IDs? -->
                             <option value = "" selected disabled>Select country</option>
                             <option value="Afghanistan">Afghanistan</option>
                             <option value="Albania">Albania</option>
@@ -299,12 +300,12 @@
                     <h2>Change your password</h2>
                     <form id="change-pw" class="change-pw" action="" method="post" onsubmit="return check_password()">
                         <label for="old-pw"><b>Old password</b></label></br>
-                        <input type="password" placeholder="Old password" id="old-pw" required>
+                        <input type="password" placeholder="Old password" id="old-pw" name="pw_old" required>
                         </br>
                         </br>
                         <label for="new-pw"><b>New password</b></label></br>
-                        <input type="password" placeholder="new password" id="new-pw" onkeyup="return check_password()" required></br>
-                        <input type="password" placeholder="repeat password" id="rep-pw" onkeyup="return check_password()" required></br>
+                        <input type="password" placeholder="new password" id="new-pw" name="pw_new" onkeyup="return check_password()" required></br>
+                        <input type="password" placeholder="repeat password" id="rep-pw" name="pw_new2" onkeyup="return check_password()" required></br>
                         <p id="errors" style="color: red; margin-top: 0;"></p>
                         <button id="pw-submit" class="btn-primary" type="submit">Change password</button>
                     </form>
