@@ -38,6 +38,9 @@ a:visited{
 hr{
     border: 1px solid #ffffff20;;
 }
+main{
+    position: relative;
+}
 
 /*---------- BUTTONS ----------*/
 .login-button.login-button{
@@ -555,8 +558,10 @@ select option{
         width: 70%;
     }
 }
+.profile-banner{
+    overflow: auto;
+}
 .profile-picture{
-    display:inline-block;
     float: left;
     height: 170px;
     width: 170px;
@@ -576,7 +581,8 @@ select option{
     font-size: 2.6em;
     float: left;
     padding: 60px 30px;
-    margin-top:60px
+    margin-top:60px;
+    margin-bottom:0;
 }
 @media only screen and (max-width: 550px) {
     .user-name{
@@ -955,4 +961,31 @@ footer .btn-to-top:hover{
     background-color: darkred;
     color: white;
     margin-bottom: 40px;
+}
+
+/*Loading animation*/
+@keyframes spinning {
+    from { transform: rotate(0deg) }
+    to { transform: rotate(360deg) }
+}
+.spin {
+    animation-name: spinning;
+    animation-duration: 1.5s;
+    animation-iteration-count: infinite;
+    animation-timing-function: ease-in-out;
+}
+
+#loading {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    text-align: center;
+    background: #212121;
+    z-index: 1;
+}
+
+#loading-image {
+    width: 100px;
+    position: relative;
+    top: 40%;
 }

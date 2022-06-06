@@ -266,7 +266,7 @@ function load_profile(){
             h_solved.innerHTML = `Created Challenges (${response.daten.solved.length})`;
             var h_created = document.getElementById("created-heading");
             h_created.innerHTML = `Created Challenges (${response.daten.created.length})`;
-    
+            $("#loading").hide();
         }).fail(function (jqXHR, statusText, error) {
             console.log('Response Code: ' + jqXHR.status + ' - Fehlermeldung: ' + jqXHR.responseText);
             alert('An error occured.');
