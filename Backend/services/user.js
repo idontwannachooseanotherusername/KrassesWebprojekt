@@ -124,14 +124,22 @@ serviceRouter.post('/user', function(request, response) {
     }
 });
 
-serviceRouter.put('/user', function(request, response) {
-    helper.log('Service User: Client requested update of existing record');
+serviceRouter.put('/user/update/:id', function(request, response) {
+    helper.log('Service User: Client requested update of id=' + request.params.id);
+
+    if (!helper.UserHasAccess(request.headers.cookie)){
+        helper.logError('Service User: User not logged in.');
+        response.status(401).json(helper.jsonMsgError('You need to be logged in to do that.'));
+        return;
+    }
+
+    console.log(request.body);
 
     var errorMsgs=[];
     if (helper.isUndefined(request.body.username)) 
         errorMsgs.push('username missing');
     if (helper.isUndefined(request.body.passwort)) 
-        errorMsgs.push('passwort missing');
+        request.body.password = undefined
     if (helper.isUndefined(request.body.bio)) 
         request.body.bio = ''
     if (helper.isUndefined(request.body.picturepath)) 

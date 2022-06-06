@@ -39,6 +39,23 @@ module.exports.UserHasAccess = function(cookiestring){
     }
 }
 
+// Default image paths
+module.exports.defaultDataPath = function(data) {
+    path = "/images/default_data/";
+    switch(data.toLowerCase()){
+        case "banner":
+            return path + "default_banner.png";
+        case "profile":
+            return path + "default_profile.png";
+        case "bio":
+            return "Empty void.";
+        case "country":
+            return "Planet Earth";
+        default:
+            return "";
+    }
+}
+
 // check if value is undefined
 module.exports.isUndefined = function(val) {
     return (val === undefined);

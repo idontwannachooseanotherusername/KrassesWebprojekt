@@ -27,14 +27,18 @@ class UserDao {
 
         result = helper.objectKeysToLower(result);
 
-        // Countries can be empty(null)
+        // Country and bio
         if (result.countryid != null){
             result.country = countryDao.loadById(result.countryid).countryname;
         }
         else{
-            result.country = null;
+            result.country = helper.defaultDataPath("country");
         }
         delete result.countryid;
+
+        if (result.bio == ""){
+            result.bio = helper.defaultDataPath("bio");
+        }
 
         // Get last 10 solved challenges
         var sql = 'SELECT * FROM Solved';
@@ -77,6 +81,10 @@ class UserDao {
 
         // Strip user password
         delete result.password;
+
+        // Add default images
+        if (result.bannerpath == "") {result.bannerpath = helper.defaultDataPath("banner");}
+        if (result.picturepath == "") {result.picturepath = helper.defaultDataPath("profile");}
 
         return result;
     }
@@ -157,12 +165,12 @@ class UserDao {
         return webtoken.generate(username, newObj.userid);
     }
 
-    update(id, username = '', newpassword = null, oldpassword = null, bio = '', picturepath = '', bannerpath = '', countryid = null, points = 0) {
+    update(id, username = '', newpassword = null, oldpassword = null, bio = '', picturepath = '', bannerpath = '', countryid = undefined) {
         if (helper.isNull(newpassword)) {
-            var sql = 'UPDATE User SET Username=?,Bio=?,PicturePath=?,BannerPath=?,CountryID=?,Points=? WHERE UserID=?';
+            var sql = 'UPDATE User SET Username=?,Bio=?,PicturePath=?,BannerPath=?,CountryID=? WHERE UserID=?';
             var params = [username, bio, picturepath, bannerpath, countryid, points, id];
         } else{
-            var sql = 'UPDATE User SET Username=?,Password=?,Bio=?,PicturePath=?,BannerPath=?,CountryID=?,Points=? WHERE UserID=?';
+            var sql = 'UPDATE User SET Username=?,Password=?,Bio=?,PicturePath=?,BannerPath=?,CountryID=? WHERE UserID=?';
             var result_t = this.loadById(id) // Check if old passwords match
             if (result_t.password == md5(oldpassword)){
                 var params = [username, md5(newpassword), bio, picturepath, bannerpath, countryid, points, id];
