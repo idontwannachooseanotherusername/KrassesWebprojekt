@@ -42,7 +42,7 @@ module.exports.UserHasAccess = function(cookiestring){
 }
 
 // Default image paths
-module.exports.defaultDataPath = function(data) {
+module.exports.defaultData = function(data) {
     path = "/images/default_data/";
     switch(data.toLowerCase()){
         case "banner":
@@ -59,7 +59,7 @@ module.exports.defaultDataPath = function(data) {
 }
 
 module.exports.isEmpty = function(val){
-    return (val === undefined || val === "" || val === null);
+    return (val === undefined || val === "" || val === null || val === '');
 }
 
 // check if value is undefined

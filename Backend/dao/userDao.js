@@ -28,16 +28,16 @@ class UserDao {
         result = helper.objectKeysToLower(result);
 
         // Country and bio
-        if (result.countryid != null){
+        if (!helper.isEmpty(result.bio)){
             result.country = countryDao.loadById(result.countryid).countryname;
         }
         else{
-            result.country = helper.defaultDataPath("country");
+            result.country = helper.defaultData("country");
         }
         delete result.countryid;
 
-        if (result.bio == ""){
-            result.bio = helper.defaultDataPath("bio");
+        if (helper.isEmpty(result.bio)){
+            result.bio = helper.defaultData("bio");
         }
 
         // Get last 10 solved challenges
@@ -83,8 +83,8 @@ class UserDao {
         delete result.password;
 
         // Add default images
-        if (result.bannerpath == "") {result.bannerpath = helper.defaultDataPath("banner");}
-        if (result.picturepath == "") {result.picturepath = helper.defaultDataPath("profile");}
+        if (helper.isEmpty(result.bannerpath)) {result.bannerpath = helper.defaultData("banner");}
+        if (helper.isEmpty(result.picturepath)) {result.picturepath = helper.defaultData("profile");}
 
         return result;
     }

@@ -32,7 +32,7 @@ function challenge_all(){
             // challenge image
             let image = document.createElement("img");
             image.className = "challenge-picture img-border";
-            image.src = "images/BasicProfile.png";
+            image.src = response.daten[i].user.userimage;
 
             challenge.appendChild(image);
 
@@ -98,9 +98,9 @@ function challenge_id(){
         code.innerHTML = response.daten.challengeid;
         attributes[2].appendChild(code);
         var link = document.getElementById("profile-link");
-        link.href = "profile.html?id=" + response.daten.userid;
+        link.href = "profile.html?id=" + response.daten.user.userid;
         var username = document.createElement("p");
-        username.innerHTML = response.daten.username;
+        username.innerHTML = response.daten.user.username;
         attributes[3].appendChild(username);
         var date = document.createElement("p");
         date.innerHTML = response.daten.creationdate;  // TODO: Only date, not time
