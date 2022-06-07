@@ -8,6 +8,7 @@
         <script type="text/javascript" src="scripts/main.js"></script>
         <script type="text/javascript" src="scripts/ajax.js"></script>
         <script type="text/javascript" src="scripts/jquery-3.6.0.min.js"></script>
+        <script>window.addEventListener("load", function(){load("profileeditor");});</script>
     </head>
      
     <body>
@@ -31,9 +32,17 @@
             </div>
             <section class="profile-banner">
                 <div class="background bg-image"></div>
+                <form class="change-banner">
+                    <label for="profile-banner">✏️</label></br>
+                    <input type="file" class="btn-primary" id="profile-banner">
+                </form>
                 <div class="profile-header">
                     <div class="profile-picture ">
                         <img class="img-border" src="">
+                         <form class="change-picture">
+                            <label for="profile-pic">✏️</label></br>
+                            <input type="file" class="btn-primary" id="profile-pic">
+                        </form>
                     </div>
                     <p class="user-name">
                         Username
@@ -311,7 +320,6 @@
                 </article>
             </section>
         </main>
-        <script>load_profile_editor()</script>
         <footer>
             <a class="btn-to-top" href="#">↑</a>
             <nav class="footer-menu">

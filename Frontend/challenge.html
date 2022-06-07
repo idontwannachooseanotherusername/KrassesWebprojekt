@@ -15,6 +15,7 @@
         <script type="text/javascript" src="scripts/main.js"></script>
         <script type="text/javascript" src="scripts/ajax.js"></script>
         <script type="text/javascript" src="scripts/jquery-3.6.0.min.js"></script>
+        <script>window.addEventListener("load", function(){load("challenge");});</script>
     </head>
      
     <body>
@@ -32,7 +33,10 @@
                 </div>
             </nav>
         </header>
-        <main style="position: relative;">
+        <main>
+            <div id="loading">
+                <img id="loading-image" class="spin" src="images/loading3.png">
+            </div>
             <section class="challenge-site">
                 <article class="challenge-attributes">
                     <div class="challenge-attribute">
@@ -100,7 +104,6 @@
                             <p class="hint-text"></p>
                             <p class="hint-unavailable">Unavailable</p>
                         </div>
-                        <script>check_hints();</script>
                     </div>
                 </article>
                 <article class="challenge-comments">
@@ -152,7 +155,6 @@ Hic ullam alias qui aut quo qui laudantium dicta. Perferendis sed et eum veritat
                 </article>
             </section>
         </main>
-        <script>challenge_id()</script>
         <footer>
             <a class="btn-to-top" href="#">↑</a>
             <nav class="footer-menu">

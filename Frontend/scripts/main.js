@@ -33,7 +33,7 @@ function show_dropdown(x=false){
 window.onclick = e => {
     var drop = document.getElementById("menu-dropdown");
     /* Hide dropdown when clicking elsewhere */
-    if (!(drop.contains(e.target)) && e.target.getAttribute('id') != "pb"){
+    if (drop && !(drop.contains(e.target)) && e.target.getAttribute('id') != "pb"){
         show_dropdown(true);
     }
 }
@@ -67,6 +67,6 @@ function logout(){
 
 // Onload functions
 window.addEventListener("load", function(){
-    login_check();
+    //load();
 });
     
