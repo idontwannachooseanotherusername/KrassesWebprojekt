@@ -51,7 +51,6 @@ class ChallengeDao {
         delete result.difficultyid;
         result.tags = challengetagDao.loadByParent(result.challengeid);
         result.category = categoryDao.loadById(result.categoryid).title;
-        delete result.categoryid;
 
         // Do not leak challenge pw
         delete result.solution;
@@ -107,7 +106,6 @@ class ChallengeDao {
 
             result[i].tags = challengetagDao.loadByParent(result[i].challengeid);
             result[i].category = categoryDao.loadById(result[i].categoryid).title;
-            delete result[i].categoryid;
 
             // Do not leak challenge pw
             delete result[i].solution;
@@ -125,10 +123,7 @@ class ChallengeDao {
         return false;
     }
 
-    create(challengename = 'Challengename', difficultyid = 1, categoryid = 0, tags = [], description = '', hint1= '', hint2 = '', hint3 = '', password = '', creationdate = '') {
-        // TODO: Remove placeholder
-        var userid = '1';
-        
+    create(userid, challengename = 'Challengename', difficultyid = 1, categoryid = 0, tags = [], description = '', hint1= '', hint2 = '', hint3 = '', password = '', creationdate = '') {       
         var sql = 'INSERT INTO Challenge (ChallengeName, DifficultyID, CategoryID, Description, CreationDate, Solution, UserID) VALUES (?,?,?,?,?,?,?)';
         var statement = this._conn.prepare(sql);
 

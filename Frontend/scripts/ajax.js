@@ -191,8 +191,11 @@ function load_challenge(){
         // TODO: Files!
 
         // Editing tools if user owns challenge
-        if (user_logged_in().daten == response.daten.user.userid)
-            create_challenge_tools();
+        user_logged_in().done(function(r) {
+            console.log(r);
+            if (r.daten == response.daten.user.userid)
+                create_challenge_tools(challengeid);
+        });
     }).fail(function (jqXHR, statusText, error) {
         show_login_prompt();
     });
@@ -371,17 +374,20 @@ function load_profile(){
 
 // Create challenge
 function submitChallenge(){
-    $.ajax({
-        url: 'http://localhost:8001/wba2api/challenge',
-        method: 'post',
-        dataType: 'json',
-        data: $('form').serialize(),
-        xhrFields: { withCredentials: true }
-    }).done(function (response) {
-        window.location.replace("challenge.html?id=" + response.daten.challengeid);
-    }).fail(function (jqXHR, statusText, error) {
-        console.log("Could not create challenge, reason: " + error);
-        if(jqXHR.status === 401){show_login_prompt();}
+    user_logged_in().done(function(response) {
+        userid = response.daten;
+        $.ajax({
+            url: 'http://localhost:8001/wba2api/challenge/' + userid,
+            method: 'post',
+            dataType: 'json',
+            data: $('form').serialize(),
+            xhrFields: { withCredentials: true }
+        }).done(function (response) {
+            window.location.replace("challenge.html?id=" + response.daten.challengeid);
+        }).fail(function (jqXHR, statusText, error) {
+            console.log("Could not create challenge, reason: " + error);
+            if(jqXHR.status === 401){show_login_prompt();}
+        });
     });
     return false;
 }
@@ -405,19 +411,21 @@ function submitUser(){
 }
 
 // Challenge
-function create_challenge_tools(){
+function create_challenge_tools(challengeid){
     var tools = document.createElement("article");
     tools.className = "challenge-tools";
     var delete_button = document.createElement("div");
     delete_button.className = "btn-delete btn-challenge";
     delete_button.innerHTML = "delete";
+    var edit_link = document.createElement("a");
+    edit_link.href = "challengecreator.html?id=" + String(challengeid)
     var edit_button = document.createElement("div");
     edit_button.className = "btn-primary btn-challenge";
     edit_button.innerHTML = "edit";
+    edit_link.appendChild(edit_button);
     delete_button.onclick = function() {delete_challenge();}
-    edit_button.onclick = function() {edit_challenge();}
     var text = document.getElementsByClassName("challenge-site")[0];
-    tools.appendChild(edit_button);
+    tools.appendChild(edit_link);
     tools.appendChild(delete_button);
     text.appendChild(tools);
 }
@@ -441,7 +449,28 @@ function delete_challenge(){
 }
 
 function load_challenge_editor(){
-    // TODO: check if editing existing challenge and fill values if it that is the case
+    var challengeid = get_url_params().id;
+    if (challengeid === undefined) {return};
+
+    $.ajax({
+        url: 'http://localhost:8001/wba2api/challenge/get_all/' + challengeid,
+        method: 'get',
+        xhrFields: { withCredentials: true },
+        dataType: 'json'
+    }).done(function (response) {
+        $("#challengename").val(response.daten.challengename);
+        $("#difficulty").val(response.daten.difficulty.level);
+        $("#category").val(response.daten.categoryid).change();
+        // TODO: Tags
+        $("#hint-1").val(response.daten.hints[0]);
+        $("#hint-2").val(response.daten.hints[1]);
+        $("#hint-3").val(response.daten.hints[2]);
+        $("#password").val(response.daten.password);
+        // TODO: Possibility to delete and upload files
+    }).fail(function (jqXHR, statusText, error) {
+        alert("Error fetching challenge, reason: " + error);
+        if(jqXHR.status === 401){show_login_prompt();}
+    });
 }
 
 function load_profile_editor(){

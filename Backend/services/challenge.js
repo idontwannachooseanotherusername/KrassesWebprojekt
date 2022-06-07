@@ -57,7 +57,7 @@ serviceRouter.get('/challenge/exists/:id', function(request, response) {
     }
 });
 
-serviceRouter.post('/challenge', function(request, response) {
+serviceRouter.post('/challenge/:id', function(request, response) {
     helper.log('Service Challenge: Client requested creation of new record');
     console.log(request.body);
 
@@ -68,6 +68,8 @@ serviceRouter.post('/challenge', function(request, response) {
     }
 
     var errorMsgs=[];
+    if (helper.isUndefined(request.params.id))
+        errorMsgs.push('userid missing')
     if (helper.isUndefined(request.body.challengename)) 
         errorMsgs.push('name missing');
     if (helper.isUndefined(request.body.category)) 
@@ -91,7 +93,7 @@ serviceRouter.post('/challenge', function(request, response) {
     var b = request.body;
     console.log(b);
     try {
-        var result = challengeDao.create(b.challengename, b.difficulty, b.categoryid, b.tags, b.description, b.hint1, b.hint2, b.hint3, b.password, b.creationdate);
+        var result = challengeDao.create(request.params.id, b.challengename, b.difficulty, b.categoryid, b.tags, b.description, b.hint1, b.hint2, b.hint3, b.password, b.creationdate);
         helper.log('Service Challenge: Record inserted');
         response.status(200).json(helper.jsonMsgOK(result));
     } catch (ex) {
