@@ -356,7 +356,7 @@ function load_profile(){
             }
     
             var h_solved = document.getElementById("solved-heading");
-            h_solved.innerHTML = `Created Challenges (${response.daten.solved.length})`;
+            h_solved.innerHTML = `Solved Challenges (${response.daten.solved.length})`;
             var h_created = document.getElementById("created-heading");
             h_created.innerHTML = `Created Challenges (${response.daten.created.length})`;
             $("#loading").hide();
