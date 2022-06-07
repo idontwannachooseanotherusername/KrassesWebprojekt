@@ -35,7 +35,7 @@ TODO (In this order)
 
 - Implement profile editing
  -> (DONE) Values of country selections as id?!
- -> Where did the option for changing banner and pb go? RESTORE
+ -> (DONE)Where did the option for changing banner and pb go? RESTORE
  -> 
 
 - Implement challenge editing
