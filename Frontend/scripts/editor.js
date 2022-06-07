@@ -11,9 +11,12 @@ var contentArea = undefined;
 var visuellView = undefined;
 var htmlView = undefined;
 var modal = undefined;
+
 function init(){
     // define vars
     editor = document.getElementsByClassName('wp-webdeasy-comment-editor')[0];
+    if (!editor)
+      return;
     toolbar = editor.getElementsByClassName('toolbar')[0];
     buttons = toolbar.querySelectorAll('.editor-btn:not(.has-submenu)');
     contentArea = editor.getElementsByClassName('content-area')[0];
