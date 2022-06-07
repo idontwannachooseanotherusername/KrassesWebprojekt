@@ -6,9 +6,9 @@ TODO (In this order)
  -> (DONE) Check for token when viewing a challenge
  -> (DONE) Check for token when getting hints
  -> (DONE) Remove dict in webtoken.js
- -> Check for token when editing profile
- -> Check for token when creating new challenge
-     -> redirect to login page when clicking on create and not logged in.
+ -> (DONE) Check for token when editing profile
+ -> (DONE)Check for token when creating new challenge
+     -> (DONE)redirect to login page when clicking on create and not logged in.
  -> More checking needed?
 
 - Implement challenge filter
@@ -28,6 +28,7 @@ TODO (In this order)
  -> Bring back Description Editor
  -> Implement challenge editing
  -> Add File upload to challengecreator
+ -> Implement creating and editing on same page with same api calls
 
 - Implement profile editing
  -> (DONE) Values of country selections as id?!
