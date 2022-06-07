@@ -11,6 +11,13 @@ TODO (In this order)
      -> (DONE)redirect to login page when clicking on create and not logged in.
  -> More checking needed?
 
+- DB stuff
+ -> (DONE) Add all Difficulties in DB (ID = Level)
+ -> (DONE) Add all Tags
+ -> (DONE) Add all Categories
+
+- Repair Hint fetching
+
 - Implement challenge filter
  -> Level selection
  -> Name / ID search
@@ -27,7 +34,7 @@ TODO (In this order)
  -> Implement what is listed under KEEP IN MIND (Create entries in extra tables)
  -> Bring back Description Editor
  -> Implement challenge editing
- -> Add File upload to challengecreator
+   - Possibility to delete uploaded files
  -> Implement creating and editing on same page with same api calls
 
 - Implement profile editing
