@@ -11,7 +11,6 @@ serviceRouter.get('/user/get/:id', function(request, response) {
     const userDao = new UserDao(request.app.locals.dbConnection);
     try {
         var result = userDao.loadById(request.params.id);
-        //TODO: Add default picture and banner if path is empty string
         helper.log('Service User: Record loaded');
         response.status(200).json(helper.jsonMsgOK(result));
     } catch (ex) {
