@@ -38,7 +38,7 @@ TODO (In this order)
  -> Bring back Description Editor
  -> Implement challenge editing
    - Possibility to delete uploaded files
- -> Implement creating and editing on same page with same api calls
+ -> (DONE) Implement creating and editing on same page with same api calls
 
 - Implement profile editing
  -> (DONE) Values of country selections as id?!
@@ -47,15 +47,17 @@ TODO (In this order)
 
 - Implement challenge editing
  -> (DONE) Add challenge edit button
- -> Redirect to challenge Editor
+ -> (DONE) Redirect to challenge Editor
+ -> Add loading screen
  -> load current information into fields
  -> update db entries on saving
  -> keep in mind stuff
-- Block Login page when already logged in
+
+- Block Login page when already logged in (Redirect to profile)
 
 - Maybe decide whether to use jQuery or plain js
 - When getting challenge via ajax: Pass category as object and not only as id
-- (DONE) Remove Login Button when logged in -> Replace it with what?
+- Remove Login Button when logged in -> Replace it with link to challengecreator
 - (DONE) Only show profile picture with dropdown when logged in
 
 NICE TO HAVE
