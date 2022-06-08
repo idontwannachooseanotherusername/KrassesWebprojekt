@@ -373,7 +373,7 @@ function load_profile(){
 }
 
 // Create challenge
-function submitChallenge(){
+function submit_challenge(){
     user_logged_in().done(function(response) {
         userid = response.daten;
         var challengeid = get_url_params().id;
@@ -402,7 +402,7 @@ function submitChallenge(){
 }
 
 // Create user or log in
-function submitUser(){
+function submit_user(){
     $.ajax({
         url: 'http://localhost:8001/wba2api/user',
         method: 'post',
