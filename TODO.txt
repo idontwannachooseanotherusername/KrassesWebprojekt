@@ -50,7 +50,7 @@ TODO (In this order)
 - Implement challenge editing
  -> (DONE) Add challenge edit button
  -> (DONE) Redirect to challenge Editor
- -> Add loading screen
+ -> (DONE) Add loading screen
  -> load current information into fields
  -> (DONE) update db entries on saving
  -> keep in mind stuff
