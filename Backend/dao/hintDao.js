@@ -1,5 +1,5 @@
 const helper = require('../helper.js');
-const ChallengeDao = require('./challengeDao.js');
+// const ChallengeDao = require('./challengeDao.js');
 
 class HintDao {
 
@@ -27,23 +27,30 @@ class HintDao {
     }
 
     loadByChallengeId(classid, challengeid){
-        var sql = 'SELECT * FROM Hint WHERE ChallengeID=?';
-        var statement = this._conn.prepare(sql);
-        var result = statement.all(challengeid);
-
-        if (helper.isUndefined(result) || result === [] || result == '') 
-            throw new Error('No Record found by id=' + classid);
-
-        // TODO: Set that hint was used
-
-        console.log(result);
-        for (var e of result){
-            if (e.Class == classid){
-                return helper.objectKeysToLower(e);
+        var result = this.loadAllByChallengeId(challengeid);
+        for (var hint of result){
+            if (hint.Class == classid){
+                return helper.objectKeysToLower(hint);
             }
         }
         
         throw new Error('No Record found by id=' + id);
+    }
+
+    loadAllByChallengeId(challengeid){
+        var sql = 'SELECT * FROM Hint WHERE ChallengeID=?';
+        var statement = this._conn.prepare(sql);
+        var result = statement.all(challengeid);
+
+        if (helper.isUndefined(result))
+            throw new Error('Hints are undefined from challengeid=' + challengeid);
+        result = helper.arrayObjectKeysToLower(result);
+
+        var hints = {};
+        for(var i=0; i< result.length; i++){
+            hints[result[i].class] = result[i].description;
+        }
+        return result;
     }
 
     check(challengeid) {

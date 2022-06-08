@@ -7,6 +7,31 @@ var serviceRouter = express.Router();
 
 helper.log('- Service Challenge');
 
+serviceRouter.get('/challenge/get/unsterilized/:id', function(request, response) {
+    helper.log('Service Challenge: Client requested one unsterilized record, id=' + request.params.id);
+
+    if (!helper.UserHasAccess(request.headers.cookie)){
+        helper.logError('Service Challenge: User not logged in.');
+        response.status(401).json(helper.jsonMsgError('You need to be logged in to do that.'));
+        return;
+    }
+
+    const challengeDao = new ChallengeDao(request.app.locals.dbConnection);
+    try {
+        var result = challengeDao.loadByIdUnsterilized(request.params.id);
+        var userid = helper.IdFromToken(request.headers.cookie);
+        if (userid !== result.user.userid){
+            helper.logError('Service Challenge: User not logged in.');
+            response.status(401).json(helper.jsonMsgError('You need to be the challengecreator to do that.'));
+            return;
+        }
+        helper.log('Service Challenge: Record loaded');
+        response.status(200).json(helper.jsonMsgOK(result));
+    } catch (ex) {
+        helper.logError('Service Challenge: Error loading record by id. Exception occured: ' + ex.message);
+        response.status(404).json(helper.jsonMsgError(ex.message));
+    }
+});
 
 serviceRouter.get('/challenge/get/:id', function(request, response) {
     helper.log('Service Challenge: Client requested one record, id=' + request.params.id);
@@ -16,7 +41,6 @@ serviceRouter.get('/challenge/get/:id', function(request, response) {
         response.status(401).json(helper.jsonMsgError('You need to be logged in to do that.'));
         return;
     }
-    console.log(request);
 
     const challengeDao = new ChallengeDao(request.app.locals.dbConnection);
     try {
@@ -57,7 +81,7 @@ serviceRouter.get('/challenge/exists/:id', function(request, response) {
     }
 });
 
-serviceRouter.post('/challenge/:id', function(request, response) {
+serviceRouter.post('/challenge', function(request, response) {
     helper.log('Service Challenge: Client requested creation of new record');
     console.log(request.body);
 
@@ -68,11 +92,9 @@ serviceRouter.post('/challenge/:id', function(request, response) {
     }
 
     var errorMsgs=[];
-    if (helper.isUndefined(request.params.id))
-        errorMsgs.push('userid missing')
-    if (helper.isUndefined(request.body.challengename)) 
+    if (helper.isUndefined(request.body.challengename))
         errorMsgs.push('name missing');
-    if (helper.isUndefined(request.body.category)) 
+    if (helper.isUndefined(request.body.categoryid)) 
         request.body.category = 'Other';
     if (helper.isUndefined(request.body.description)) 
         request.body.description = '';
@@ -80,20 +102,22 @@ serviceRouter.post('/challenge/:id', function(request, response) {
         errorMsgs.push('difficulty missing');
     if (helper.isUndefined(request.body.password))
         errorMsgs.push('password missing');
+    if (helper.isEmpty(request.body.tags))
+        errorMsgs.push('tag missing');
     if (errorMsgs.length > 0) {
-        helper.log('Service Challenge: Creation not possible, data missing');
-        response.status(400).json(helper.jsonMsgError('Creation not possible, missing data: ' + helper.concatArray(errorMsgs)));
+        helper.log('Service Challenge: Creation not possible, data wrong');
+        response.status(400).json(helper.jsonMsgError('Creation not possible, wrong data: ' + helper.concatArray(errorMsgs)));
         return;
     }
 
-    // Set current time as creationtime
+    request.body.id = helper.IdFromToken(request.headers.cookie)
     request.body.creationdate = helper.getNow();
 
     const challengeDao = new ChallengeDao(request.app.locals.dbConnection);
     var b = request.body;
     console.log(b);
     try {
-        var result = challengeDao.create(request.params.id, b.challengename, b.difficulty, b.categoryid, b.tags, b.description, b.hint1, b.hint2, b.hint3, b.password, b.creationdate);
+        var result = challengeDao.create(b.id, b.challengename, b.difficulty, b.categoryid, b.tags, b.description, b.hint1, b.hint2, b.hint3, b.password, b.creationdate);
         helper.log('Service Challenge: Record inserted');
         response.status(200).json(helper.jsonMsgOK(result));
     } catch (ex) {
@@ -102,7 +126,7 @@ serviceRouter.post('/challenge/:id', function(request, response) {
     }
 });
 
-serviceRouter.put('/challenge', function(request, response) {
+serviceRouter.put('/challenge/:id', function(request, response) {
     helper.log('Service Challenge: Client requested update of existing record');
 
     var errorMsgs=[];
@@ -112,17 +136,17 @@ serviceRouter.put('/challenge', function(request, response) {
         request.body.description = '';
     if (helper.isUndefined(request.body.difficulty)) 
         errorMsgs.push('difficulty missing');
-    if (!helper.isNumeric(request.body.solution)) 
-        errorMsgs.push('solution missing');
     if (errorMsgs.length > 0) {
         helper.log('Service Challenge: Creation not possible, data missing');
-        response.status(400).json(helper.jsonMsgError('Creation not possible, missing data: ' + helper.concatArray(errorMsgs)));
+        response.status(400).json(helper.jsonMsgError('Creation not possible, missing data: ' +
+                                                      helper.concatArray(errorMsgs)));
         return;
     }
 
     const challengeDao = new ChallengeDao(request.app.locals.dbConnection);
     try {
-        var result = challengeDao.update(request.body.challengename, request.body.difficulty, request.body.description, request.body.creationdate, request.body.solution);
+        var result = challengeDao.update(request.params.id, request.body.challengename, request.body.description,
+                                         request.body.password, request.body.difficulty, request.body.categoryid);
         helper.log('Service Challenge: Record updated, id=' + request.body.id);
         response.status(200).json(helper.jsonMsgOK(result));
     } catch (ex) {
