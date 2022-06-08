@@ -42,16 +42,19 @@ TODO (In this order)
 
 - Implement profile editing
  -> (DONE) Values of country selections as id?!
- -> (DONE)Where did the option for changing banner and pb go? RESTORE
- -> 
+ -> (DONE) Where did the option for changing banner and pb go? RESTORE
+ -> Add delete account button
+   - Don't delete challenges from user
+   - Create Banner and Image for deleted user
 
 - Implement challenge editing
  -> (DONE) Add challenge edit button
  -> (DONE) Redirect to challenge Editor
  -> Add loading screen
  -> load current information into fields
- -> update db entries on saving
+ -> (DONE) update db entries on saving
  -> keep in mind stuff
+ -> Add file upload
 
 - Block Login page when already logged in (Redirect to profile)
 
@@ -59,6 +62,33 @@ TODO (In this order)
 - When getting challenge via ajax: Pass category as object and not only as id
 - Remove Login Button when logged in -> Replace it with link to challengecreator
 - (DONE) Only show profile picture with dropdown when logged in
+
+FINAL
+- Remove unnecessary comments
+- Remove outcommented code
+- Remove unused functions from api
+- Remove unused functions from frontend JavaScripts
+- Test everything
+ -> Creating new user
+ -> Visit all sites
+ -> Logout
+ -> Login
+ -> Try breaking permission system
+   - Profileditor
+   - Challenge
+   - Challengecreator
+   - Getting Hints
+   - ...
+ -> Edit profile (with banner and pb)
+ -> Change password
+ -> Create challenge
+ -> Edit challenge
+ -> Delete challenge
+ -> Delete User
+ -> Look for visual bugs
+- Test in Firefox and Chrome (Brave)
+- Have at least 3 "real" users
+- Create at least one real challenge per difficulty Level
 
 NICE TO HAVE
 - Implement comment writing
