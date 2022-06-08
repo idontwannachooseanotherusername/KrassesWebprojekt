@@ -58,17 +58,9 @@
                             <option value="8">Computer</option>
                             <option value="9">Physical</option>
                         </select>
-                        <label><h2>Tags</h2></label>
-                        <input id="tag-r-int" type="checkbox">
-                        <label for="tag-r-int">Requires internet</label>
-                        <input id="tag-r-hwa" type="checkbox">
-                        <label for="tag-r-hwa">Requires special hardware</label>
-                        <input id="tag-r-swa" type="checkbox">
-                        <label for="tag-r-swa">Requires special software</label>
-                        <input id="tag-r-kno" type="checkbox">
-                        <label for="tag-rkno">Requires special knowledge</label>
-                        <input id="tag-r-loc" type="checkbox">
-                        <label for="tag-loc">Requires special location</label>
+                        <div id="tags-wrapper">
+                            <label><h2>Tags</h2></label>
+                        </div>
                         </br>
                         <label for="description"><h2>Description</h2></label>
 
@@ -289,11 +281,11 @@
                         <div class="hints">
                             <h2>Hints</h2>
                             <label for="hint-1"><h3>Hint 1</h3></label>
-                            <textarea id="hint-1" name="hint-1" placeholder="optional Hint"> </textarea>
+                            <textarea id="hint-1" name="hint-1" placeholder="optional Hint"></textarea>
                             <label for="hint-2"><h3>Hint 2</h3></label>
-                            <textarea id="hint-2" name="hint-2" placeholder="optional Hint"> </textarea>
+                            <textarea id="hint-2" name="hint-2" placeholder="optional Hint"></textarea>
                             <label for="hint-3"><h3>Hint 3</h3></label>
-                            <textarea id="hint-3" name="hint-3" placeholder="optional Hint"> </textarea>
+                            <textarea id="hint-3" name="hint-3" placeholder="optional Hint"></textarea>
                         </div>
                         <h2>Files</h2>
                         <label id="fileupload" for="files">Click here to upload files.</label>

@@ -841,6 +841,14 @@ select option{
     overflow: auto;
 }
 
+/*---------- Challengecreator ----------*/
+.editor-tag{
+    margin-right: 5px;
+}
+.editor-taglabel{
+    margin-right: 15px;
+}
+
 /*---------- FOOTER ----------*/
 footer{
     clear: both;

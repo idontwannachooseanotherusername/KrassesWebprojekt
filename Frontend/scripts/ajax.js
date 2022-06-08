@@ -471,12 +471,26 @@ function load_challenge_editor(){
         $("#challengename").val(response.daten.challengename);
         $("#difficulty").val(response.daten.difficulty.level);
         $("#category").val(response.daten.categoryid).change();
-        // TODO: Tags
         response.daten.hints.forEach(hint => {
             $(`#hint-${hint.class}`).val(hint.description);
         });
         $("#password").attr("placeholder", "unchanged");
         $("#password").removeAttr('required');
+
+        $.ajax({
+            url: 'http://localhost:8001/wba2api/tag/all',
+            method: 'get',
+            dataType: 'json'
+        }).done(function (response_tags) {
+            var tags_wrapper = $("#tags-wrapper")
+            response_tags.daten.forEach(tag => {
+                tags_wrapper.append($(`<input class="editor-tag" name="tag-${tag.tagid}" type="checkbox">`));
+                tags_wrapper.append($(`<label class="editor-taglabel" for="tag-${tag.tagid}">${tag.title}</label>`));
+            });
+        }).fail(function (jqXHR, statusText, error) {
+            console.log("Error fetching tags, reason: " + error);
+        });
+
         // TODO: Possibility to delete and upload files
     }).fail(function (jqXHR, statusText, error) {
         console.log("Error fetching challenge, reason: " + error);
