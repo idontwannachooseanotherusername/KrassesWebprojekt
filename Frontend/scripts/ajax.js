@@ -483,14 +483,20 @@ function load_challenge_editor(){
             dataType: 'json'
         }).done(function (response_tags) {
             var tags_wrapper = $("#tags-wrapper")
-            response_tags.daten.forEach(tag => {
-                tags_wrapper.append($(`<input class="editor-tag" name="tags[]" value=${tag.tagid} type="checkbox">`));
+            for (var tag of response_tags.daten){
+                var checkbox = $(`<input class="editor-tag" name="tags[]" value=${tag.tagid} type="checkbox">`)
+                for (var challenge_tag of response.daten.tags){
+                    if (challenge_tag.tagid === tag.tagid){
+                        checkbox.attr("checked", "");
+                        break;
+                    }
+                }
+                tags_wrapper.append(checkbox);
                 tags_wrapper.append($(`<label class="editor-taglabel" for="tags[]">${tag.title}</label>`));
-            });
+            }
         }).fail(function (jqXHR, statusText, error) {
             console.log("Error fetching tags, reason: " + error);
         });
-
         // TODO: Possibility to delete and upload files
     }).fail(function (jqXHR, statusText, error) {
         console.log("Error fetching challenge, reason: " + error);
