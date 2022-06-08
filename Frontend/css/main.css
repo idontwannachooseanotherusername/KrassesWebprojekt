@@ -814,9 +814,6 @@ select option{
     padding: 0;
     height: 8px;
 }
-#solved-rating::-webkit-slider-thumb {
-    /*-webkit-appearance: none;*/
-}
 #solved-stars{
     margin-bottom: 0;
 }
