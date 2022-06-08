@@ -1,4 +1,7 @@
 TODO (In this order)
+
+-profile top right script forgotten on account page
+
 - Implement json Webtoken
  -> (DONE) Check if user exists when logging in otherwise create new user and log it in
  -> (DONE) Create json web token
@@ -32,7 +35,7 @@ TODO (In this order)
 
 - Implement profile editing
  -> (DONE) Values of country selections as id?!
- -> Where did the option for changing banner and pb go? RESTORE
+ -> (DONE)Where did the option for changing banner and pb go? RESTORE
  -> 
 
 - Implement challenge editing
