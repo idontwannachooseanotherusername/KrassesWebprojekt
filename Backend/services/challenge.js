@@ -136,6 +136,8 @@ serviceRouter.put('/challenge/:id', function(request, response) {
         request.body.description = '';
     if (helper.isUndefined(request.body.difficulty)) 
         errorMsgs.push('difficulty missing');
+    if (helper.isEmpty(request.body.tags))
+        errorMsgs.push('tags missing')
     if (errorMsgs.length > 0) {
         helper.log('Service Challenge: Creation not possible, data missing');
         response.status(400).json(helper.jsonMsgError('Creation not possible, missing data: ' +
@@ -146,7 +148,8 @@ serviceRouter.put('/challenge/:id', function(request, response) {
     const challengeDao = new ChallengeDao(request.app.locals.dbConnection);
     try {
         var result = challengeDao.update(request.params.id, request.body.challengename, request.body.description,
-                                         request.body.password, request.body.difficulty, request.body.categoryid);
+                                         request.body.password, request.body.difficulty, request.body.categoryid,
+                                         request.body.tags);
         helper.log('Service Challenge: Record updated, id=' + request.body.id);
         response.status(200).json(helper.jsonMsgOK(result));
     } catch (ex) {

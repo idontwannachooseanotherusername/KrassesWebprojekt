@@ -99,9 +99,6 @@ class ChallengeTagDao {
 
         if (result.changes != 1)
             throw new Error('Could not insert new Record. Data: ' + params);
-
-        var newObj = this.loadById(result.lastInsertRowid);
-        return newObj;
     }
 
     update(id, challengeid = '', tagid = '') {
@@ -130,6 +127,22 @@ class ChallengeTagDao {
             return true;
         } catch (ex) {
             throw new Error('Could not delete Record by id=' + id + '. Reason: ' + ex.message);
+        }
+    }
+
+    deleteByChallengeId(id) {
+        try {
+            var sql = 'DELETE FROM ChallengeTag WHERE ChallengeID=?';
+            var statement = this._conn.prepare(sql);
+            var result = statement.run(id);
+
+            if (result.changes != 1)
+                console.log('challengeTagDao - Could not delete records with challengeID=' + id + ". Records might have been deleted already.")
+                // throw new Error('Could not delete Records with challengeid=' + id);
+
+            return true;
+        } catch (ex) {
+            throw new Error('Could not delete Records with challengeid=' + id + '. Reason: ' + ex.message);
         }
     }
 

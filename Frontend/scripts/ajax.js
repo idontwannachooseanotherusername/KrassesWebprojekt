@@ -484,8 +484,8 @@ function load_challenge_editor(){
         }).done(function (response_tags) {
             var tags_wrapper = $("#tags-wrapper")
             response_tags.daten.forEach(tag => {
-                tags_wrapper.append($(`<input class="editor-tag" name="tag-${tag.tagid}" type="checkbox">`));
-                tags_wrapper.append($(`<label class="editor-taglabel" for="tag-${tag.tagid}">${tag.title}</label>`));
+                tags_wrapper.append($(`<input class="editor-tag" name="tags[]" value=${tag.tagid} type="checkbox">`));
+                tags_wrapper.append($(`<label class="editor-taglabel" for="tags[]">${tag.title}</label>`));
             });
         }).fail(function (jqXHR, statusText, error) {
             console.log("Error fetching tags, reason: " + error);

@@ -145,7 +145,7 @@ class ChallengeDao {
         return newObj;
     }
 
-    update(id, challengename = '',  description = '', solution = '', difficultyid = '', categoryid = '') {
+    update(id, challengename = '',  description = '', solution = '', difficultyid = '', categoryid = '', tags = []) {
         var sql = 'UPDATE Challenge SET Challengename=?, Description=?';
         var params = [challengename, description];
         if (!helper.isEmpty(solution)){
@@ -167,6 +167,13 @@ class ChallengeDao {
 
         if (result.changes != 1)
             throw new Error('Could not update existing Record. Data: ' + params);
+
+        // Set tags
+        const challengetagDao = new ChallengeTagDao(this._conn);
+        challengetagDao.deleteByChallengeId(id);
+        tags.forEach(tag => {
+            challengetagDao.create(id, tag);
+        });
 
         var updatedObj = this.loadById(id);
         return updatedObj;
