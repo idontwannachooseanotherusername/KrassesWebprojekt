@@ -28,7 +28,7 @@ class UserDao {
         result = helper.objectKeysToLower(result);
 
         // Country and bio
-        if (!helper.isEmpty(result.bio)){
+        if (!helper.isEmpty(result.country)){
             result.country = countryDao.loadById(result.countryid).countryname;
         }
         else{

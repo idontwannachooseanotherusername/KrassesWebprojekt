@@ -59,7 +59,10 @@ module.exports.defaultData = function(data) {
 }
 
 module.exports.isEmpty = function(val){
-    return (val === undefined || val === "" || val === null || val === '' || val === false);
+    var erg = (val === undefined || val === "" || val === null || val === '' || val === false);
+    if (!erg && val.isArray)
+        erg = (val.length < 1)
+    return erg
 }
 
 // check if value is undefined

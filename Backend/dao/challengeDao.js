@@ -2,7 +2,10 @@ const helper = require('../helper.js');
 const DifficultyDao = require('./difficultyDao.js');
 const ChallengeTagDao = require('./challengetagDao.js');
 const CategoryDao = require('./categoryDao.js');
+const HintDao = require('./hintDao.js');
 const md5 = require('md5');
+const { result } = require('lodash');
+const { param } = require('express/lib/request');
 
 class ChallengeDao {
 
@@ -14,48 +17,52 @@ class ChallengeDao {
         return this._conn;
     }
 
-    loadById(id) {
+    loadByIdUnsterilized(id) {
         const difficultyDao = new DifficultyDao(this._conn);
         const challengetagDao = new ChallengeTagDao(this._conn);
         const categoryDao = new CategoryDao(this._conn);
+        const hintDao = new HintDao(this._conn);
 
         var sql = 'SELECT * FROM Challenge WHERE ChallengeID=?';
         var statement = this._conn.prepare(sql);
         var result = statement.get(id);    
-
         if (helper.isUndefined(result)) 
             throw new Error('No Record found by id=' + id);
         result = helper.objectKeysToLower(result);
+        
+        // Get time
+        var dt = helper.parseSQLDateTimeString(result.creationdate);
+        result.creationdate = helper.formatToGermanDateTime(dt)
 
         // Get userdata
         var sql = 'SELECT * FROM User WHERE UserID=?';
         var statement = this._conn.prepare(sql);
         var user = statement.get(result.userid);
-
         if (helper.isUndefined(user)) 
             throw new Error('No user found by id=' + id);
-            user = helper.objectKeysToLower(user);
-        
-        var dt = helper.parseSQLDateTimeString(result.creationdate);
-        result.creationdate = helper.formatToGermanDateTime(dt)
-
-        // Resolve ids
+        user = helper.objectKeysToLower(user);
         result.user = {
             username: user.username,
             userid: user.userid,
             userimage: user.picturepath
         }
+        if (helper.isEmpty(result.user.userimage))
+            result.user.userimage = helper.defaultData("profile");
         delete result.userid;
 
         result.difficulty = difficultyDao.loadById(result.difficultyid);
         delete result.difficultyid;
         result.tags = challengetagDao.loadByParent(result.challengeid);
         result.category = categoryDao.loadById(result.categoryid).title;
-        delete result.categoryid;
+        result.hints = hintDao.loadAllByChallengeId(id);
+        delete result.solution; // It is hashed and useless anyways
 
-        // Do not leak challenge pw
-        delete result.solution;
+        return result;
+    }
 
+    loadById(id){
+        var result = this.loadByIdUnsterilized(id);
+        delete result.hints;
         return result;
     }
 
@@ -107,7 +114,6 @@ class ChallengeDao {
 
             result[i].tags = challengetagDao.loadByParent(result[i].challengeid);
             result[i].category = categoryDao.loadById(result[i].categoryid).title;
-            delete result[i].categoryid;
 
             // Do not leak challenge pw
             delete result[i].solution;
@@ -125,10 +131,7 @@ class ChallengeDao {
         return false;
     }
 
-    create(challengename = 'Challengename', difficultyid = 1, categoryid = 0, tags = [], description = '', hint1= '', hint2 = '', hint3 = '', password = '', creationdate = '') {
-        // TODO: Remove placeholder
-        var userid = '1';
-        
+    create(userid, challengename = 'Challengename', difficultyid = 1, categoryid = 0, tags = [], description = '', hint1= '', hint2 = '', hint3 = '', password = '', creationdate = '') {       
         var sql = 'INSERT INTO Challenge (ChallengeName, DifficultyID, CategoryID, Description, CreationDate, Solution, UserID) VALUES (?,?,?,?,?,?,?)';
         var statement = this._conn.prepare(sql);
 
@@ -142,14 +145,35 @@ class ChallengeDao {
         return newObj;
     }
 
-    update(id, challengename = '',  description = '', creationdate = '', solution = '', difficultyid = null) {
-        var sql = 'UPDATE Challenge SET Challengename=?, Description=?, CreationDate=?, Solution=?, CountryID=? WHERE ChallengeID=?)';
+    update(id, challengename = '',  description = '', solution = '', difficultyid = '', categoryid = '', tags = []) {
+        var sql = 'UPDATE Challenge SET Challengename=?, Description=?';
+        var params = [challengename, description];
+        if (!helper.isEmpty(solution)){
+            sql += ", Solution=?";
+            params.push(solution);
+        }
+        if (!helper.isEmpty(difficultyid)){
+            sql += ", DifficultyID=?";
+            params.push(difficultyid);
+        }
+        if (!helper.isEmpty(categoryid)){
+            sql += ", CategoryID=?";
+            params.push(categoryid);
+        }
+        sql += " WHERE ChallengeID=?";
+        params.push(id);
         var statement = this._conn.prepare(sql);
-        var params = [challengename, description, helper.formatToSQLDateTime(creationdate), solution, difficultyDao.loadById(result.difficultyid)];
         var result = statement.run(params);
 
         if (result.changes != 1)
             throw new Error('Could not update existing Record. Data: ' + params);
+
+        // Set tags
+        const challengetagDao = new ChallengeTagDao(this._conn);
+        challengetagDao.deleteByChallengeId(id);
+        tags.forEach(tag => {
+            challengetagDao.create(id, tag);
+        });
 
         var updatedObj = this.loadById(id);
         return updatedObj;

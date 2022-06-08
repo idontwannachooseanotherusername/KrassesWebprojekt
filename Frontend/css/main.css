@@ -814,9 +814,6 @@ select option{
     padding: 0;
     height: 8px;
 }
-#solved-rating::-webkit-slider-thumb {
-    /*-webkit-appearance: none;*/
-}
 #solved-stars{
     margin-bottom: 0;
 }
@@ -842,6 +839,14 @@ select option{
 .comment .ratings{
     margin-bottom: 20px;
     overflow: auto;
+}
+
+/*---------- Challengecreator ----------*/
+.editor-tag{
+    margin-right: 5px;
+}
+.editor-taglabel{
+    margin-right: 15px;
 }
 
 /*---------- FOOTER ----------*/
