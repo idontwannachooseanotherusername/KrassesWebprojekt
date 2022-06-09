@@ -59,7 +59,7 @@ function load_challenges(){
 
 function get_url_params(){
     var paramstring = window.location.href.split('?')[1];
-    if (paramstring === undefined){return}
+    if (paramstring === undefined){return {id: undefined};}
 
     var params = {};
     for (p of paramstring.split('&')){
@@ -459,7 +459,10 @@ function delete_challenge(){
 
 function load_challenge_editor(){
     var challengeid = get_url_params().id;
-    if (challengeid === undefined) {return;}
+    if (challengeid === undefined) {
+        load_challenge_editor_tags([]);
+        return
+    }
 
     $.ajax({
         url: 'http://localhost:8001/wba2api/challenge/get/unsterilized/' + challengeid,
@@ -476,31 +479,34 @@ function load_challenge_editor(){
         });
         $("#password").attr("placeholder", "unchanged");
         $("#password").removeAttr('required');
-
-        $.ajax({
-            url: 'http://localhost:8001/wba2api/tag/all',
-            method: 'get',
-            dataType: 'json'
-        }).done(function (response_tags) {
-            var tags_wrapper = $("#tags-wrapper")
-            for (var tag of response_tags.daten){
-                var checkbox = $(`<input class="editor-tag" name="tags[]" value=${tag.tagid} type="checkbox">`)
-                for (var challenge_tag of response.daten.tags){
-                    if (challenge_tag.tagid === tag.tagid){
-                        checkbox.attr("checked", "");
-                        break;
-                    }
-                }
-                tags_wrapper.append(checkbox);
-                tags_wrapper.append($(`<label class="editor-taglabel" for="tags[]">${tag.title}</label>`));
-            }
-        }).fail(function (jqXHR, statusText, error) {
-            console.log("Error fetching tags, reason: " + error);
-        });
         // TODO: Possibility to delete and upload files
+        load_challenge_editor_tags(response.daten.tags);
     }).fail(function (jqXHR, statusText, error) {
         console.log("Error fetching challenge, reason: " + error);
         if(jqXHR.status === 401){show_login_prompt();}
+    });
+}
+
+function load_challenge_editor_tags(tags){
+    $.ajax({
+        url: 'http://localhost:8001/wba2api/tag/all',
+        method: 'get',
+        dataType: 'json'
+    }).done(function (response_tags) {
+        var tags_wrapper = $("#tags-wrapper")
+        for (var tag of response_tags.daten){
+            var checkbox = $(`<input class="editor-tag" name="tags[]" value=${tag.tagid} type="checkbox">`)
+            for (var challenge_tag of tags){
+                if (challenge_tag.tagid === tag.tagid){
+                    checkbox.attr("checked", "");
+                    break;
+                }
+            }
+            tags_wrapper.append(checkbox);
+            tags_wrapper.append($(`<label class="editor-taglabel" for="tags[]">${tag.title}</label>`));
+        }
+    }).fail(function (jqXHR, statusText, error) {
+        console.log("Error fetching tags, reason: " + error);
     });
 }
 
