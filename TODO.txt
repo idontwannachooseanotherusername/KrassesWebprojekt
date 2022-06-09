@@ -1,6 +1,7 @@
 TODO (In this order)
 
--profile top right script forgotten on account page
+- profile top right script forgotten on account page
+- Alle Forms überdenken (z.B. return false gegen even.preventDefault() austauschen)
 
 - Implement json Webtoken
  -> (DONE) Check if user exists when logging in otherwise create new user and log it in
@@ -12,6 +13,8 @@ TODO (In this order)
  -> (DONE) Check for token when editing profile
  -> (DONE)Check for token when creating new challenge
      -> (DONE)redirect to login page when clicking on create and not logged in.
+ -> Do not set cookie via js
+ -> Login form without ajax call
  -> More checking needed?
 
 - DB stuff
@@ -34,10 +37,13 @@ TODO (In this order)
 
 - Finish implementing challengecreator
  -> Add file upload functionality
- -> Implement what is listed under KEEP IN MIND (Create entries in extra tables)
- -> Bring back Description Editor
+ -> (DONE) Implement what is listed under KEEP IN MIND (Create entries in extra tables)
+ -> (DONE) Bring back Description Editor
+ -> (DONE) Fix hint submitting
+ -> Show 400 errors to user
  -> Implement challenge editing
    - Possibility to delete uploaded files
+   - (DONE) Everything else
  -> (DONE) Implement creating and editing on same page with same api calls
 
 - Implement profile editing
