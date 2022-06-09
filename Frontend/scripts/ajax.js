@@ -383,7 +383,6 @@ function submit_challenge(){
             url += challengeid;
             method = "put";
         }
-        else{url += userid;}
 
         $.ajax({
             url: url,

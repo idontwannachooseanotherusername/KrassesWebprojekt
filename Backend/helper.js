@@ -41,6 +41,11 @@ module.exports.UserHasAccess = function(cookiestring){
     }
 }
 
+module.exports.SameUser = function (cookiestring, userid){
+    if (this.isEmpty(userid) || this.isEmpty(cookiestring)){return false;}
+    return (this.IdFromToken(cookiestring) === userid);
+}
+
 // Default image paths
 module.exports.defaultData = function(data) {
     path = "/images/default_data/";
