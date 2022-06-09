@@ -105,8 +105,8 @@
                                         </span>
                                         <span
                                         class="editor-btn icon smaller"
-                                        data-action="strikeThrough"
-                                        data-tag-name="strike"
+                                        data-action="delete"
+                                        data-tag-name="del"
                                         title="Strike through"
                                         >
                                         <img alt="strike through"
@@ -257,36 +257,36 @@
                                         />
                                         </span>
                                     </div>
-                                    </div>
-                                </div>
-                                <div class="content-area">
-                                    <div class="visuell-view" contenteditable></div>
-                                    <textarea id="description" name="description" class="html-view"></textarea>
                                 </div>
                             </div>
-                            <div class="modal">
-                                <div class="modal-bg"></div>
-                                    <div class="modal-wrapper">
-                                        <div class="close">✖</div>
-                                            <div class="modal-content" id="modalCreateLink">
-                                                <h3>Insert Link</h3>
-                                                <input type="text" id="linkValue"placeholder="Link (example: https://example.com)"/>
-                                                <div class="row">
-                                                    <input type="checkbox" id="new-tab" />
-                                                    <label for="new-tab">Open in new Tab?</label>
-                                                </div>
-                                                <div class="btn-primary done">Done</div>
+                            <div class="content-area">
+                                <div class="visuell-view" contenteditable></div>
+                                <textarea id="description" name="description" class="html-view"></textarea>
+                            </div>
+                        </div>
+                        <div class="modal">
+                            <div class="modal-bg"></div>
+                                <div class="modal-wrapper">
+                                    <div class="close">✖</div>
+                                        <div class="modal-content" id="modalCreateLink">
+                                            <h3>Insert Link</h3>
+                                            <input type="text" id="linkValue"placeholder="Link (example: https://example.com)"/>
+                                            <div class="row">
+                                                <input type="checkbox" id="new-tab" />
+                                                <label for="new-tab">Open in new Tab?</label>
+                                            </div>
+                                            <div class="btn-primary done">Done</div>
                                     </div>
                                 </div>
                             </div>
                         <div class="hints">
                             <h2>Hints</h2>
-                            <label for="hint-1"><h3>Hint 1</h3></label>
-                            <textarea id="hint-1" name="hint-1" placeholder="optional Hint"></textarea>
-                            <label for="hint-2"><h3>Hint 2</h3></label>
-                            <textarea id="hint-2" name="hint-2" placeholder="optional Hint"></textarea>
-                            <label for="hint-3"><h3>Hint 3</h3></label>
-                            <textarea id="hint-3" name="hint-3" placeholder="optional Hint"></textarea>
+                            <label for="hint1"><h3>Hint 1</h3></label>
+                            <textarea id="hint1" name="hint1" placeholder="optional Hint"></textarea>
+                            <label for="hint2"><h3>Hint 2</h3></label>
+                            <textarea id="hint2" name="hint2" placeholder="optional Hint"></textarea>
+                            <label for="hint3"><h3>Hint 3</h3></label>
+                            <textarea id="hint3" name="hint3" placeholder="optional Hint"></textarea>
                         </div>
                         <h2>Files</h2>
                         <label id="fileupload" for="files">Click here to upload files.</label>

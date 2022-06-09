@@ -131,7 +131,7 @@ class ChallengeDao {
         return false;
     }
 
-    create(userid, challengename = 'Challengename', difficultyid = 1, categoryid = 0, tags = [], description = '', hint1= '', hint2 = '', hint3 = '', password = '', creationdate = '') {       
+    create(userid, challengename = 'Challengename', difficultyid = 1, categoryid = 0, tags = [], description = '', password = '', creationdate = '') {       
         var sql = 'INSERT INTO Challenge (ChallengeName, DifficultyID, CategoryID, Description, CreationDate, Solution, UserID) VALUES (?,?,?,?,?,?,?)';
         var statement = this._conn.prepare(sql);
 
@@ -141,7 +141,7 @@ class ChallengeDao {
         if (result.changes != 1) 
             throw new Error('Could not insert new Record. Data: ' + params);
 
-        var newObj = this.loadById(result.lastInsertRowid);
+        var newObj = this.loadByIdUnsterilized(result.lastInsertRowid);
         return newObj;
     }
 

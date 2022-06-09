@@ -1,5 +1,7 @@
 const helper = require('../helper.js');
 const ChallengeDao = require('../dao/challengeDao.js');
+const HintDao = require('../dao/hintDao.js');
+const ChallengetagDao = require('../dao/challengetagDao.js');
 const express = require('express');
 const req = require('express/lib/request');
 const UserDao = require('../dao/userDao.js');
@@ -81,7 +83,7 @@ serviceRouter.get('/challenge/exists/:id', function(request, response) {
     }
 });
 
-serviceRouter.post('/challenge', function(request, response) {
+serviceRouter.post('/challenge/', function(request, response) {
     helper.log('Service Challenge: Client requested creation of new record');
     console.log(request.body);
 
@@ -110,14 +112,23 @@ serviceRouter.post('/challenge', function(request, response) {
         return;
     }
 
-    request.body.id = helper.IdFromToken(request.headers.cookie)
+    request.body.id = helper.IdFromToken(request.headers.cookie);
     request.body.creationdate = helper.getNow();
+    request.body.description = helper.Sanitize(request.body.description);
 
     const challengeDao = new ChallengeDao(request.app.locals.dbConnection);
+    const hintDao = new HintDao(request.app.locals.dbConnection);
+    const challengetagDao = new ChallengetagDao(request.app.locals.dbConnection);
     var b = request.body;
-    console.log(b);
+
     try {
-        var result = challengeDao.create(b.id, b.challengename, b.difficulty, b.categoryid, b.tags, b.description, b.hint1, b.hint2, b.hint3, b.password, b.creationdate);
+        hintDao.create(result.challengeid, 1, request.body.hint1);
+        hintDao.create(result.challengeid, 2, request.body.hint2);
+        hintDao.create(result.challengeid, 3, request.body.hint3);
+        for (var tagid of request.body.tags.substring(1).slice(0,-1).split(",")){
+            challengetagDao.create(result.challengeid, tagid);
+        }
+        var result = challengeDao.create(b.id, b.challengename, b.difficulty, b.categoryid, b.tags, b.description, b.password, b.creationdate);
         helper.log('Service Challenge: Record inserted');
         response.status(200).json(helper.jsonMsgOK(result));
     } catch (ex) {
@@ -139,14 +150,19 @@ serviceRouter.put('/challenge/:id', function(request, response) {
     if (helper.isEmpty(request.body.tags))
         errorMsgs.push('tags missing')
     if (errorMsgs.length > 0) {
-        helper.log('Service Challenge: Creation not possible, data missing');
+        helper.log('Service Challenge: Updating not possible, data missing: ' + errorMsgs);
         response.status(400).json(helper.jsonMsgError('Creation not possible, missing data: ' +
                                                       helper.concatArray(errorMsgs)));
         return;
     }
 
     const challengeDao = new ChallengeDao(request.app.locals.dbConnection);
+    const hintDao = new HintDao(request.app.locals.dbConnection);
+    request.body.description = helper.Sanitize(request.body.description);
     try {
+        hintDao.update(request.params.id, 1, request.body.hint1);
+        hintDao.update(request.params.id, 2, request.body.hint2);
+        hintDao.update(request.params.id, 3, request.body.hint3);
         var result = challengeDao.update(request.params.id, request.body.challengename, request.body.description,
                                          request.body.password, request.body.difficulty, request.body.categoryid,
                                          request.body.tags);

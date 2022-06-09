@@ -46,9 +46,8 @@ class HintDao {
             throw new Error('Hints are undefined from challengeid=' + challengeid);
         result = helper.arrayObjectKeysToLower(result);
 
-        var hints = {};
         for(var i=0; i< result.length; i++){
-            hints[result[i].class] = result[i].description;
+            delete result[i].challengeid;
         }
         return result;
     }
@@ -67,10 +66,18 @@ class HintDao {
         return result;
     }
 
-    create(description = '', cost = '',challengeid = null) {
-        var sql = 'INSERT INTO Hint (Description, Cost, ChallengeID) VALUES (?,?,?)';
+    create(challengeid, hintclass, description = '', cost) {
+        if (helper.isUndefined(cost)){
+            switch(hintclass){
+                case 1: cost = 0; break;
+                case 2: cost = 20; break;
+                case 3: cost = 50; break;
+            }
+        }
+
+        var sql = 'INSERT INTO Hint (Description, Class, Cost, ChallengeID) VALUES (?,?,?,?)';
         var statement = this._conn.prepare(sql);
-        var params = [description, cost, challengeDao.loadById(result.challengeid)];
+        var params = [description, hintclass, cost, challengeid];
         var result = statement.run(params);
 
         if (result.changes != 1)
@@ -80,17 +87,16 @@ class HintDao {
         return newObj;
     }
 
-    update(id, description = '', cost = '',challengeid = null) {
-        var sql = 'UPDATE Hint SET Description=?, Cost=? ,ChallengeID=? WHERE HintID=?';
+    update(challengeid, hintclass, description = '') {
+        var sql = 'UPDATE Hint SET Description=? WHERE ChallengeID=? AND Class=?';
         var statement = this._conn.prepare(sql);
-        var params = [description, cost, challengeid];
+        var params = [description, challengeid, hintclass];
         var result = statement.run(params);
 
-        if (result.changes != 1)
+        if (result.changes != 1){
             throw new Error('Could not update existing Record. Data: ' + params);
-
-        var updatedObj = this.loadById(id);
-        return updatedObj;
+            //return this.create(challengeid, hintclass, description);
+        }
     }
 
 

@@ -180,13 +180,7 @@ function load_challenge(){
             tag.appendChild(description);
             wrapper.appendChild(tag);
 
-            // challenge body
-            var challenge = document.getElementsByClassName("challenge-information")[0];
-            var description = document.createElement("div");
-            description.className = "challenge-text";
-            description.innerHTML = response.daten.description;
-            challenge.prepend(description);
-
+            $('.challenge-text')[0].innerHTML = response.daten.description;
         }
         // TODO: Files!
 
@@ -384,6 +378,8 @@ function submit_challenge(){
             method = "put";
         }
 
+        $('#description')[0].value = $('.visuell-view')[0].innerHTML;
+
         $.ajax({
             url: url,
             method: method,
@@ -473,13 +469,14 @@ function load_challenge_editor(){
         $("#challengename").val(response.daten.challengename);
         $("#difficulty").val(response.daten.difficulty.level);
         $("#category").val(response.daten.categoryid).change();
-        response.daten.hints.forEach(hint => {
-            $(`#hint-${hint.class}`).val(hint.description);
-        });
+        for (hint of response.daten.hints){
+            $(`#hint${hint.class}`).val(hint.description);
+        }
         $("#password").attr("placeholder", "unchanged");
         $("#password").removeAttr('required');
         // TODO: Possibility to delete and upload files
         load_challenge_editor_tags(response.daten.tags);
+        $(".visuell-view")[0].innerHTML = response.daten.description;
     }).fail(function (jqXHR, statusText, error) {
         console.log("Error fetching challenge, reason: " + error);
         if(jqXHR.status === 401){show_login_prompt();}
@@ -502,7 +499,7 @@ function load_challenge_editor_tags(tags){
                 }
             }
             tags_wrapper.append(checkbox);
-            tags_wrapper.append($(`<label class="editor-taglabel" for="tags[]">${tag.title}</label>`));
+            tags_wrapper.append($(`<label class="editor-tag" for="tags[]">${tag.title}</label>`));
         }
     }).fail(function (jqXHR, statusText, error) {
         console.log("Error fetching tags, reason: " + error);

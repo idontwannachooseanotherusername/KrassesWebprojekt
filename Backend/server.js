@@ -78,9 +78,6 @@ try {
     var serviceRouter = require('./services/challengefile.js');
     app.use(TOPLEVELPATH, serviceRouter);
 
-    var serviceRouter = require('./services/challengetag.js');
-    app.use(TOPLEVELPATH, serviceRouter);
-
     var serviceRouter = require('./services/challengecategory.js');
     app.use(TOPLEVELPATH, serviceRouter);
 

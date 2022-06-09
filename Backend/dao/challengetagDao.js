@@ -12,20 +12,37 @@ class ChallengeTagDao {
         return this._conn;
     }
 
-    loadById(id) {
-        var sql = 'SELECT * FROM ChallengeTag WHERE ChallengeTagID=?';
+    loadByTagId(id) {
+        var sql = 'SELECT * FROM ChallengeTag WHERE TagID=?';
         var statement = this._conn.prepare(sql);
-        var result = statement.get(id);
+        var result = statement.all(id);
 
         if (helper.isUndefined(result)) 
             throw new Error('No Record found by id=' + id);
 
         result = helper.objectKeysToLower(result);
-        const tagDao = new TagDao(request.app.locals.dbConnection);
+        const tagDao = new TagDao(this._conn);
 
-        result.tag = tagDao.loadById(result.tagid);
-        delete result.tagid;
+        for (var i = 0; i < result.length; i++){
+            result[i] = tagDao.loadById(result.tagid);
+        }
+        return result;
+    }
 
+    loadByChallengeId(id) {
+        var sql = 'SELECT * FROM ChallengeTag WHERE ChallengeID=?';
+        var statement = this._conn.prepare(sql);
+        var result = statement.all(id);
+
+        if (helper.isUndefined(result)) 
+            throw new Error('No Record found by id=' + id);
+
+        result = helper.objectKeysToLower(result);
+        const tagDao = new TagDao(this._conn);
+
+        for (var i = 0; i < result.length; i++){
+            result[i] = tagDao.loadById(result.tagid);
+        }
         return result;
     }
     

@@ -23,6 +23,8 @@ function init(){
     visuellView = contentArea.getElementsByClassName('visuell-view')[0];
     htmlView = contentArea.getElementsByClassName('html-view')[0];
     modal = document.getElementsByClassName('modal')[0];
+    // add copy to textarea event
+    // visuellView.addEventListener("DOMCharacterDataModified", textareaUpdate)
     // add active tag event
     document.addEventListener('selectionchange', selectionChange);
     // add paste event
@@ -51,6 +53,10 @@ function init(){
     }
 }
 
+function textareaUpdate(){
+  htmlView.value = visuellView.innerHTML;
+}
+
 /** 
  * This function toggles between visual and html view
  */
@@ -61,7 +67,7 @@ function execCodeAction(button, editor) {
     visuellView.style.display = 'block';
     button.classList.remove('active');     
   } else {  // show html view
-    htmlView.innerText = visuellView.innerHTML;
+    textareaUpdate();
     visuellView.style.display = 'none';
     htmlView.style.display = 'block';
     button.classList.add('active'); 
@@ -155,21 +161,17 @@ function restoreSelection(savedSel) {
 }
 /**
  * Sets the current selected format buttons active/inactive
- */ 
+ */
 function selectionChange(e) {
-  
-  for(let i = 0; i < buttons.length; i++) {
-    let button = buttons[i];
-    
+  /*for(let i = 0; i < buttons.length; i++) {
     // don't remove active class on code toggle button
-    if(button.dataset.action === 'toggle-code') continue;
-    
-    button.classList.remove('active');
+    if(buttons[i].dataset.action === 'toggle-code') {continue;}
+    //buttons[i].classList.remove('active');
   }
   
   if(!childOf(window.getSelection().anchorNode.parentNode, editor)) return false;
   
-  parentTagActive(window.getSelection().anchorNode.parentNode);
+  parentTagActive(window.getSelection().anchorNode.parentNode);*/
 }
 /**
  * Checks if the passed child has the passed parent

@@ -46,6 +46,30 @@ module.exports.SameUser = function (cookiestring, userid){
     return (this.IdFromToken(cookiestring) === userid);
 }
 
+module.exports.Sanitize = function (text){
+    var marker = null;
+    var sanitized = "";
+
+    for(var i=0; i<text.length; i++){       
+        if (text[i] == '<') {marker = i;}
+        else if (marker !== null){
+            if (text[i] == '>'){
+                var tag = text.substring(marker+1, i);
+                if (allowed(tag)){
+                    sanitized += '<' + tag + '>'
+                    marker = null;
+                }
+            }
+        }else{sanitized += text[i];}
+    }
+    return sanitized;
+}
+    
+function allowed(tag){
+    var list_allowed = ["p", "hr", "ol", "ul", "blockquote", "li", "b", "i", "u", "del", "br", "strike"];
+    return (list_allowed.includes(tag) || (tag[0] == '/' && list_allowed.includes(tag.substring(1))) );
+}
+
 // Default image paths
 module.exports.defaultData = function(data) {
     path = "/images/default_data/";
