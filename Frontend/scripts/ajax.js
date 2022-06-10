@@ -139,16 +139,15 @@ function load(site=""){
                 login_button.parentNode.href = "challengecreator.html";
             }
         }
-//        else{
-//            var login_button = document.getElementsByClassName("login-button")[0];
-//            if (login_button) {login_button.style.display = "initial";}
-//        }
         switch(site){
-            case "challenge": if (userid) {load_challenge(userid);} break;
-            case "challengeeditor": if (userid){load_challenge_editor(userid);} break;
+            case "challenge": if (userid) {load_challenge(userid);}
+            else {hide_loading();show_login_prompt();} break;
+            case "challengeeditor": if (userid){load_challenge_editor(userid);}
+            else {hide_loading();show_login_prompt();} break;
             case "challenges": load_challenges(); break;
             case "profile": load_profile(userid); break;
-            case "profileeditor": if (userid) {load_profile_editor(userid);} break;
+            case "profileeditor": if (userid) {load_profile_editor(userid);}
+            else {hide_loading();show_login_prompt();} break;
         }
     }).fail(function(jqXHR, statusText, error){
         console.log("Login check failed, reason: " + error + " | " + jqXHR.status);
@@ -348,11 +347,15 @@ function get_hint(hint){
 function load_profile(){
     var params = get_url_params();
     if (!userid) {
-        show_login_prompt();
-        return;
+        hide_loading();
     }
 
     if (params.id === undefined){
+        if (!userid) {
+            hide_loading();
+            show_login_prompt();
+            return;
+        }
         id = userid;
     }
     else{
