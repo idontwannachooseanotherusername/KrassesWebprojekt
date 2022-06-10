@@ -22,7 +22,7 @@ TODO (In this order)
  -> (DONE) Add all Tags
  -> (DONE) Add all Categories
 
-- Repair Hint fetching
+- (DONE) Repair Hint fetching
 
 - Implement challenge filter
  -> Level selection
