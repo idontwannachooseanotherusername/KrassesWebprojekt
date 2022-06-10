@@ -1,5 +1,6 @@
 const helper = require('../helper.js');
 const HintDao = require('../dao/hintDao.js');
+const ChallengeDao = require('../dao/challengeDao.js');
 const express = require('express');
 const req = require('express/lib/request');
 var serviceRouter = express.Router();
@@ -20,7 +21,7 @@ serviceRouter.get('/hint/get/:id', function(request, response) {
     }
 });
 
-serviceRouter.get('/hint/get-from-challenge/:class/:challengeid', function(request, response) {
+serviceRouter.get('/hint/get-from-challenge/:hintclass/:challengeid', function(request, response) {
     helper.log('Service Hint: Client requested one record, from challengeid=' + request.params.challengeid);
 
     if (!helper.UserHasAccess(request.headers.cookie)){
@@ -31,7 +32,7 @@ serviceRouter.get('/hint/get-from-challenge/:class/:challengeid', function(reque
 
     const hintDao = new HintDao(request.app.locals.dbConnection);
     try {
-        var result = hintDao.loadByChallengeId(request.params.class, request.params.challengeid);
+        var result = hintDao.loadByChallengeId(request.params.hintclass, request.params.challengeid, helper.IdFromToken(request.headers.cookie));
         helper.log('Service Hint: Record loaded');
         response.status(200).json(helper.jsonMsgOK(result));
     } catch (ex) {
@@ -40,8 +41,8 @@ serviceRouter.get('/hint/get-from-challenge/:class/:challengeid', function(reque
     }
 });
 
-serviceRouter.get('/hint/check/:id', function(request, response) {
-    helper.log('Service Hint: Client requested check, id=' + request.params.id);
+serviceRouter.get('/hint/check/challenge/:id', function(request, response) {
+    helper.log('Service Hint: Client requested check by challengeid=' + request.params.id);
 
     if (!helper.UserHasAccess(request.headers.cookie)){
         helper.logError('Service Hint: User not logged in.');
@@ -50,15 +51,24 @@ serviceRouter.get('/hint/check/:id', function(request, response) {
     }
 
     const hintDao = new HintDao(request.app.locals.dbConnection);
+    const challengeDao = new ChallengeDao(request.app.locals.dbConnection)
+    var result = challengeDao.loadByIdUnsterilized(request.params.id);
+    var userid = helper.IdFromToken(request.headers.cookie);
+    var creator = false;
+    if (userid == result.user.userid){
+        creator = true;
+    }
+
     try {
-        var result = hintDao.check(request.params.id);
-        helper.log('Service Hint: Check if record exists by id=' + request.params.id + ', result=' + result);
+        var result = hintDao.checkByChallengeId(request.params.id, helper.IdFromToken(request.headers.cookie), creator);
+        helper.log('Service Hint: Check hints by challengeid=' + request.params.id + ', result=' + result);
         response.status(200).json(helper.jsonMsgOK(result));
     } catch (ex) {
         helper.logError('Service Hint: Error checking if record exists. Exception occured: ' + ex.message);
         response.status(400).json(helper.jsonMsgError(ex.message));
     }
 });
+
 
 serviceRouter.post('/hint', function(request, response) {
     helper.log('Service Hint: Client requested creation of new record');

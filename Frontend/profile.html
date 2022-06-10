@@ -8,6 +8,7 @@
         <script type="text/javascript" src="scripts/main.js"></script>
         <script type="text/javascript" src="scripts/ajax.js"></script>
         <script type="text/javascript" src="scripts/jquery-3.6.0.min.js"></script>
+        <script>window.addEventListener("load", function(){load("profile");});</script>
     </head>
      
     <body>
@@ -18,9 +19,9 @@
             <nav class="main-menu">
                 <div class="wrapper">
                     <ul>
-                        <li><a href="index.html">Home</a></li>
-                        <li><a href="challenges.html">Challenges</a></li>
-                        <li class="active"><a href="#">Profile</a></li>
+                        <a href="index.html"><li>Home</li></a>
+                        <a href="challenges.html"><li>Challenges</li></a>
+                        <a href="login.html"><li class="login-button">Login</li></a>
                     </ul>
                 </div>
             </nav>
@@ -57,7 +58,6 @@
                 </article>
             </section>
         </main>
-        <script>load_profile()</script>
         <footer>
             <a class="btn-to-top" href="#">↑</a>
             <nav class="footer-menu">

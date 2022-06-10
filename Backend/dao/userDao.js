@@ -28,7 +28,7 @@ class UserDao {
         result = helper.objectKeysToLower(result);
 
         // Country and bio
-        if (!helper.isEmpty(result.bio)){
+        if (!helper.isEmpty(result.country)){
             result.country = countryDao.loadById(result.countryid).countryname;
         }
         else{
@@ -41,7 +41,7 @@ class UserDao {
         }
 
         // Get last 10 solved challenges
-        var sql = 'SELECT * FROM Solved';
+        var sql = 'SELECT * FROM Solved order by SolvedID desc limit 10';
         var statement = this._conn.prepare(sql);
         var result_solved = statement.all();
         var dt = helper.parseSQLDateTimeString(result_solved.ts);
@@ -67,7 +67,7 @@ class UserDao {
         // Get last 10 created challenges
         var created_list = [];
         for (var e of challengeDao.loadAll()){
-            if (e.userid == result.userid){
+            if (e.user.userid == result.userid){
                 created_list.push({
                     challengeid: e.challengeid,
                     challengename: e.challengename,

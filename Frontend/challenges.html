@@ -25,9 +25,9 @@
             <nav class="main-menu">
                 <div class="wrapper">
                     <ul>
-                        <li><a href="index.html">Home</a></li>
-                        <li class="active"><a href="#">Challenges</a></li>
-                        <li class="login-button"><a href="login.html">Login</a></li>
+                        <a href="index.html"><li>Home</li></a>
+                        <a href="#"><li class="active">Challenges</li></a>
+                        <a href="login.html"><li class="login-button">Login</li></a>
                     </ul>
                 </div>
             </nav>
@@ -37,20 +37,20 @@
                 <div class="challenge-search-wrapper">
                     <h1>Challenges</h1>
                     <div class="challenge-search">
-                        <input id="search-difficulty" max="9" min="1" type="number" placeholder="lvl">
-                        <input id="search-name" type="text" placeholder="name/id">
-                        <select id="search-category">
-                            <option value="all" selected>All categories</option>
-                            <option value="other">Other</option>
-                            <option value="math">Math</option>
-                            <option value="trivia">Trivia</option>
-                            <option value="logic">Logic</option>
-                            <option value="coding">Coding</option>
-                            <option value="cryptography">Cryptography</option>
-                            <option value="visual">Visual</option>
-                            <option value="auditorial">Auditorial</option>
-                            <option value="computer">Computer</option>
-                            <option value="physical">Physical</option>
+                        <input id="search-difficulty" max="9" min="0" type="number" placeholder="lvl" onchange="filter_challenges('level', this.value)">
+                        <input id="search-name" onkeyup="filter_challenges('name', this.value)" type="text" placeholder="name/id">
+                        <select id="search-category" onchange="filter_challenges('category', this.value)">
+                            <option value="" selected>All categories</option>
+                            <option value=10>Other</option>
+                            <option value=1>Math</option>
+                            <option value=2>Trivia</option>
+                            <option value=3>Logic</option>
+                            <option value=4>Coding</option>
+                            <option value=5>Cryptography</option>
+                            <option value=6>Visual</option>
+                            <option value=7>Auditorial</option>
+                            <option value=8>Computer</option>
+                            <option value=9>Physical</option>
                         </select>
                     </div>
                 </div>

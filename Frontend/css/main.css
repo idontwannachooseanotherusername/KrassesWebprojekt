@@ -53,7 +53,7 @@ main, section{
 
 /*---------- BUTTONS ----------*/
 .login-button.login-button{
-    display: none;
+    display: initial;
 }
 .btn-primary, .login-button{
     padding: 15px 35px;
@@ -783,9 +783,16 @@ select option{
     margin: 0 10px 20px 0;
 }
 .hint-text{
-    filter: blur(5px);
     padding: 20px;
     user-select: none;
+    color: #00e1c2;
+}
+.hint-text.preview{
+    filter: blur(5px);
+    color: white;
+}
+.hint-text.loaded{
+    color: white;
 }
 .warning{
     color: orange;
@@ -814,9 +821,6 @@ select option{
     padding: 0;
     height: 8px;
 }
-#solved-rating::-webkit-slider-thumb {
-    /*-webkit-appearance: none;*/
-}
 #solved-stars{
     margin-bottom: 0;
 }
@@ -842,6 +846,14 @@ select option{
 .comment .ratings{
     margin-bottom: 20px;
     overflow: auto;
+}
+
+/*---------- Challengecreator ----------*/
+.editor-tag{
+    margin-right: 5px;
+}
+.editor-taglabel{
+    margin-right: 15px;
 }
 
 /*---------- FOOTER ----------*/

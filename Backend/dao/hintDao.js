@@ -1,5 +1,5 @@
 const helper = require('../helper.js');
-const ChallengeDao = require('./challengeDao.js');
+const UserhintsDao = require('./userhintsDao');
 
 class HintDao {
 
@@ -26,44 +26,61 @@ class HintDao {
         return result;
     }
 
-    loadByChallengeId(classid, challengeid){
-        var sql = 'SELECT * FROM Hint WHERE ChallengeID=?';
-        var statement = this._conn.prepare(sql);
-        var result = statement.all(challengeid);
-
-        if (helper.isUndefined(result) || result === [] || result == '') 
-            throw new Error('No Record found by id=' + classid);
-
-        // TODO: Set that hint was used
-
-        console.log(result);
-        for (var e of result){
-            if (e.Class == classid){
-                return helper.objectKeysToLower(e);
+    loadByChallengeId(classid, challengeid, userid){
+        const userhintsDao = new UserhintsDao(this._conn);
+        var result = this.loadAllByChallengeId(challengeid);
+        for (var hint of result){
+            if (hint.class == classid){
+                userhintsDao.create(userid, hint.hintid);
+                return helper.objectKeysToLower(hint);
             }
         }
         
-        throw new Error('No Record found by id=' + id);
+        throw new Error('No Record found by id=' + challengeid);
     }
 
-    check(challengeid) {
+    loadAllByChallengeId(challengeid){
         var sql = 'SELECT * FROM Hint WHERE ChallengeID=?';
         var statement = this._conn.prepare(sql);
         var result = statement.all(challengeid);
 
-        if (helper.isUndefined(result)) 
-            throw new Error('No Record found by id=' + classid);
+        if (helper.isUndefined(result))
+            throw new Error('Hints are undefined from challengeid=' + challengeid);
+        result = helper.arrayObjectKeysToLower(result);
 
-        result = helper.objectKeysToLower(result);
-        // TODO: Set that hint was used
-
+        for(var i=0; i< result.length; i++){
+            delete result[i].challengeid;
+        }
         return result;
     }
 
-    create(description = '', cost = '',challengeid = null) {
-        var sql = 'INSERT INTO Hint (Description, Cost, ChallengeID) VALUES (?,?,?)';
+    checkByChallengeId(challengeid, userid, creator=false) {
+        var hints = this.loadAllByChallengeId(challengeid);
+        if (!creator){
+            const userhintsDao = new UserhintsDao(this._conn);
+            var userhints = userhintsDao.loadAllByUserId(userid);
+        }
+
+        var result = {};
+        for (var i = 0; i < hints.length; i++){
+            if (hints[i].description != "")
+                result[hints[i].class] = (creator || userhints.includes(hints[i].hintid));
+        }
+        return result;
+    }
+
+    create(challengeid, hintclass, description = '', cost) {
+        if (helper.isUndefined(cost)){
+            switch(hintclass){
+                case 1: cost = 0; break;
+                case 2: cost = 20; break;
+                case 3: cost = 50; break;
+            }
+        }
+
+        var sql = 'INSERT INTO Hint (Description, Class, Cost, ChallengeID) VALUES (?,?,?,?)';
         var statement = this._conn.prepare(sql);
-        var params = [description, cost, challengeDao.loadById(result.challengeid)];
+        var params = [description, hintclass, cost, challengeid];
         var result = statement.run(params);
 
         if (result.changes != 1)
@@ -73,17 +90,16 @@ class HintDao {
         return newObj;
     }
 
-    update(id, description = '', cost = '',challengeid = null) {
-        var sql = 'UPDATE Hint SET Description=?, Cost=? ,ChallengeID=? WHERE HintID=?';
+    update(challengeid, hintclass, description = '') {
+        var sql = 'UPDATE Hint SET Description=? WHERE ChallengeID=? AND Class=?';
         var statement = this._conn.prepare(sql);
-        var params = [description, cost, challengeid];
+        var params = [description, challengeid, hintclass];
         var result = statement.run(params);
 
-        if (result.changes != 1)
+        if (result.changes != 1){
             throw new Error('Could not update existing Record. Data: ' + params);
-
-        var updatedObj = this.loadById(id);
-        return updatedObj;
+            //return this.create(challengeid, hintclass, description);
+        }
     }
 
 

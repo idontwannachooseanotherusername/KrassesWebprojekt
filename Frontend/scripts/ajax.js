@@ -1,65 +1,107 @@
 // const { fail } = require("assert");
+var userid = false;
+var challenges = [];
 
-function load_challenges(){    
+function filter_challenges(field, value){
+    $(".challenge-wrapper").empty();
+
+    switch(field){
+        case "level":
+            if (value == 0){$("#search-difficulty").val("");}
+            
+            $(".challenge-wrapper").empty();
+            for (var challenge of challenges){
+                if (value == 0 || challenge.difficulty == value){
+                    create_challenge(challenge);
+                }
+            }
+            break;
+        case "name":
+            value = value.toLowerCase();
+            for (var challenge of challenges){
+                if (challenge.challengename.toLowerCase().includes(value) ||
+                    challenge.description.toLowerCase().includes(value) ||
+                    challenge.challengeid == value)
+                    create_challenge(challenge);
+            }
+            break;
+        case "category":
+            for (var challenge of challenges){
+                if (challenge.categoryid == value)
+                    create_challenge(challenge);
+            }
+            break;
+    }
+    
+}
+
+function load_challenges(){
     $.ajax({
         url: 'http://localhost:8001/wba2api/challenge/all',
         method: 'get',
         xhrFields: { withCredentials: true },
         dataType: 'json'
     }).done(function (response) {
-        var wrapper = document.getElementsByClassName('challenge-wrapper')[0];
         console.log('Number of challenges in db: ' + response.daten.length);
 
         // create challenges
         for (let i = 0; i < response.daten.length; i++) {
-            // link wrapper
-            let link = document.createElement("a");
-            link.href = "challenge.html?id=" + response.daten[i].challengeid;
-            
-            // challenge wrapper
-            let challenge = document.createElement("div");
-            challenge.className = "challenge";
-
-            // challenge color
-            let color = document.createElement("div");
-            color.className = `challenge-color level-${response.daten[i].difficulty}`;
-            let p = document.createElement("p");
-            p.innerHTML = `${response.daten[i].difficulty}`;
-            
-            color.appendChild(p);
-            challenge.appendChild(color);
-
-            // challenge image
-            let image = document.createElement("img");
-            image.className = "challenge-picture img-border";
-            image.src = response.daten[i].user.userimage;
-
-            challenge.appendChild(image);
-
-            // challenge description
-            let description = document.createElement("div");
-            description.className = "challenge-description";
-            let heading = document.createElement("h2");
-            heading.innerHTML = response.daten[i].challengename;
-            let text = document.createElement("p");
-            text.innerHTML = response.daten[i].description.split(' ').slice(0, 10).join(' ').slice(0, 150) + '...';
-            
-            description.appendChild(heading);
-            description.appendChild(text);
-            challenge.appendChild(description);
-
-            // add to link-wrapper to wrapper
-            link.appendChild(challenge);
-            wrapper.appendChild(link);
+            create_challenge(response.daten[i]);
+            challenges.push(response.daten[i]);
         }
+        hide_loading();
     }).fail(function (jqXHR, statusText, error) {
-        console.log("Could not load challenges");
+        console.log("Could not load challenges: " + error);
     });
+}
+
+function create_challenge(challenge_data){
+    var wrapper = document.getElementsByClassName('challenge-wrapper')[0];
+    
+    // link wrapper
+    let link = document.createElement("a");
+    link.href = "challenge.html?id=" + challenge_data.challengeid;
+    
+    // challenge wrapper
+    let challenge = document.createElement("div");
+    challenge.className = "challenge";
+
+    // challenge color
+    let color = document.createElement("div");
+    color.className = `challenge-color level-${challenge_data.difficulty}`;
+    let p = document.createElement("p");
+    p.innerHTML = `${challenge_data.difficulty}`;
+    
+    color.appendChild(p);
+    challenge.appendChild(color);
+
+    // challenge image
+    let image = document.createElement("img");
+    image.className = "challenge-picture img-border";
+    image.src = challenge_data.user.userimage;
+
+    challenge.appendChild(image);
+
+    // challenge description
+    let description = document.createElement("div");
+    description.className = "challenge-description";
+    let heading = document.createElement("h2");
+    heading.innerHTML = challenge_data.challengename;
+    let text = document.createElement("p");
+    text.innerHTML = challenge_data.description.split(' ').slice(0, 10).join(' ').slice(0, 150) + '...';
+    
+    description.appendChild(heading);
+    description.appendChild(text);
+    challenge.appendChild(description);
+
+    // add to link-wrapper to wrapper
+    link.appendChild(challenge);
+    wrapper.appendChild(link);
 }
 
 function get_url_params(){
     var paramstring = window.location.href.split('?')[1];
-    if (paramstring === undefined){return}
+    if (paramstring === undefined){return {id: undefined};}
 
     var params = {};
     for (p of paramstring.split('&')){
@@ -67,6 +109,11 @@ function get_url_params(){
         params[p_split[0]] = p_split[1];
     }
     return params;
+}
+
+function hide_loading(){
+    if ($("#loading"))
+        $("#loading").hide();
 }
 
 function user_logged_in(){
@@ -79,42 +126,37 @@ function user_logged_in(){
 }
 
 function load(site=""){
-    execute_if_logged_in(load_default);
-    switch(site){
-        case "challenge": execute_if_logged_in(load_challenge, true); break;
-        case "challengeeditor": execute_if_logged_in(load_challenge_editor, true); break;
-        case "challenges": load_challenges(); break;
-        case "profile": load_profile(); break;
-        case "profileeditor": execute_if_logged_in(load_profile_editor, true); break;
-    }
-}
+    user_logged_in().done(function (answer){
+        userid = answer.daten;
 
-function hide_loading(){
-    if ($("#loading"))
-        $("#loading").hide();
-}
+        if (userid) {
+            console.log("Logged in with ID = " + userid);
+            load_default(userid);
 
-function execute_if_logged_in(funct, show_prompt=false){
-    user_logged_in().done(function(response) {
-        console.log(response);
-        userid = response.daten;
-        if (!userid){
-            $("#loading").hide();
             var login_button = document.getElementsByClassName("login-button")[0];
-            if (login_button) {login_button.style.display = "initial";}
-            if (show_prompt){show_login_prompt();}
-            return;
+            if (login_button) {
+                login_button.innerHTML = "CREATE";
+                login_button.parentNode.href = "challengecreator.html";
+            }
         }
-        funct(userid);
-        hide_loading();
+        switch(site){
+            case "challenge": if (userid) {load_challenge(userid);}
+            else {hide_loading();show_login_prompt();} break;
+            case "challengeeditor": if (userid){load_challenge_editor(userid);}
+            else {hide_loading();show_login_prompt();} break;
+            case "challenges": load_challenges(); break;
+            case "profile": load_profile(userid); break;
+            case "profileeditor": if (userid) {load_profile_editor(userid);}
+            else {hide_loading();show_login_prompt();} break;
+        }
     }).fail(function(jqXHR, statusText, error){
-        console.log("Login check for execution failed, reason: " + error);
+        console.log("Login check failed, reason: " + error + " | " + jqXHR.status);
     });
 }
 
 function load_default(userid){
     $.ajax({
-        url: 'http://localhost:8001/wba2api/user/get/' + String(userid),
+        url: 'http://localhost:8001/wba2api/user/get/' + userid,
         method: 'get',
         dataType: 'json',
     }).done(function (response) {
@@ -133,7 +175,8 @@ function load_challenge(){
         method: 'get',
         xhrFields: { withCredentials: true },
         dataType: 'json'
-    }).done(function (response) {      
+    }).done(function (response) {   
+        load_hint_preview();
         console.log(response.daten); 
         // Heading
         var challenge = document.getElementsByClassName("challenge-attributes")[0];
@@ -161,9 +204,6 @@ function load_challenge(){
         var date = document.createElement("p");
         date.innerHTML = response.daten.creationdate;  // TODO: Only date, not time
         attributes[4].appendChild(date);
-        var rating = document.createElement("p");
-        rating.innerHTML = "⭐".repeat(response.daten.rating);
-        attributes[5].appendChild(rating);
 
         // Tags
         var wrapper = document.getElementsByClassName("tag-wrapper")[0];
@@ -180,19 +220,15 @@ function load_challenge(){
             tag.appendChild(description);
             wrapper.appendChild(tag);
 
-            // challenge body
-            var challenge = document.getElementsByClassName("challenge-information")[0];
-            var description = document.createElement("div");
-            description.className = "challenge-text";
-            description.innerHTML = response.daten.description;
-            challenge.prepend(description);
-
+            $('.challenge-text')[0].innerHTML = response.daten.description;
         }
+
         // TODO: Files!
 
-        // Editing tools if user owns challenge
-        if (user_logged_in().daten == response.daten.user.userid)
-            create_challenge_tools();
+        if (userid == response.daten.user.userid)
+            create_challenge_tools(challengeid);
+        
+        hide_loading();
     }).fail(function (jqXHR, statusText, error) {
         show_login_prompt();
     });
@@ -231,31 +267,52 @@ function create_usermenu(user){
     menu_bar.append(list);
 }
 
-function check_hints(){
+function load_hint_preview(){
     var challengeid = get_url_params().id;
     if (challengeid === undefined) {return};
 
     $.ajax({
-        url: 'http://localhost:8001/wba2api/hint/check/' + challengeid,
+        url: 'http://localhost:8001/wba2api/hint/check/challenge/' + challengeid,
         method: 'get',
         xhrFields: { withCredentials: true },
         dataType: 'json'
     }).done(function (response) {    
-        var unavailable = document.getElementsByClassName("hint-unavailable");
         var texts = document.getElementsByClassName("hint-text");
         var hints = document.getElementsByClassName("hint");
-        for (let e in response.daten){
-            texts[response.daten[e].Class - 1].innerHTML = "Voluptatem maiores amet quae. Aliquid quia ut exercitationem voluptatibus ut. Iure aut velit nisi.";
-            unavailable[response.daten[e].Class - 1].innerHTML = "";
-            hints[response.daten[e].Class - 1].onclick = function() {get_hint(response.daten[e].Class)};
+        for (var hintclass in response.daten){
+            texts[hintclass-1].innerHTML = "Voluptatem maiores amet quae. Aliquid quia ut exercitationem voluptatibus ut. Iure aut velit nisi.";
+            hints[hintclass-1].onclick = function() {get_hint(this)};
+            texts[hintclass-1].classList.add("preview");
+            if(response.daten[hintclass]){
+                load_hint(hintclass);
+            }
         }
     }).fail(function (jqXHR, statusText, error) {
     console.log("Error: " + error);
 });
 }
 
-function get_hint(id){
-    var hint = document.getElementsByClassName("hint")[id -1];
+function load_hint(hintclass){
+    var challengeid = get_url_params().id;
+    if (challengeid === undefined) {return};
+    $.ajax({
+        url: 'http://localhost:8001/wba2api/hint/get-from-challenge/' + hintclass + '/' + challengeid,
+        method: 'get',
+        xhrFields: { withCredentials: true },
+        dataType: 'json'
+    }).done(function (response) {
+        var description = $('.hint-text')[hintclass-1];
+        description.innerHTML = response.daten.description;
+        description.className = "hint-text loaded";
+        $('.hint')[hintclass-1].onclick = undefined;
+    }).fail(function (jqXHR, statusText, error) {
+        console.log('Response Code: ' + jqXHR.status + ' - Fehlermeldung: ' + jqXHR.responseText);
+        alert('An error occured.');
+    });
+}
+
+function get_hint(hint){
+    var hintclass = hint.id.substr(4);
     var text = hint.querySelector('.hint-text');
     if (text != undefined){
         /*Hint already visible*/
@@ -281,25 +338,7 @@ function get_hint(id){
                 hint.classList.remove("confirm")
                 
                 /*Get hint from server*/
-                var challengeid = get_url_params().id;
-                if (challengeid === undefined) {return};
-                $.ajax({
-                    url: 'http://localhost:8001/wba2api/hint/get-from-challenge/' + id + '/' + challengeid,
-                    method: 'get',
-                    xhrFields: { withCredentials: true },
-                    dataType: 'json'
-                }).done(function (response) {
-                    hint.lastChild.remove();
-                    text.innerHTML = response.daten.description;;
-                }).fail(function (jqXHR, statusText, error) {
-                    if (jqXHR.status == 401){
-                        alert('Not logged in!');
-                    }
-                    else{
-                        console.log('Response Code: ' + jqXHR.status + ' - Fehlermeldung: ' + jqXHR.responseText);
-                        alert('An error occured.');
-                    }
-                });
+                load_hint(hintclass);
             }
         }
     }
@@ -307,87 +346,96 @@ function get_hint(id){
 
 function load_profile(){
     var params = get_url_params();
+    if (!userid) {
+        hide_loading();
+    }
+
+    if (params.id === undefined){
+        if (!userid) {
+            hide_loading();
+            show_login_prompt();
+            return;
+        }
+        id = userid;
+    }
+    else{
+        id = params.id;
+    }
     $.ajax({
-        url: 'http://localhost:8001/wba2api/login_check',
+        url: 'http://localhost:8001/wba2api/user/get/' + id,
         method: 'get',
         xhrFields: { withCredentials: true },
         dataType: 'json'
-    }).done(function (r) {
-        if (params === undefined){
-            userid = r.daten;
+    }).done(function (response) {
+        console.log(response);
+        $('.user-name').html(response.daten.username);
+        $('#profile-description').html(response.daten.bio);
+        $('#profile-country').html(response.daten.country);
+        $('#profile-points').html(response.daten.points);
+
+        // Pfade anpassen
+        $('.img-border').attr("src", `${response.daten.picturepath}`);
+        $('.background').css("background-image", `url(${response.daten.bannerpath})`);
+
+        // solved and created challenges
+        var solved = document.getElementById("profile-solved");
+        var created = document.getElementById("profile-created");
+        for (var i = 0; i < response.daten.solved.length; i++){
+            var li = document.createElement("li");
+            var a = document.createElement("a");
+            a.href = "challenge.html?id=" + response.daten.solved[i].challengeid;
+            a.innerHTML = '(' + response.daten.solved[i].challengeid + ') ' + response.daten.solved[i].challengename;
+            li.appendChild(a);
+            solved.appendChild(li);
         }
-        else{
-            userid = params.id;
+        for (var i = 0; i < response.daten.created.length; i++){
+            var li = document.createElement("li");
+            var a = document.createElement("a");
+            a.href = "challenge.html?id=" + response.daten.created[i].challengeid;
+            a.innerHTML = '(' + response.daten.created[i].challengeid + ') ' + response.daten.created[i].challengename;
+            li.appendChild(a);
+            created.appendChild(li);
         }
-        $.ajax({
-            url: 'http://localhost:8001/wba2api/user/get/' + userid,
-            method: 'get',
-            xhrFields: { withCredentials: true },
-            dataType: 'json'
-        }).done(function (response) {
-            console.log(response);
-            $('.user-name').html(response.daten.username);
-            $('#profile-description').html(response.daten.bio);
-            $('#profile-country').html(response.daten.country);
-            $('#profile-points').html(response.daten.points);
-    
-            // Pfade anpassen
-            $('.img-border').attr("src", `${response.daten.picturepath}`);
-            $('.background').css("background-image", `url(${response.daten.bannerpath})`);
-    
-            // solved and created challenges
-            var solved = document.getElementById("profile-solved");
-            var created = document.getElementById("profile-created");
-            for (var i = 0; i < response.daten.solved.length; i++){
-                var li = document.createElement("li");
-                var a = document.createElement("a");
-                a.href = "challenge.html?id=" + response.daten.solved[i].challengeid;
-                a.innerHTML = '(' + response.daten.solved[i].challengeid + ') ' + response.daten.solved[i].challengename;
-                li.appendChild(a);
-                solved.appendChild(li);
-            }
-            for (var i = 0; i < response.daten.created.length; i++){
-                var li = document.createElement("li");
-                var a = document.createElement("a");
-                a.href = "challenge.html?id=" + response.daten.created[i].challengeid;
-                a.innerHTML = '(' + response.daten.created[i].challengeid + ') ' + response.daten.created[i].challengename;
-                li.appendChild(a);
-                created.appendChild(li);
-            }
-    
-            var h_solved = document.getElementById("solved-heading");
-            h_solved.innerHTML = `Created Challenges (${response.daten.solved.length})`;
-            var h_created = document.getElementById("created-heading");
-            h_created.innerHTML = `Created Challenges (${response.daten.created.length})`;
-            $("#loading").hide();
-        }).fail(function (jqXHR, statusText, error) {
-            console.log('Response Code: ' + jqXHR.status + ' - Fehlermeldung: ' + jqXHR.responseText);
-            alert('An error occured.');
-        });
+
+        var h_solved = document.getElementById("solved-heading");
+        h_solved.innerHTML = `Solved Challenges (${response.daten.solved.length})`;
+        var h_created = document.getElementById("created-heading");
+        h_created.innerHTML = `Created Challenges (${response.daten.created.length})`;
+        hide_loading();
     }).fail(function (jqXHR, statusText, error) {
-        window.location.replace("login.html");
+        console.log('Response Code: ' + jqXHR.status + ' - Fehlermeldung: ' + jqXHR.responseText);
+        alert('An error occured.');
     });
 }
 
 // Create challenge
-function submitChallenge(){
+function submit_challenge(){
+    var challengeid = get_url_params().id;
+    var url = "http://localhost:8001/wba2api/challenge/";
+    var method = "post";
+    if (challengeid !== undefined) {
+        url += challengeid;
+        method = "put";
+    }
+    $('#description')[0].value = $('.visuell-view')[0].innerHTML;
+
     $.ajax({
-        url: 'http://localhost:8001/wba2api/challenge',
-        method: 'post',
+        url: url,
+        method: method,
         dataType: 'json',
         data: $('form').serialize(),
         xhrFields: { withCredentials: true }
     }).done(function (response) {
         window.location.replace("challenge.html?id=" + response.daten.challengeid);
     }).fail(function (jqXHR, statusText, error) {
-        console.log("Could not create challenge, reason: " + error);
+        console.log("Could not upload challenge, reason: " + error);
         if(jqXHR.status === 401){show_login_prompt();}
     });
     return false;
 }
 
 // Create user or log in
-function submitUser(){
+function submit_user(){
     $.ajax({
         url: 'http://localhost:8001/wba2api/user',
         method: 'post',
@@ -405,19 +453,21 @@ function submitUser(){
 }
 
 // Challenge
-function create_challenge_tools(){
+function create_challenge_tools(challengeid){
     var tools = document.createElement("article");
     tools.className = "challenge-tools";
     var delete_button = document.createElement("div");
     delete_button.className = "btn-delete btn-challenge";
     delete_button.innerHTML = "delete";
+    var edit_link = document.createElement("a");
+    edit_link.href = "challengecreator.html?id=" + String(challengeid)
     var edit_button = document.createElement("div");
     edit_button.className = "btn-primary btn-challenge";
     edit_button.innerHTML = "edit";
+    edit_link.appendChild(edit_button);
     delete_button.onclick = function() {delete_challenge();}
-    edit_button.onclick = function() {edit_challenge();}
     var text = document.getElementsByClassName("challenge-site")[0];
-    tools.appendChild(edit_button);
+    tools.appendChild(edit_link);
     tools.appendChild(delete_button);
     text.appendChild(tools);
 }
@@ -441,44 +491,83 @@ function delete_challenge(){
 }
 
 function load_challenge_editor(){
-    // TODO: check if editing existing challenge and fill values if it that is the case
-}
+    var challengeid = get_url_params().id;
+    if (challengeid === undefined) {
+        load_challenge_editor_tags([]);
+        hide_loading();
+        return;
+    }
 
-function load_profile_editor(){
     $.ajax({
-        url: 'http://localhost:8001/wba2api/login_check',
+        url: 'http://localhost:8001/wba2api/challenge/get/unsterilized/' + challengeid,
         method: 'get',
         xhrFields: { withCredentials: true },
         dataType: 'json'
-    }).done(function (r) {
-        user_logged_in().done(function(response) {
-            userid = response.daten;
-            if (!userid){
-                if (show_prompt){show_login_prompt();}
-                return;
-            }
-
-            $.ajax({
-                url: 'http://localhost:8001/wba2api/user/get/' + userid,
-                method: 'get',
-                dataType: 'json'
-            }).done(function (r) {    
-                console.log(r);
-                document.getElementsByClassName("user-name")[0].innerHTML = r.daten.username;
-                document.getElementById("profile-name").value = r.daten.username;
-                document.getElementById("profile-bio").value = r.daten.bio;
-                document.getElementById("profile-country").value = r.daten.country;
-                $('.img-border').attr("src", `${r.daten.picturepath}`);
-                $('.background').css("background-image", `url(${r.daten.bannerpath})`);
-                $("#loading").hide();
-            }).fail(function (jqXHR, statusText, error) {
-                if(jqXHR.status === 401){show_login_prompt();}
-            });
-        }).fail(function(jqXHR, statusText, error){
-            console.log("Login check for execution failed, reason: " + error);
-        });
+    }).done(function (response) {
+        console.log(response.daten);
+        $("#challengename").val(response.daten.challengename);
+        $("#difficulty").val(response.daten.difficulty.level);
+        $("#category").val(response.daten.categoryid).change();
+        for (hint of response.daten.hints){
+            $(`#hint${hint.class}`).val(hint.description);
+        }
+        $("#password").attr("placeholder", "unchanged");
+        $("#password").removeAttr('required');
+        // TODO: Possibility to delete and upload files
+        load_challenge_editor_tags(response.daten.tags);
+        $(".visuell-view")[0].innerHTML = response.daten.description;
+        hide_loading();
     }).fail(function (jqXHR, statusText, error) {
-        console.log("Error: " + error);
+        console.log("Error fetching challenge, reason: " + error);
+        if(jqXHR.status === 401){show_login_prompt();}
+    });
+}
+
+function load_challenge_editor_tags(tags){
+    $.ajax({
+        url: 'http://localhost:8001/wba2api/tag/all',
+        method: 'get',
+        dataType: 'json'
+    }).done(function (response_tags) {
+        var tags_wrapper = $("#tags-wrapper")
+        for (var tag of response_tags.daten){
+            var checkbox = $(`<input class="editor-tag" name="tags[]" value=${tag.tagid} type="checkbox">`)
+            for (var challenge_tag of tags){
+                if (challenge_tag.tagid === tag.tagid){
+                    checkbox.attr("checked", "");
+                    break;
+                }
+            }
+            tags_wrapper.append(checkbox);
+            tags_wrapper.append($(`<label class="editor-tag" for="tags[]">${tag.title}</label>`));
+        }
+    }).fail(function (jqXHR, statusText, error) {
+        console.log("Error fetching tags, reason: " + error);
+    });
+}
+
+function load_profile_editor(){
+    if (!userid){
+        if (show_prompt){show_login_prompt();}
+        return;
+    }
+
+    $.ajax({
+        url: 'http://localhost:8001/wba2api/user/get/' + userid,
+        method: 'get',
+        dataType: 'json'
+    }).done(function (r) {    
+        console.log(r);
+        document.getElementsByClassName("user-name")[0].innerHTML = r.daten.username;
+        document.getElementById("profile-name").value = r.daten.username;
+        document.getElementById("profile-bio").value = r.daten.bio;
+        document.getElementById("profile-country").value = r.daten.country;
+        $('.img-border').attr("src", `${r.daten.picturepath}`);
+        $('.background').css("background-image", `url(${r.daten.bannerpath})`);
+        $("#loading").hide();
+        hide_loading();
+    }).fail(function (jqXHR, statusText, error) {
+        if(jqXHR.status === 401){show_login_prompt();}
     });
     return false;
 }
