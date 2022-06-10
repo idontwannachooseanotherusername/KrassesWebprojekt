@@ -783,9 +783,16 @@ select option{
     margin: 0 10px 20px 0;
 }
 .hint-text{
-    filter: blur(5px);
     padding: 20px;
     user-select: none;
+    color: #00e1c2;
+}
+.hint-text.preview{
+    filter: blur(5px);
+    color: white;
+}
+.hint-text.loaded{
+    color: white;
 }
 .warning{
     color: orange;
