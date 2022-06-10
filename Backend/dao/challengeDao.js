@@ -18,10 +18,16 @@ class ChallengeDao {
     }
 
     loadByIdUnsterilized(id) {
+        var result = this.loadById(id);
+        const hintDao = new HintDao(this._conn);
+        result.hints = hintDao.loadAllByChallengeId(id);
+        return result;
+    }
+
+    loadById(id){
         const difficultyDao = new DifficultyDao(this._conn);
         const challengetagDao = new ChallengeTagDao(this._conn);
         const categoryDao = new CategoryDao(this._conn);
-        const hintDao = new HintDao(this._conn);
 
         var sql = 'SELECT * FROM Challenge WHERE ChallengeID=?';
         var statement = this._conn.prepare(sql);
@@ -54,15 +60,8 @@ class ChallengeDao {
         delete result.difficultyid;
         result.tags = challengetagDao.loadByParent(result.challengeid);
         result.category = categoryDao.loadById(result.categoryid).title;
-        result.hints = hintDao.loadAllByChallengeId(id);
-        delete result.solution; // It is hashed and useless anyways
+        delete result.solution;
 
-        return result;
-    }
-
-    loadById(id){
-        var result = this.loadByIdUnsterilized(id);
-        delete result.hints;
         return result;
     }
 

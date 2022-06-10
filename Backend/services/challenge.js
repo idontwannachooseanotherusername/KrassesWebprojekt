@@ -122,13 +122,13 @@ serviceRouter.post('/challenge/', function(request, response) {
     var b = request.body;
 
     try {
+        var result = challengeDao.create(b.id, b.challengename, b.difficulty, b.categoryid, b.tags, b.description, b.password, b.creationdate);
         hintDao.create(result.challengeid, 1, request.body.hint1);
         hintDao.create(result.challengeid, 2, request.body.hint2);
         hintDao.create(result.challengeid, 3, request.body.hint3);
-        for (var tagid of request.body.tags.substring(1).slice(0,-1).split(",")){
+        for (var tagid of request.body.tags){
             challengetagDao.create(result.challengeid, tagid);
         }
-        var result = challengeDao.create(b.id, b.challengename, b.difficulty, b.categoryid, b.tags, b.description, b.password, b.creationdate);
         helper.log('Service Challenge: Record inserted');
         response.status(200).json(helper.jsonMsgOK(result));
     } catch (ex) {

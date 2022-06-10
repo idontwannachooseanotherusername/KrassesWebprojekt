@@ -1,5 +1,6 @@
 const helper = require('../helper.js');
 const HintDao = require('../dao/hintDao.js');
+const ChallengeDao = require('../dao/challengeDao.js');
 const express = require('express');
 const req = require('express/lib/request');
 var serviceRouter = express.Router();
@@ -50,8 +51,16 @@ serviceRouter.get('/hint/check/challenge/:id', function(request, response) {
     }
 
     const hintDao = new HintDao(request.app.locals.dbConnection);
+    const challengeDao = new ChallengeDao(request.app.locals.dbConnection)
+    var result = challengeDao.loadByIdUnsterilized(request.params.id);
+    var userid = helper.IdFromToken(request.headers.cookie);
+    var creator = false;
+    if (userid == result.user.userid){
+        creator = true;
+    }
+
     try {
-        var result = hintDao.checkByChallengeId(request.params.id, helper.IdFromToken(request.headers.cookie));
+        var result = hintDao.checkByChallengeId(request.params.id, helper.IdFromToken(request.headers.cookie), creator);
         helper.log('Service Hint: Check hints by challengeid=' + request.params.id + ', result=' + result);
         response.status(200).json(helper.jsonMsgOK(result));
     } catch (ex) {

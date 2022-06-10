@@ -54,14 +54,17 @@ class HintDao {
         return result;
     }
 
-    checkByChallengeId(challengeid, userid) {
-        const userhintsDao = new UserhintsDao(this._conn);
+    checkByChallengeId(challengeid, userid, creator=false) {
         var hints = this.loadAllByChallengeId(challengeid);
-        var userhints = userhintsDao.loadAllByUserId(userid);
+        if (!creator){
+            const userhintsDao = new UserhintsDao(this._conn);
+            var userhints = userhintsDao.loadAllByUserId(userid);
+        }
 
         var result = {};
         for (var i = 0; i < hints.length; i++){
-            result[hints[i].class] = (userhints.includes(hints[i].hintid));
+            if (hints[i].description != "")
+                result[hints[i].class] = (creator || userhints.includes(hints[i].hintid));
         }
         return result;
     }

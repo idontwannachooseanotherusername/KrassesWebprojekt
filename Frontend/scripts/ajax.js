@@ -1,4 +1,5 @@
 // const { fail } = require("assert");
+var userid = false;
 
 function load_challenges(){    
     $.ajax({
@@ -70,6 +71,11 @@ function get_url_params(){
     return params;
 }
 
+function hide_loading(){
+    if ($("#loading"))
+        $("#loading").hide();
+}
+
 function user_logged_in(){
     return $.ajax({
         url: 'http://localhost:8001/wba2api/login_check',
@@ -80,41 +86,28 @@ function user_logged_in(){
 }
 
 function load(site=""){
-    execute_if_logged_in(load_default);
-    switch(site){
-        case "challenge": execute_if_logged_in(load_challenge, true); break;
-        case "challengeeditor": execute_if_logged_in(load_challenge_editor, true); break;
-        case "challenges": load_challenges(); break;
-        case "profile": load_profile(); break;
-        case "profileeditor": execute_if_logged_in(load_profile_editor, true); break;
-    }
-}
+    user_logged_in().done(function (answer){
+        userid = answer.daten;
 
-function hide_loading(){
-    if ($("#loading"))
-        $("#loading").hide();
-}
-
-function execute_if_logged_in(funct, show_prompt=false){
-    user_logged_in().done(function(response) {
-        console.log(response);
-        userid = response.daten;
-        if (!userid){
-            $("#loading").hide();
-            var login_button = document.getElementsByClassName("login-button")[0];
-            if (login_button) {login_button.style.display = "initial";}
-            if (show_prompt){show_login_prompt();}
-            return;
+        if (userid) {
+            console.log("Logged in with ID = " + userid);
+            load_default(userid);
         }
-        funct(userid);
+        switch(site){
+            case "challenge": if (userid) {load_challenge(userid);} break;
+            case "challengeeditor": if (userid){load_challenge_editor(userid);} break;
+            case "challenges": load_challenges(); break;
+            case "profile": load_profile(userid); break;
+            case "profileeditor": if (userid) {load_profile_editor(userid);} break;
+        }
     }).fail(function(jqXHR, statusText, error){
-        console.log("Login check for execution failed, reason: " + error);
+        console.log("Login check failed, reason: " + error + " | " + jqXHR.status);
     });
 }
 
 function load_default(userid){
     $.ajax({
-        url: 'http://localhost:8001/wba2api/user/get/' + String(userid),
+        url: 'http://localhost:8001/wba2api/user/get/' + userid,
         method: 'get',
         dataType: 'json',
     }).done(function (response) {
@@ -183,12 +176,9 @@ function load_challenge(){
 
         // TODO: Files!
 
-        // Editing tools if user owns challenge
-        user_logged_in().done(function(r) {
-            console.log(r);
-            if (r.daten == response.daten.user.userid)
-                create_challenge_tools(challengeid);
-        });
+        if (userid == response.daten.user.userid)
+            create_challenge_tools(challengeid);
+        
         hide_loading();
     }).fail(function (jqXHR, statusText, error) {
         show_login_prompt();
@@ -307,94 +297,86 @@ function get_hint(hint){
 
 function load_profile(){
     var params = get_url_params();
+    if (!userid) {
+        show_login_prompt();
+        return;
+    }
+
+    if (params.id === undefined){
+        id = userid;
+    }
+    else{
+        id = params.id;
+    }
     $.ajax({
-        url: 'http://localhost:8001/wba2api/login_check',
+        url: 'http://localhost:8001/wba2api/user/get/' + id,
         method: 'get',
         xhrFields: { withCredentials: true },
         dataType: 'json'
-    }).done(function (r) {
-        if (params === undefined){
-            userid = r.daten;
+    }).done(function (response) {
+        console.log(response);
+        $('.user-name').html(response.daten.username);
+        $('#profile-description').html(response.daten.bio);
+        $('#profile-country').html(response.daten.country);
+        $('#profile-points').html(response.daten.points);
+
+        // Pfade anpassen
+        $('.img-border').attr("src", `${response.daten.picturepath}`);
+        $('.background').css("background-image", `url(${response.daten.bannerpath})`);
+
+        // solved and created challenges
+        var solved = document.getElementById("profile-solved");
+        var created = document.getElementById("profile-created");
+        for (var i = 0; i < response.daten.solved.length; i++){
+            var li = document.createElement("li");
+            var a = document.createElement("a");
+            a.href = "challenge.html?id=" + response.daten.solved[i].challengeid;
+            a.innerHTML = '(' + response.daten.solved[i].challengeid + ') ' + response.daten.solved[i].challengename;
+            li.appendChild(a);
+            solved.appendChild(li);
         }
-        else{
-            userid = params.id;
+        for (var i = 0; i < response.daten.created.length; i++){
+            var li = document.createElement("li");
+            var a = document.createElement("a");
+            a.href = "challenge.html?id=" + response.daten.created[i].challengeid;
+            a.innerHTML = '(' + response.daten.created[i].challengeid + ') ' + response.daten.created[i].challengename;
+            li.appendChild(a);
+            created.appendChild(li);
         }
-        $.ajax({
-            url: 'http://localhost:8001/wba2api/user/get/' + userid,
-            method: 'get',
-            xhrFields: { withCredentials: true },
-            dataType: 'json'
-        }).done(function (response) {
-            console.log(response);
-            $('.user-name').html(response.daten.username);
-            $('#profile-description').html(response.daten.bio);
-            $('#profile-country').html(response.daten.country);
-            $('#profile-points').html(response.daten.points);
-    
-            // Pfade anpassen
-            $('.img-border').attr("src", `${response.daten.picturepath}`);
-            $('.background').css("background-image", `url(${response.daten.bannerpath})`);
-    
-            // solved and created challenges
-            var solved = document.getElementById("profile-solved");
-            var created = document.getElementById("profile-created");
-            for (var i = 0; i < response.daten.solved.length; i++){
-                var li = document.createElement("li");
-                var a = document.createElement("a");
-                a.href = "challenge.html?id=" + response.daten.solved[i].challengeid;
-                a.innerHTML = '(' + response.daten.solved[i].challengeid + ') ' + response.daten.solved[i].challengename;
-                li.appendChild(a);
-                solved.appendChild(li);
-            }
-            for (var i = 0; i < response.daten.created.length; i++){
-                var li = document.createElement("li");
-                var a = document.createElement("a");
-                a.href = "challenge.html?id=" + response.daten.created[i].challengeid;
-                a.innerHTML = '(' + response.daten.created[i].challengeid + ') ' + response.daten.created[i].challengename;
-                li.appendChild(a);
-                created.appendChild(li);
-            }
-    
-            var h_solved = document.getElementById("solved-heading");
-            h_solved.innerHTML = `Solved Challenges (${response.daten.solved.length})`;
-            var h_created = document.getElementById("created-heading");
-            h_created.innerHTML = `Created Challenges (${response.daten.created.length})`;
-            hide_loading();
-        }).fail(function (jqXHR, statusText, error) {
-            console.log('Response Code: ' + jqXHR.status + ' - Fehlermeldung: ' + jqXHR.responseText);
-            alert('An error occured.');
-        });
+
+        var h_solved = document.getElementById("solved-heading");
+        h_solved.innerHTML = `Solved Challenges (${response.daten.solved.length})`;
+        var h_created = document.getElementById("created-heading");
+        h_created.innerHTML = `Created Challenges (${response.daten.created.length})`;
+        hide_loading();
     }).fail(function (jqXHR, statusText, error) {
-        window.location.replace("login.html");
+        console.log('Response Code: ' + jqXHR.status + ' - Fehlermeldung: ' + jqXHR.responseText);
+        alert('An error occured.');
     });
 }
 
 // Create challenge
 function submit_challenge(){
-    user_logged_in().done(function(response) {
-        userid = response.daten;
-        var challengeid = get_url_params().id;
-        var url = "http://localhost:8001/wba2api/challenge/";
-        var method = "post";
-        if (challengeid !== undefined) {
-            url += challengeid;
-            method = "put";
-        }
+    var challengeid = get_url_params().id;
+    var url = "http://localhost:8001/wba2api/challenge/";
+    var method = "post";
+    if (challengeid !== undefined) {
+        url += challengeid;
+        method = "put";
+    }
+    $('#description')[0].value = $('.visuell-view')[0].innerHTML;
 
-        $('#description')[0].value = $('.visuell-view')[0].innerHTML;
-
-        $.ajax({
-            url: url,
-            method: method,
-            dataType: 'json',
-            data: $('form').serialize(),
-            xhrFields: { withCredentials: true }
-        }).done(function (response) {
-            window.location.replace("challenge.html?id=" + response.daten.challengeid);
-        }).fail(function (jqXHR, statusText, error) {
-            console.log("Could not upload challenge, reason: " + error);
-            if(jqXHR.status === 401){show_login_prompt();}
-        });
+    $.ajax({
+        url: url,
+        method: method,
+        dataType: 'json',
+        data: $('form').serialize(),
+        xhrFields: { withCredentials: true }
+    }).done(function (response) {
+        window.location.replace("challenge.html?id=" + response.daten.challengeid);
+    }).fail(function (jqXHR, statusText, error) {
+        console.log("Could not upload challenge, reason: " + error);
+        if(jqXHR.status === 401){show_login_prompt();}
     });
     return false;
 }
@@ -459,7 +441,8 @@ function load_challenge_editor(){
     var challengeid = get_url_params().id;
     if (challengeid === undefined) {
         load_challenge_editor_tags([]);
-        return
+        hide_loading();
+        return;
     }
 
     $.ajax({
@@ -511,32 +494,27 @@ function load_challenge_editor_tags(tags){
 }
 
 function load_profile_editor(){
-    user_logged_in().done(function(response) {
-        userid = response.daten;
-        if (!userid){
-            if (show_prompt){show_login_prompt();}
-            return;
-        }
+    if (!userid){
+        if (show_prompt){show_login_prompt();}
+        return;
+    }
 
-        $.ajax({
-            url: 'http://localhost:8001/wba2api/user/get/' + userid,
-            method: 'get',
-            dataType: 'json'
-        }).done(function (r) {    
-            console.log(r);
-            document.getElementsByClassName("user-name")[0].innerHTML = r.daten.username;
-            document.getElementById("profile-name").value = r.daten.username;
-            document.getElementById("profile-bio").value = r.daten.bio;
-            document.getElementById("profile-country").value = r.daten.country;
-            $('.img-border').attr("src", `${r.daten.picturepath}`);
-            $('.background').css("background-image", `url(${r.daten.bannerpath})`);
-            $("#loading").hide();
-            hide_loading();
-        }).fail(function (jqXHR, statusText, error) {
-            if(jqXHR.status === 401){show_login_prompt();}
-        });
-    }).fail(function(jqXHR, statusText, error){
-        console.log("Login check failed, reason: " + error);
+    $.ajax({
+        url: 'http://localhost:8001/wba2api/user/get/' + userid,
+        method: 'get',
+        dataType: 'json'
+    }).done(function (r) {    
+        console.log(r);
+        document.getElementsByClassName("user-name")[0].innerHTML = r.daten.username;
+        document.getElementById("profile-name").value = r.daten.username;
+        document.getElementById("profile-bio").value = r.daten.bio;
+        document.getElementById("profile-country").value = r.daten.country;
+        $('.img-border').attr("src", `${r.daten.picturepath}`);
+        $('.background').css("background-image", `url(${r.daten.bannerpath})`);
+        $("#loading").hide();
+        hide_loading();
+    }).fail(function (jqXHR, statusText, error) {
+        if(jqXHR.status === 401){show_login_prompt();}
     });
     return false;
 }
