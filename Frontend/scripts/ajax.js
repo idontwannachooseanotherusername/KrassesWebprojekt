@@ -92,7 +92,17 @@ function load(site=""){
         if (userid) {
             console.log("Logged in with ID = " + userid);
             load_default(userid);
+
+            var login_button = document.getElementsByClassName("login-button")[0];
+            if (login_button) {
+                login_button.innerHTML = "CREATE";
+                login_button.parentNode.href = "challengecreator.html";
+            }
         }
+//        else{
+//            var login_button = document.getElementsByClassName("login-button")[0];
+//            if (login_button) {login_button.style.display = "initial";}
+//        }
         switch(site){
             case "challenge": if (userid) {load_challenge(userid);} break;
             case "challengeeditor": if (userid){load_challenge_editor(userid);} break;
