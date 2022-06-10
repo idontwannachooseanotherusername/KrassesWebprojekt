@@ -1,62 +1,102 @@
 // const { fail } = require("assert");
 var userid = false;
+var challenges = [];
 
-function load_challenges(){    
+function filter_challenges(field, value){
+    $(".challenge-wrapper").empty();
+
+    switch(field){
+        case "level":
+            if (value == 0){$("#search-difficulty").val("");}
+            
+            $(".challenge-wrapper").empty();
+            for (var challenge of challenges){
+                if (value == 0 || challenge.difficulty == value){
+                    create_challenge(challenge);
+                }
+            }
+            break;
+        case "name":
+            value = value.toLowerCase();
+            for (var challenge of challenges){
+                if (challenge.challengename.toLowerCase().includes(value) ||
+                    challenge.description.toLowerCase().includes(value) ||
+                    challenge.challengeid == value)
+                    create_challenge(challenge);
+            }
+            break;
+        case "category":
+            for (var challenge of challenges){
+                if (challenge.categoryid == value)
+                    create_challenge(challenge);
+            }
+            break;
+    }
+    
+}
+
+function load_challenges(){
     $.ajax({
         url: 'http://localhost:8001/wba2api/challenge/all',
         method: 'get',
         xhrFields: { withCredentials: true },
         dataType: 'json'
     }).done(function (response) {
-        var wrapper = document.getElementsByClassName('challenge-wrapper')[0];
         console.log('Number of challenges in db: ' + response.daten.length);
 
         // create challenges
         for (let i = 0; i < response.daten.length; i++) {
-            // link wrapper
-            let link = document.createElement("a");
-            link.href = "challenge.html?id=" + response.daten[i].challengeid;
-            
-            // challenge wrapper
-            let challenge = document.createElement("div");
-            challenge.className = "challenge";
-
-            // challenge color
-            let color = document.createElement("div");
-            color.className = `challenge-color level-${response.daten[i].difficulty}`;
-            let p = document.createElement("p");
-            p.innerHTML = `${response.daten[i].difficulty}`;
-            
-            color.appendChild(p);
-            challenge.appendChild(color);
-
-            // challenge image
-            let image = document.createElement("img");
-            image.className = "challenge-picture img-border";
-            image.src = response.daten[i].user.userimage;
-
-            challenge.appendChild(image);
-
-            // challenge description
-            let description = document.createElement("div");
-            description.className = "challenge-description";
-            let heading = document.createElement("h2");
-            heading.innerHTML = response.daten[i].challengename;
-            let text = document.createElement("p");
-            text.innerHTML = response.daten[i].description.split(' ').slice(0, 10).join(' ').slice(0, 150) + '...';
-            
-            description.appendChild(heading);
-            description.appendChild(text);
-            challenge.appendChild(description);
-
-            // add to link-wrapper to wrapper
-            link.appendChild(challenge);
-            wrapper.appendChild(link);
-            hide_loading();
+            create_challenge(response.daten[i]);
+            challenges.push(response.daten[i]);
         }
+        hide_loading();
     }).fail(function (jqXHR, statusText, error) {
-        console.log("Could not load challenges");
+        console.log("Could not load challenges: " + error);
     });
+}
+
+function create_challenge(challenge_data){
+    var wrapper = document.getElementsByClassName('challenge-wrapper')[0];
+    
+    // link wrapper
+    let link = document.createElement("a");
+    link.href = "challenge.html?id=" + challenge_data.challengeid;
+    
+    // challenge wrapper
+    let challenge = document.createElement("div");
+    challenge.className = "challenge";
+
+    // challenge color
+    let color = document.createElement("div");
+    color.className = `challenge-color level-${challenge_data.difficulty}`;
+    let p = document.createElement("p");
+    p.innerHTML = `${challenge_data.difficulty}`;
+    
+    color.appendChild(p);
+    challenge.appendChild(color);
+
+    // challenge image
+    let image = document.createElement("img");
+    image.className = "challenge-picture img-border";
+    image.src = challenge_data.user.userimage;
+
+    challenge.appendChild(image);
+
+    // challenge description
+    let description = document.createElement("div");
+    description.className = "challenge-description";
+    let heading = document.createElement("h2");
+    heading.innerHTML = challenge_data.challengename;
+    let text = document.createElement("p");
+    text.innerHTML = challenge_data.description.split(' ').slice(0, 10).join(' ').slice(0, 150) + '...';
+    
+    description.appendChild(heading);
+    description.appendChild(text);
+    challenge.appendChild(description);
+
+    // add to link-wrapper to wrapper
+    link.appendChild(challenge);
+    wrapper.appendChild(link);
 }
 
 function get_url_params(){

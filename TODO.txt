@@ -25,16 +25,17 @@ TODO (In this order)
  -> Rebuild with real data
 
 - (DONE) Repair Hint fetching
+- Show login prompt when not logged in
 
-- Implement challenge filter
- -> Level selection
- -> Name / ID search
- -> category (Replace text with IDs in HTML and add all Categories to DB)
- -> Filter should already work while typing (Nice to have)
+- (DONE) Implement challenge filter
+ -> (DONE) Level selection
+ -> (DONE) Name / ID search
+ -> (DONE) category (Replace text with IDs in HTML and add all Categories to DB)
+ -> (DONE) Filter should already work while typing (Nice to have)
 
 - Implement solution password button and checking of password
  -> Coins getting added
- -> Challenge makred as solved
+ -> Challenge marked as solved
  -> Visual feedback in challenges.html and challenge.html (Little star icon or something similar)
 
 - Finish implementing challengecreator
@@ -46,6 +47,7 @@ TODO (In this order)
  -> Implement challenge editing
    - Possibility to delete uploaded files
    - (DONE) Everything else
+ -> Add cancel button
  -> (DONE) Implement creating and editing on same page with same api calls
 
 - Implement profile editing
