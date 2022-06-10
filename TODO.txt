@@ -21,6 +21,8 @@ TODO (In this order)
  -> (DONE) Add all Difficulties in DB (ID = Level)
  -> (DONE) Add all Tags
  -> (DONE) Add all Categories
+ -> (DONE) Add Category other
+ -> Rebuild with real data
 
 - (DONE) Repair Hint fetching
 
