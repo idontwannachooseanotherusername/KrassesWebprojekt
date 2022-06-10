@@ -53,7 +53,7 @@ main, section{
 
 /*---------- BUTTONS ----------*/
 .login-button.login-button{
-    display: none;
+    display: initial;
 }
 .btn-primary, .login-button{
     padding: 15px 35px;
