@@ -29,10 +29,15 @@ serviceRouter.get('/hint/get-from-challenge/:hintclass/:challengeid', function(r
         response.status(401).json(helper.jsonMsgError('You need to be logged in to do that.'));
         return;
     }
+    var userid = helper.IdFromToken(request.headers.cookie);
 
     const hintDao = new HintDao(request.app.locals.dbConnection);
+    const challengeDao = new ChallengeDao(request.app.locals.dbConnection);
     try {
-        var result = hintDao.loadByChallengeId(request.params.hintclass, request.params.challengeid, helper.IdFromToken(request.headers.cookie));
+        var result = hintDao.loadByChallengeId(request.params.hintclass,
+                                               request.params.challengeid,
+                                               userid,
+                                               challengeDao.isSolved(userid, request.params.challengeid));
         helper.log('Service Hint: Record loaded');
         response.status(200).json(helper.jsonMsgOK(result));
     } catch (ex) {

@@ -13,25 +13,25 @@ class SolvedDao {
     }
 
     loadById(id) {
-        const challengeDao = new ChallengeDao(this._conn);
-        const userDao = new UserDao(this._conn);
-
         var sql = 'SELECT * FROM Solved WHERE SolvedID=?';
         var statement = this._conn.prepare(sql);
         var result = statement.get(id);
 
         if (helper.isUndefined(result)) 
-            throw new Error('No Record found by id=' + id);
+                throw new Error('Could not load Record by id=' + id);
+        
+        return helper.objectKeysToLower(result);
+    }
 
-        result = helper.objectKeysToLower(result);
+    loadByUserId(userid) {
+        var sql = 'SELECT * FROM Solved WHERE UserID=?';
+        var statement = this._conn.prepare(sql);
+        var result = statement.all(userid);
 
-        result.challengename = challengeDao.loadById(result.challengeid).challengename;
-        result.username = userDao.loadById(result.userid).username;
-
-        var dt = helper.parseSQLDateTimeString(result.ts);
-        result.ts = helper.formatToGermanDateTime(dt)
-
-        return result;
+        if (helper.isEmpty(result))
+            return result;
+        
+        return helper.arrayObjectKeysToLower(result);
     }
 
     loadAll() {;
@@ -84,7 +84,7 @@ class SolvedDao {
     }
 
     create(challengeid = '', userid = '',ts = '') {
-        var sql = 'INSERT INTO Solved (ChallengeID, UserID, Ts) VALUES (?,?,?)';
+        var sql = 'INSERT INTO Solved (ChallengeID, UserID, TS) VALUES (?,?,?)';
         var statement = this._conn.prepare(sql);
         var params = [challengeid, userid, helper.formatToSQLDateTime(ts)];
         var result = statement.run(params);

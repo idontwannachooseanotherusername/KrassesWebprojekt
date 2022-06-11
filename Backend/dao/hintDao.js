@@ -26,12 +26,15 @@ class HintDao {
         return result;
     }
 
-    loadByChallengeId(classid, challengeid, userid){
+    loadByChallengeId(classid, challengeid, userid, solved){
         const userhintsDao = new UserhintsDao(this._conn);
         var result = this.loadAllByChallengeId(challengeid);
         for (var hint of result){
             if (hint.class == classid){
-                userhintsDao.create(userid, hint.hintid);
+                if (!solved){
+                    userhintsDao.create(userid, hint.hintid);
+                    // TODO: Remove points
+                }
                 return helper.objectKeysToLower(hint);
             }
         }

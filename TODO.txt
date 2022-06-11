@@ -25,7 +25,10 @@ TODO (In this order)
  -> Rebuild with real data
 
 - (DONE) Repair Hint fetching
-- Show login prompt when not logged in
+- Remove points from user when getting hint
+- (DONE) Show login prompt when not logged in
+- Fix long text in Challenge preview
+- Fix first login always fails
 
 - (DONE) Implement challenge filter
  -> (DONE) Level selection
@@ -34,9 +37,9 @@ TODO (In this order)
  -> (DONE) Filter should already work while typing (Nice to have)
 
 - Implement solution password button and checking of password
- -> Coins getting added
- -> Challenge marked as solved
- -> Visual feedback in challenges.html and challenge.html (Little star icon or something similar)
+ -> Implement Coin adding
+ -> (DONE) Challenge marked as solved
+ -> Visual feedback in challenges.html and (DONE) challenge.html (Little star icon or something similar)
 
 - Finish implementing challengecreator
  -> Add file upload functionality

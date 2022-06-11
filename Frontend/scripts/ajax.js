@@ -141,13 +141,13 @@ function load(site=""){
         }
         switch(site){
             case "challenge": if (userid) {load_challenge(userid);}
-            else {hide_loading();show_login_prompt();} break;
+                else {hide_loading();show_login_prompt();} break;
             case "challengeeditor": if (userid){load_challenge_editor(userid);}
-            else {hide_loading();show_login_prompt();} break;
+                else {hide_loading();show_login_prompt();} break;
             case "challenges": load_challenges(); break;
             case "profile": load_profile(userid); break;
             case "profileeditor": if (userid) {load_profile_editor(userid);}
-            else {hide_loading();show_login_prompt();} break;
+                else {hide_loading();show_login_prompt();} break;
         }
     }).fail(function(jqXHR, statusText, error){
         console.log("Login check failed, reason: " + error + " | " + jqXHR.status);
@@ -176,7 +176,7 @@ function load_challenge(){
         xhrFields: { withCredentials: true },
         dataType: 'json'
     }).done(function (response) {   
-        load_hint_preview();
+        load_hint_preview(response.daten.solved);
         console.log(response.daten); 
         // Heading
         var challenge = document.getElementsByClassName("challenge-attributes")[0];
@@ -225,6 +225,12 @@ function load_challenge(){
 
         // TODO: Files!
 
+        if(response.daten.solved){
+            create_challenge_solved();
+            $('#solution').prop("disabled", true).prop("placeholder", "Already solved");
+            $('#solution-button').addClass("disabled").prop("onclick", "");
+        }
+
         if (userid == response.daten.user.userid)
             create_challenge_tools(challengeid);
         
@@ -267,7 +273,7 @@ function create_usermenu(user){
     menu_bar.append(list);
 }
 
-function load_hint_preview(){
+function load_hint_preview(solved){
     var challengeid = get_url_params().id;
     if (challengeid === undefined) {return};
 
@@ -283,7 +289,7 @@ function load_hint_preview(){
             texts[hintclass-1].innerHTML = "Voluptatem maiores amet quae. Aliquid quia ut exercitationem voluptatibus ut. Iure aut velit nisi.";
             hints[hintclass-1].onclick = function() {get_hint(this)};
             texts[hintclass-1].classList.add("preview");
-            if(response.daten[hintclass]){
+            if(response.daten[hintclass] || solved){
                 load_hint(hintclass);
             }
         }
@@ -327,6 +333,12 @@ function get_hint(hint){
             hint.appendChild(warning);
             text.classList.add("confirm");
             warning.classList.add("warning");
+
+            setTimeout(function() {
+                text.classList.remove("confirm");
+                warning.classList.remove("warning");
+                hint.removeChild(warning);
+            }, 5000);
         }
         /*Second click*/
         else{
@@ -472,6 +484,10 @@ function create_challenge_tools(challengeid){
     text.appendChild(tools);
 }
 
+function create_challenge_solved(){
+    $('.challenge-tags:first').after($('<article/>').addClass("challenge-solved").text("You solved this challenge!"));
+}
+
 function delete_challenge(){
     var challengeid = get_url_params().id;
     if (challengeid === undefined) {return};
@@ -597,4 +613,38 @@ function save_profile_editor(){
         console.log("Error: " + error);
     });
     return false;
+}
+
+function check_challenge_solution(){
+    var challengeid = get_url_params().id;
+    if (challengeid === undefined) {return;}
+
+    $.ajax({
+        url: 'http://localhost:8001/wba2api/challenge/solutioncheck/' + challengeid,
+        method: 'post',
+        dataType: 'json',
+        xhrFields: { withCredentials: true },
+        data: {"solution": $('#solution')[0].value}
+    }).done(function (response) {    
+        if (!response.daten){
+            show_wrong_solution();
+            return;
+        }
+        show_right_solution();
+    }).fail(function (jqXHR, statusText, error) {
+        console.log("Could not check solution, reason: " + error);
+        if(jqXHR.status === 401){show_login_prompt();}
+    });
+}
+
+function show_right_solution(){
+    $('#solution')[0].classList.remove("wrong");
+    window.location.reload(true);
+}
+
+function show_wrong_solution(){
+    $('#solution')[0].classList.remove("wrong");
+    window.setTimeout(function(){
+        $('#solution')[0].classList.add("wrong");
+    },500);
 }

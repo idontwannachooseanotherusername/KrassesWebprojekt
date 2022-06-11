@@ -492,7 +492,6 @@ main .teaser{
 }
 
 /*---------- PROFILE FORMS ----------*/
-/*General forms*/
 input, textarea, select, .form-element{
     background: #ffffff20;
     color: white;
@@ -640,7 +639,7 @@ select option{
 }
 .challenge-tags{
     clear: both;
-    margin: 0 auto;
+    margin: 0 auto 40px auto;
     overflow: auto;
 }
 .tag-wrapper{
@@ -690,7 +689,7 @@ select option{
     background: #ffffff20;
     border-radius: 7px;
     padding: 20px;
-    margin: 40px auto;
+    margin: 0 auto;
 }
 .challenge-information form h2{
     margin-bottom: 0;
@@ -721,34 +720,64 @@ select option{
 .challenge-information #files{
     display: none;
 }
-/* solution submit*/
-.solution h3{
+/* already solved */
+.challenge-solved{
+    margin: 0 auto 20px auto;
+    background-color: #007969;
+    padding: 20px;
+    border-radius: 3px;
+    text-align: center;
+}
+/* solution submit */
+.challenge-solution h3{
     margin-bottom: 0;
 }
-.solution input{
+.challenge-solution input{
     width: 100%;
+    max-width: 300px;
+    transition: 1s;
 }
-.solution div{
+.challenge-solution .wrong{
+    animation: solution_wrong 0.3s 2;
+}
+@keyframes solution_wrong {
+    0% {
+        background-color: #ffffff20;
+    }
+    50% {
+        background-color: #6c0129;
+    }
+    100% {
+        background-color: #ffffff20;
+    }
+}
+#solution-button{
     padding: 9px;
     background: #212121;
     color: white;
-    margin: 5px 5px 13px 30px;
-    margin-bottom: 13px;
+    margin-left: 5px;
     border-radius: 5px;
     cursor: pointer;
     width: 25px;
     height: 25px;
     text-align: center;
+    display: inline-block;
+    user-select: none;
 }
-.solution table{
-    max-width: 700px;
-    width: 70%;
+#solution-button.disabled{
+    cursor: not-allowed;
 }
 @media only screen and (max-width: 800px) {
-    .solution table{
-        width: 95%;
+    .challenge-solution input{
+        width: 80%;
     }
 }
+@media only screen and (max-width: 500px) {
+    .challenge-solution input{
+        width: 70%;
+    }
+}
+
 /*Text / Description*/
 .challenge-text p{
     margin-bottom: 40px;

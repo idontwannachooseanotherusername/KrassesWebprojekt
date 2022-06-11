@@ -89,7 +89,7 @@ module.exports.defaultData = function(data) {
 
 module.exports.isEmpty = function(val){
     var erg = (val === undefined || val === "" || val === null || val === '' || val === false);
-    if (!erg && val.isArray)
+    if (!erg && Array.isArray(val))
         erg = (val.length < 1)
     return erg
 }

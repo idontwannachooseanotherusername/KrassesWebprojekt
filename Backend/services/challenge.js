@@ -22,8 +22,8 @@ serviceRouter.get('/challenge/get/unsterilized/:id', function(request, response)
     try {
         var result = challengeDao.loadByIdUnsterilized(request.params.id);
         var userid = helper.IdFromToken(request.headers.cookie);
-        if (userid !== result.user.userid){
-            helper.logError('Service Challenge: User not logged in.');
+        if (userid !== result.user.userid || challengeDao.isSolved(userid, result.challengeid)){
+            helper.logError('Service Challenge: User not owner of challenge.');
             response.status(401).json(helper.jsonMsgError('You need to be the challengecreator to do that.'));
             return;
         }
@@ -47,6 +47,7 @@ serviceRouter.get('/challenge/get/:id', function(request, response) {
     const challengeDao = new ChallengeDao(request.app.locals.dbConnection);
     try {
         var result = challengeDao.loadById(request.params.id);
+        result.solved = challengeDao.isSolved(helper.IdFromToken(request.headers.cookie), request.params.id);
         helper.log('Service Challenge: Record loaded');
         response.status(200).json(helper.jsonMsgOK(result));
     } catch (ex) {
@@ -62,6 +63,25 @@ serviceRouter.get('/challenge/all/', function(request, response) {
     try {
         var result = challengeDao.loadAll();
         helper.log('Service Challenge: Records loaded, count=' + result.length);
+        response.status(200).json(helper.jsonMsgOK(result));
+    } catch (ex) {
+        helper.logError('Service Challenge: Error loading all records. Exception occured: ' + ex.message);
+        response.status(400).json(helper.jsonMsgError(ex.message));
+    }
+});
+
+serviceRouter.post('/challenge/solutioncheck/:id', function(request, response) {
+    helper.log('Service Challenge: Client requested solutioncheck');
+    if (!helper.UserHasAccess(request.headers.cookie)){
+        helper.logError('Service Challenge: User not logged in.');
+        response.status(401).json(helper.jsonMsgError('You need to be logged in to do that.'));
+        return;
+    }
+
+    const challengeDao = new ChallengeDao(request.app.locals.dbConnection);
+    try {
+        var result = challengeDao.checkSolution(request.params.id, helper.IdFromToken(request.headers.cookie), request.body.solution);
+        helper.log('Service Challenge: Solution checked, machtes: ' + result);
         response.status(200).json(helper.jsonMsgOK(result));
     } catch (ex) {
         helper.logError('Service Challenge: Error loading all records. Exception occured: ' + ex.message);

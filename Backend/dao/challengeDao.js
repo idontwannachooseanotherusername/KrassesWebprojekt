@@ -3,6 +3,7 @@ const DifficultyDao = require('./difficultyDao.js');
 const ChallengeTagDao = require('./challengetagDao.js');
 const CategoryDao = require('./categoryDao.js');
 const HintDao = require('./hintDao.js');
+const SolvedDao = require('./solvedDao.js');
 const md5 = require('md5');
 const { result } = require('lodash');
 const { param } = require('express/lib/request');
@@ -54,7 +55,8 @@ class ChallengeDao {
         }
         if (helper.isEmpty(result.user.userimage))
             result.user.userimage = helper.defaultData("profile");
-        delete result.userid;
+        
+            delete result.userid;
 
         result.difficulty = difficultyDao.loadById(result.difficultyid);
         delete result.difficultyid;
@@ -75,7 +77,7 @@ class ChallengeDao {
         var statement = this._conn.prepare(sql);
         var result = statement.all();
 
-        if (helper.isArrayEmpty(result))
+        if (helper.isEmpty(result))
             return [];
 
         result = helper.arrayObjectKeysToLower(result);
@@ -118,6 +120,38 @@ class ChallengeDao {
             delete result[i].solution;
         }
         return result;
+    }
+
+    checkSolution(challengeid, userid, entered){
+        var sql = 'SELECT Solution FROM Challenge WHERE ChallengeID=?';
+        var statement = this._conn.prepare(sql);
+        var result = statement.get(challengeid);
+
+        if (helper.isUndefined(result))
+            throw new Error('No Record found by id=' + id);
+
+        var correct = (md5(entered) === result.Solution)
+        if (!correct){return correct;}
+
+        const solvedDao = new SolvedDao(this._conn);
+        var tmp = solvedDao.loadByUserId(userid);
+        if (!solvedDao.loadByUserId(userid).includes(challengeid))
+            solvedDao.create(challengeid, userid, helper.getNow());
+        
+        return correct;
+    }
+
+    isSolved(userid, challengeid){
+        const solvedDao = new SolvedDao(this._conn);
+        var solved = solvedDao.loadByUserId(userid);
+        if (helper.isEmpty(solved))
+            return false;
+        
+        for (var s of solved){
+            if (s.challengeid == challengeid)
+                return true;
+        }
+        return false;
     }
 
     exists(id) {
