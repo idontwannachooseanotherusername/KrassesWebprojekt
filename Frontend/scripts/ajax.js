@@ -286,18 +286,22 @@ function load_hint_preview(solved){
         var texts = document.getElementsByClassName("hint-text");
         var hints = document.getElementsByClassName("hint");
         for (var hintclass in response.daten){
-            texts[hintclass-1].innerHTML = "Voluptatem maiores amet quae. Aliquid quia ut exercitationem voluptatibus ut. Iure aut velit nisi.";
+
             hints[hintclass-1].onclick = function() {get_hint(this)};
             texts[hintclass-1].classList.add("preview");
-            if(response.daten[hintclass] || solved){
+            if((!(Number.isInteger(response.daten[hintclass]))) || solved){
                 load_hint(hintclass);
+            }
+            else{
+                var hint_len = response.daten[hintclass];
+                var start = Math.floor(Math.random() * (guide_max_len - hint_len));
+                texts[hintclass-1].innerHTML = guide.substr(start,hint_len);
             }
         }
     }).fail(function (jqXHR, statusText, error) {
     console.log("Error: " + error);
-});
+    });
 }
-
 function load_hint(hintclass){
     var challengeid = get_url_params().id;
     if (challengeid === undefined) {return};
