@@ -412,6 +412,7 @@ main .teaser{
 }
 .challenge-description{
     padding: 20px;
+    word-break: break-word;
 }
 .challenge-description h2{
     margin-top: 0;
@@ -821,6 +822,7 @@ select option{
     color: white;
 }
 .hint-text.loaded{
+    word-break: break-word;
     color: white;
 }
 .warning{
