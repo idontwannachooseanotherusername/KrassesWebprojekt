@@ -1,5 +1,6 @@
 const helper = require('../helper.js');
 const UserhintsDao = require('./userhintsDao');
+const UserDao = require('./usersDao');
 
 class HintDao {
 
@@ -28,12 +29,20 @@ class HintDao {
 
     loadByChallengeId(classid, challengeid, userid, solved){
         const userhintsDao = new UserhintsDao(this._conn);
+        const userDao = new UserDao(this._conn);
+
+        var user = userDao.loadById(userid);
+        var hint = this.loadAllByChallengeId(challengeid)[classid-1];
+
         var result = this.loadAllByChallengeId(challengeid);
         for (var hint of result){
             if (hint.class == classid){
                 if (!solved){
+                    if (user.points - hint.cost < 0) {
+                        throw new Error('Not enough point to buy hint from challenge: ' + challengeid);
+                    }
                     userhintsDao.create(userid, hint.hintid);
-                    // TODO: Remove points
+                    userDao.update_points(user.points - hint.cost);
                 }
                 return helper.objectKeysToLower(hint);
             }

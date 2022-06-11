@@ -29,6 +29,7 @@ TODO (In this order)
 - (DONE) Show login prompt when not logged in
 - Fix long text in Challenge preview
 - Fix first login always fails
+- Show error if user does not have enough point to buy hint
 
 - (DONE) Implement challenge filter
  -> (DONE) Level selection
