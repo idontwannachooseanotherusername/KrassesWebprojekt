@@ -1,38 +1,66 @@
-// const { fail } = require("assert");
 var userid = false;
 var challenges = [];
 
-function filter_challenges(field, value){
+function filter_challenges(){
     $(".challenge-wrapper").empty();
+    var filtered_challenges = [...challenges];
+    var fields = {};
+    var filtered_len = filtered_challenges.length;
 
-    switch(field){
-        case "level":
-            if (value == 0){$("#search-difficulty").val("");}
-            
-            $(".challenge-wrapper").empty();
-            for (var challenge of challenges){
-                if (value == 0 || challenge.difficulty == value){
-                    create_challenge(challenge);
-                }
+    if($('#search-difficulty').val())
+        fields.level = $('#search-difficulty').val();
+    if($('#search-name').val())
+        fields.name = $('#search-name').val();
+    if($('#search-category').val())
+        fields.category = $('#search-category').val();
+
+    if ("level" in fields){
+        var value = fields.level;
+        if (value == 0){$("#search-difficulty").val("");}
+        var i=0;
+        while(i<filtered_len){
+            if (filtered_challenges[i].difficulty != value && value != 0){
+                filtered_challenges.splice(i,1);
+                filtered_len--;
             }
-            break;
-        case "name":
-            value = value.toLowerCase();
-            for (var challenge of challenges){
-                if (challenge.challengename.toLowerCase().includes(value) ||
-                    challenge.description.toLowerCase().includes(value) ||
-                    challenge.challengeid == value)
-                    create_challenge(challenge);
+            else{
+                i++;
             }
-            break;
-        case "category":
-            for (var challenge of challenges){
-                if (challenge.categoryid == value)
-                    create_challenge(challenge);
-            }
-            break;
+        }
     }
-    
+
+    if ("name" in fields){
+        var value = fields.name.toLowerCase();
+        var i=0;
+        while(i<filtered_len){
+            if (!(filtered_challenges[i].challengename.toLowerCase().includes(value) ||
+                filtered_challenges[i].description.toLowerCase().includes(value) ||
+                filtered_challenges[i].challengeid == value)){
+                filtered_challenges.splice(i,1);
+                filtered_len--;
+            }
+            else{
+                i++;
+            }
+        }
+    }
+
+    if ("category" in fields){
+        var value = fields.category;
+        var i=0;
+        while(i<filtered_len){
+            if (!(filtered_challenges[i].categoryid == value)){
+                filtered_challenges.splice(i,1);
+                filtered_len--;
+            }
+            else{
+                i++;
+            }
+        }
+    }
+    for (challenge of filtered_challenges){
+        create_challenge(challenge);
+    }
 }
 
 function load_challenges(){

@@ -37,9 +37,9 @@
                 <div class="challenge-search-wrapper">
                     <h1>Challenges</h1>
                     <div class="challenge-search">
-                        <input id="search-difficulty" max="9" min="0" type="number" placeholder="lvl" onchange="filter_challenges('level', this.value)">
-                        <input id="search-name" onkeyup="filter_challenges('name', this.value)" type="text" placeholder="name/id">
-                        <select id="search-category" onchange="filter_challenges('category', this.value)">
+                        <input id="search-difficulty" max="9" min="0" type="number" placeholder="lvl" onchange="filter_challenges()">
+                        <input id="search-name" onkeyup="filter_challenges()" type="text" placeholder="name/id">
+                        <select id="search-category" onchange="filter_challenges()">
                             <option value="" selected>All categories</option>
                             <option value=10>Other</option>
                             <option value=1>Math</option>

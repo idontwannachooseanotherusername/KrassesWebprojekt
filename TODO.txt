@@ -10,9 +10,6 @@ TODO (In this order)
 - Fix first login always fails
 - Show error if user does not have enough point to buy hint
 
-- Implement challenge filter
- -> Filter should combine search point (all math level 9)
-
 - Implement solution password button and checking of password
  -> Visual feedback in challenges.html and (DONE) challenge.html (Little star icon or something similar)
 
