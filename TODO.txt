@@ -6,10 +6,9 @@ TODO (In this order)
 - Implement json Webtoken
  -> Do not set cookie via js
  -> Login form without ajax call
- -> More checking needed?
+ -> More checking needed? (FINAL)
 
 - Fix first login always fails
-- Show error if user does not have enough point to buy hint
 
 - Implement solution password button and checking of password
  -> Visual feedback in challenges.html and (DONE) challenge.html (Little star icon or something similar)
@@ -26,13 +25,11 @@ TODO (In this order)
    - Create Banner and Image for deleted user
 
 - Implement challenge editing
- -> load current information into fields
- -> keep in mind stuff
  -> Add file upload
+ -> load current files into fields
+ -> Uploaded files should be renamed to their hash value to avoid name conflicts
+  and to make sure we aren't saving the same image over and over again
 
-- Block Login page when already logged in (Redirect to profile)
-
-- Maybe decide whether to use jQuery or plain js
 - When getting challenge via ajax: Pass category as object and not only as id
 
 FINAL
@@ -61,18 +58,5 @@ FINAL
 - Test in Firefox and Chrome (Brave)
 - Have at least 3 "real" users
 - Create at least one real challenge per difficulty Level
+- Maybe decide whether to use jQuery or plain js
 
-NICE TO HAVE
-- Implement comment writing
-- Implement rating when writing a comment (user can only write one comment)
-- Implement comment editing
--
-
-KEEP IN MIND
-- Login form is used for loging in AND signing upload
-- When creating (or changing) a challenge a lot of entries have to be made in other tables
- -> ChallengeTag
- -> ChallengeFile
- -> ...
-- Uploaded files should be renamed to their hash value to avoid name conflicts
-  and to make sure we aren't saving the same image over and over again
