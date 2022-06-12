@@ -619,6 +619,26 @@ function save_profile_editor(){
     return false;
 }
 
+function delete_profile(){
+    /*
+    var userid = get_url_params().id;
+    if (userid === undefined) {return};
+    if (! window.confirm('Are you sure?')){return;}
+
+    $.ajax({
+        url: 'http://localhost:8001/wba2api/user/'
+        method: 'delete',
+        xhrFields: { withCredentials: true },
+        dataType: 'json'
+    }).done(function (response) {
+        alert("User deleted successfully!");
+        window.location.replace("index.html");
+    }).fail(function (jqXHR, statusText, error) {
+        alert("Error deleting user!\n\n" + error);
+    });*/
+    return false;
+}
+
 function check_challenge_solution(){
     var challengeid = get_url_params().id;
     if (challengeid === undefined) {return;}

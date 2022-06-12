@@ -25,7 +25,6 @@ TODO (In this order)
  -> Show 400 errors to user
  -> Implement challenge editing
    - Possibility to delete uploaded files
- -> Add cancel button
 
 - Implement profile editing
  -> Add delete account button
