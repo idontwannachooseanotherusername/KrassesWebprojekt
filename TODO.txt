@@ -19,6 +19,7 @@ TODO (In this order)
    - Possibility to delete uploaded files
 
 - Implement profile editing
+ - Updating is Bugged
  -> Add delete account button
    - Don't delete challenges from user
    - Create Banner and Image for deleted user
