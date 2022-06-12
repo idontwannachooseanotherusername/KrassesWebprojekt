@@ -113,6 +113,7 @@ main, section{
     box-shadow: 0 0 9px #00000020;
     transition: 0.3s;
     cursor: pointer;
+    margin-left: 20px;
 }
 .btn-delete:hover{
     scale: 1.05;
@@ -125,7 +126,6 @@ main, section{
 .btn-challenge{
     width: 50px;
     float: left;
-    margin-right: 20px;
 }
 
 /*---------- NAVIGATION ----------*/
@@ -684,6 +684,9 @@ select option{
 }
 .challenge-tag p{
     margin: 0;
+}
+.challenge-information{
+    word-break: break-word;
 }
 .challenge-information, .challenge-comments{
     clear: both;
