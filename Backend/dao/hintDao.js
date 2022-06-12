@@ -1,6 +1,5 @@
 const helper = require('../helper.js');
-const UserhintsDao = require('./userhintsDao');
-const UserDao = require('./usersDao');
+const UserhintsDao = require('./userhintsDao.js');
 
 class HintDao {
 
@@ -28,10 +27,17 @@ class HintDao {
     }
 
     loadByChallengeId(classid, challengeid, userid, solved){
-        const userhintsDao = new UserhintsDao(this._conn);
-        const userDao = new UserDao(this._conn);
 
-        var user = userDao.loadById(userid);
+        var sql = 'SELECT * FROM User WHERE UserID=?';
+        var statement = this._conn.prepare(sql);
+        var result = statement.get(id);
+
+        if (helper.isUndefined(result)) 
+            throw new Error('No Record found by id=' + id);
+
+        user = helper.objectKeysToLower(result);
+        
+
         var hint = this.loadAllByChallengeId(challengeid)[classid-1];
 
         var result = this.loadAllByChallengeId(challengeid);
