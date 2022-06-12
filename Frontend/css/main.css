@@ -528,28 +528,34 @@ select option{
     cursor: pointer;
 }
 .change-banner{
-    position:relative;
+    position:absolute;
     display:inline-block;
-    opacity: 0.3;
     left: 15px;
     top: -115px;
+    position: relative;
+    opacity: 0.7;
+    text-shadow: 0 0 10px black;
+    filter: grayscale(1);
+    font-size: large;
 }
 .change-banner:hover{
-    opacity: 0.7;
+    opacity: 1;
 }
 .change-picture input[type="file"]{
     display: none;
-
 }
 .change-picture label{
     cursor: pointer;
     left: 70px;
     top: -45px;;
     position: relative;
-    opacity: 0.3;
+    opacity: 0.7;
+    text-shadow: 0 0 10px black;
+    filter: grayscale(1);
+    font-size: large;
 }
 .change-picture label:hover{
-    opacity: 0.7;
+    opacity: 1;
 }
 
 /*---------- PROFILE ----------*/
