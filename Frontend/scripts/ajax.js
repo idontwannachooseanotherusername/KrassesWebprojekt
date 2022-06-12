@@ -5,6 +5,7 @@ function filter_challenges(){
     $(".challenge-wrapper").empty();
     var filtered_challenges = [...challenges];
     var fields = {};
+    var filtered_len = filtered_challenges.length;
 
     if($('#search-difficulty').val())
         fields.level = $('#search-difficulty').val();
@@ -16,27 +17,45 @@ function filter_challenges(){
     if ("level" in fields){
         var value = fields.level;
         if (value == 0){$("#search-difficulty").val("");}
-        
-        for (var challenge of filtered_challenges){
-            if (challenge.difficulty != value && value != 0){
-                filtered_challenges.splice(filtered_challenges.indexOf(challenge),1);
+        var i=0;
+        while(i<filtered_len){
+            if (filtered_challenges[i].difficulty != value && value != 0){
+                filtered_challenges.splice(i,1);
+                filtered_len--;
+            }
+            else{
+                i++;
             }
         }
     }
+
     if ("name" in fields){
         var value = fields.name.toLowerCase();
-        for (var challenge of filtered_challenges){
-            if (!(challenge.challengename.toLowerCase().includes(value) ||
-                challenge.description.toLowerCase().includes(value) ||
-                challenge.challengeid == value))
-                filtered_challenges.splice(filtered_challenges.indexOf(challenge),1);
+        var i=0;
+        while(i<filtered_len){
+            if (!(filtered_challenges[i].challengename.toLowerCase().includes(value) ||
+                filtered_challenges[i].description.toLowerCase().includes(value) ||
+                filtered_challenges[i].challengeid == value)){
+                filtered_challenges.splice(i,1);
+                filtered_len--;
+            }
+            else{
+                i++;
+            }
         }
     }
+
     if ("category" in fields){
         var value = fields.category;
-        for (var challenge of filtered_challenges){
-            if (!(challenge.categoryid == value))
-            filtered_challenges.splice(filtered_challenges.indexOf(challenge),1);
+        var i=0;
+        while(i<filtered_len){
+            if (!(filtered_challenges[i].categoryid == value)){
+                filtered_challenges.splice(i,1);
+                filtered_len--;
+            }
+            else{
+                i++;
+            }
         }
     }
     for (challenge of filtered_challenges){
