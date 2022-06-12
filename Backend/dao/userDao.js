@@ -134,7 +134,7 @@ class UserDao {
         var statement = this._conn.prepare(sql);
         var result = statement.get(username);
 
-        if (result == undefined){return false};
+        if (result == undefined || result.Deleted == 1){return false};
         return helper.arrayObjectKeysToLower(result);
     }
 
@@ -192,23 +192,18 @@ class UserDao {
 
         var statement = this._conn.prepare(sql);
         var result = statement.run(params);
-        if (result.changes != 1) 
+        if (result.changes != 1)
             throw new Error('Could not update existing Record with given data: ' + params);
     }
 
     delete(id) {
-        try {
-            var sql = 'DELETE FROM User WHERE UserID=?';
-            var statement = this._conn.prepare(sql);
-            var result = statement.run(id);
+        var sql = 'UPDATE User SET Username=?,Bio=?,PicturePath=?,BannerPath=?,CountryID=?, Password=?, Deleted=? WHERE UserID=?';
+        var params = ["Deleted User", "deleted", helper.defaultData("profile_d"), helper.defaultData("banner_d"), null, "", 1, id];
+        var statement = this._conn.prepare(sql);
+        var result = statement.run(params);
 
-            if (result.changes != 1) 
-                throw new Error('Could not delete Record by id=' + id);
-
-            return true;
-        } catch (ex) {
-            throw new Error('Could not delete Record by id=' + id + '. Reason: ' + ex.message);
-        }
+        if (result.changes != 1) 
+            throw new Error('Could not delete user with given data: ' + params);
     }
 
     toString() {
