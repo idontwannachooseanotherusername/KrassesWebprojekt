@@ -27,33 +27,18 @@ class HintDao {
     }
 
     loadByChallengeId(classid, challengeid, userid, solved){
-
-        var sql = 'SELECT * FROM User WHERE UserID=?';
-        var statement = this._conn.prepare(sql);
-        var result = statement.get(id);
-
-        if (helper.isUndefined(result)) 
-            throw new Error('No Record found by id=' + id);
-
-        user = helper.objectKeysToLower(result);
-        
-
+        const userhintsDao = new UserhintsDao(this._conn);
         var hint = this.loadAllByChallengeId(challengeid)[classid-1];
 
         var result = this.loadAllByChallengeId(challengeid);
         for (var hint of result){
             if (hint.class == classid){
                 if (!solved){
-                    if (user.points - hint.cost < 0) {
-                        throw new Error('Not enough point to buy hint from challenge: ' + challengeid);
-                    }
                     userhintsDao.create(userid, hint.hintid);
-                    userDao.update_points(user.points - hint.cost);
                 }
                 return helper.objectKeysToLower(hint);
             }
         }
-        
         throw new Error('No Record found by id=' + challengeid);
     }
 
