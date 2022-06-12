@@ -1,5 +1,5 @@
 const helper = require('../helper.js');
-const UserhintsDao = require('./userhintsDao');
+const UserhintsDao = require('./userhintsDao.js');
 
 class HintDao {
 
@@ -26,16 +26,19 @@ class HintDao {
         return result;
     }
 
-    loadByChallengeId(classid, challengeid, userid){
+    loadByChallengeId(classid, challengeid, userid, solved){
         const userhintsDao = new UserhintsDao(this._conn);
+        var hint = this.loadAllByChallengeId(challengeid)[classid-1];
+
         var result = this.loadAllByChallengeId(challengeid);
         for (var hint of result){
             if (hint.class == classid){
-                userhintsDao.create(userid, hint.hintid);
+                if (!solved){
+                    userhintsDao.create(userid, hint.hintid);
+                }
                 return helper.objectKeysToLower(hint);
             }
         }
-        
         throw new Error('No Record found by id=' + challengeid);
     }
 

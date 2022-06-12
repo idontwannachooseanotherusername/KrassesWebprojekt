@@ -113,6 +113,7 @@ main, section{
     box-shadow: 0 0 9px #00000020;
     transition: 0.3s;
     cursor: pointer;
+    margin-left: 20px;
 }
 .btn-delete:hover{
     scale: 1.05;
@@ -121,11 +122,10 @@ main, section{
     color: white;
     transition: all ease-in-out 0.3s;
 }
-
 .btn-challenge{
     width: 50px;
     float: left;
-    margin-right: 20px;
+    margin-top: 20px;
 }
 
 /*---------- NAVIGATION ----------*/
@@ -412,6 +412,7 @@ main .teaser{
 }
 .challenge-description{
     padding: 20px;
+    word-break: break-word;
 }
 .challenge-description h2{
     margin-top: 0;
@@ -492,7 +493,6 @@ main .teaser{
 }
 
 /*---------- PROFILE FORMS ----------*/
-/*General forms*/
 input, textarea, select, .form-element{
     background: #ffffff20;
     color: white;
@@ -528,28 +528,34 @@ select option{
     cursor: pointer;
 }
 .change-banner{
-    position:relative;
+    position:absolute;
     display:inline-block;
-    opacity: 0.3;
     left: 15px;
     top: -115px;
+    position: relative;
+    opacity: 0.7;
+    text-shadow: 0 0 10px black;
+    filter: grayscale(1);
+    font-size: large;
 }
 .change-banner:hover{
-    opacity: 0.7;
+    opacity: 1;
 }
 .change-picture input[type="file"]{
     display: none;
-
 }
 .change-picture label{
     cursor: pointer;
     left: 70px;
     top: -45px;;
     position: relative;
-    opacity: 0.3;
+    opacity: 0.7;
+    text-shadow: 0 0 10px black;
+    filter: grayscale(1);
+    font-size: large;
 }
 .change-picture label:hover{
-    opacity: 0.7;
+    opacity: 1;
 }
 
 /*---------- PROFILE ----------*/
@@ -640,7 +646,7 @@ select option{
 }
 .challenge-tags{
     clear: both;
-    margin: 0 auto;
+    margin: 0 auto 40px auto;
     overflow: auto;
 }
 .tag-wrapper{
@@ -685,12 +691,15 @@ select option{
 .challenge-tag p{
     margin: 0;
 }
+.challenge-information{
+    word-break: break-word;
+}
 .challenge-information, .challenge-comments{
     clear: both;
     background: #ffffff20;
     border-radius: 7px;
     padding: 20px;
-    margin: 40px auto;
+    margin: 0 auto;
 }
 .challenge-information form h2{
     margin-bottom: 0;
@@ -721,34 +730,64 @@ select option{
 .challenge-information #files{
     display: none;
 }
-/* solution submit*/
-.solution h3{
+/* already solved */
+.challenge-solved{
+    margin: 0 auto 20px auto;
+    background-color: #007969;
+    padding: 20px;
+    border-radius: 3px;
+    text-align: center;
+}
+/* solution submit */
+.challenge-solution h3{
     margin-bottom: 0;
 }
-.solution input{
+.challenge-solution input{
     width: 100%;
+    max-width: 300px;
+    transition: 1s;
 }
-.solution div{
+.challenge-solution .wrong{
+    animation: solution_wrong 0.3s 2;
+}
+@keyframes solution_wrong {
+    0% {
+        background-color: #ffffff20;
+    }
+    50% {
+        background-color: #6c0129;
+    }
+    100% {
+        background-color: #ffffff20;
+    }
+}
+#solution-button{
     padding: 9px;
     background: #212121;
     color: white;
-    margin: 5px 5px 13px 30px;
-    margin-bottom: 13px;
+    margin-left: 5px;
     border-radius: 5px;
     cursor: pointer;
     width: 25px;
     height: 25px;
     text-align: center;
+    display: inline-block;
+    user-select: none;
 }
-.solution table{
-    max-width: 700px;
-    width: 70%;
+#solution-button.disabled{
+    cursor: not-allowed;
 }
 @media only screen and (max-width: 800px) {
-    .solution table{
-        width: 95%;
+    .challenge-solution input{
+        width: 80%;
     }
 }
+@media only screen and (max-width: 500px) {
+    .challenge-solution input{
+        width: 70%;
+    }
+}
+
 /*Text / Description*/
 .challenge-text p{
     margin-bottom: 40px;
@@ -792,6 +831,7 @@ select option{
     color: white;
 }
 .hint-text.loaded{
+    word-break: break-word;
     color: white;
 }
 .warning{

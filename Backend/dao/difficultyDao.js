@@ -18,9 +18,7 @@ class DifficultyDao {
         if (helper.isUndefined(result)) 
             throw new Error('No Record found by id=' + id);
 
-        result = helper.objectKeysToLower(result);
-
-        return result;
+        return helper.objectKeysToLower(result);
     }
 
     loadAll() {;

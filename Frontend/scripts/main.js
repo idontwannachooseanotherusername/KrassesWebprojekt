@@ -65,6 +65,10 @@ function logout(){
     window.location.replace("index.html");
 }
 
+function cancel_challenge_edit(){
+    window.location.replace("challenges.html");
+}
+
 // Onload functions
 window.addEventListener("load", function(){
     //load();

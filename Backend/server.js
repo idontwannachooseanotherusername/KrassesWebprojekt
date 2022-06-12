@@ -60,9 +60,6 @@ try {
     var serviceRouter = require('./services/user.js');
     app.use(TOPLEVELPATH, serviceRouter);
 
-    var serviceRouter = require('./services/user.js');
-    app.use(TOPLEVELPATH, serviceRouter);
-
     var serviceRouter = require('./services/country.js');
     app.use(TOPLEVELPATH, serviceRouter);
 

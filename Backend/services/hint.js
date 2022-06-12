@@ -29,10 +29,15 @@ serviceRouter.get('/hint/get-from-challenge/:hintclass/:challengeid', function(r
         response.status(401).json(helper.jsonMsgError('You need to be logged in to do that.'));
         return;
     }
+    var userid = helper.IdFromToken(request.headers.cookie);
 
     const hintDao = new HintDao(request.app.locals.dbConnection);
+    const challengeDao = new ChallengeDao(request.app.locals.dbConnection);
     try {
-        var result = hintDao.loadByChallengeId(request.params.hintclass, request.params.challengeid, helper.IdFromToken(request.headers.cookie));
+        var result = hintDao.loadByChallengeId(request.params.hintclass,
+                                               request.params.challengeid,
+                                               userid,
+                                               challengeDao.isSolved(userid, request.params.challengeid));
         helper.log('Service Hint: Record loaded');
         response.status(200).json(helper.jsonMsgOK(result));
     } catch (ex) {
@@ -52,15 +57,22 @@ serviceRouter.get('/hint/check/challenge/:id', function(request, response) {
 
     const hintDao = new HintDao(request.app.locals.dbConnection);
     const challengeDao = new ChallengeDao(request.app.locals.dbConnection)
-    var result = challengeDao.loadByIdUnsterilized(request.params.id);
+    var challenge = challengeDao.loadByIdUnsterilized(request.params.id);
     var userid = helper.IdFromToken(request.headers.cookie);
     var creator = false;
-    if (userid == result.user.userid){
+    if (userid == challenge.user.userid){
         creator = true;
     }
 
     try {
         var result = hintDao.checkByChallengeId(request.params.id, helper.IdFromToken(request.headers.cookie), creator);
+
+        for (var i = 0; i < challenge.hints.length; i++){
+            if (!result[challenge.hints[i].class]){
+                result[challenge.hints[i].class] = challenge.hints[i].description.length ;
+            }
+        }
+
         helper.log('Service Hint: Check hints by challengeid=' + request.params.id + ', result=' + result);
         response.status(200).json(helper.jsonMsgOK(result));
     } catch (ex) {

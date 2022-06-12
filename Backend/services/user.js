@@ -172,15 +172,22 @@ serviceRouter.put('/user/update/:id', function(request, response) {
     }    
 });
 
-serviceRouter.delete('/user/:id', function(request, response) {
+serviceRouter.delete('/user/', function(request, response) {
     helper.log('Service User: Client requested deletion of record, id=' + request.params.id);
 
+    if (!helper.UserHasAccess(request.headers.cookie)){
+        helper.logError('Service Challenge: User not logged in.');
+        response.status(401).json(helper.jsonMsgError('You need to be logged in to do that.'));
+        return;
+    }
+
     const userDao = new UserDao(request.app.locals.dbConnection);
+    userid = helper.IdFromToken(request.headers.cookie);
+
     try {
-        var obj = userDao.loadById(request.params.id);
-        userDao.delete(request.params.id);
-        helper.log('Service User: Deletion of record successfull, id=' + request.params.id);
-        response.status(200).json(helper.jsonMsgOK({ 'gelöscht': true, 'eintrag': obj }));
+        userDao.delete(userid);
+        helper.log('Service User: Deletion of record successfull, id=' + userid);
+        response.status(200).json(helper.jsonMsgOK({ 'gelöscht': true, 'userid':  userid}));
     } catch (ex) {
         helper.logError('Service User: Error deleting record. Exception occured: ' + ex.message);
         response.status(400).json(helper.jsonMsgError(ex.message));
