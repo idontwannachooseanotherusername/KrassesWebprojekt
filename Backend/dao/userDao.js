@@ -165,16 +165,6 @@ class UserDao {
         return webtoken.generate(username, newObj.userid);
     }
 
-    update_points(userid, points=0){
-        var sql = 'UPDATE User SET Points=? WHERE UserID=?';
-        var params = [points, userid];
-        var statement = this._conn.prepare(sql);
-        var result = statement.run(params);
-
-        if (result.changes != 1) 
-            throw new Error('Could not update existing Record with given data: ' + params);
-    }
-
     update_data(id, username = '', bio = '', picturepath = '', bannerpath = '', countryid = '') {
         var old_data = this.loadById(id);
         if (helper.isEmpty(username)){username = old_data.username;}

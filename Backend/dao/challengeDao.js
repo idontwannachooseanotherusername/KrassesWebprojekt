@@ -4,6 +4,7 @@ const ChallengeTagDao = require('./challengetagDao.js');
 const CategoryDao = require('./categoryDao.js');
 const HintDao = require('./hintDao.js');
 const SolvedDao = require('./solvedDao.js');
+const UserhintsDao = require('./userhintsDao.js');
 const md5 = require('md5');
 const { result } = require('lodash');
 const { param } = require('express/lib/request');
@@ -126,15 +127,34 @@ class ChallengeDao {
         var sql = 'SELECT Solution FROM Challenge WHERE ChallengeID=?';
         var statement = this._conn.prepare(sql);
         var result = statement.get(challengeid);
-
-        if (helper.isUndefined(result))
-            throw new Error('No Record found by id=' + id);
+        if (helper.isUndefined(result)) {throw new Error('No Record found by id=' + id);}
 
         var correct = (md5(entered) === result.Solution)
-        if (!correct){return correct;}
+        if (!correct) {return correct;}
+        
+        var sql = 'SELECT * FROM User WHERE UserID=?';
+        var statement = this._conn.prepare(sql);
+        var result = statement.get(userid);
+        if (helper.isUndefined(result)) {throw new Error('No Record found by id=' + userid)};
+        var user = helper.objectKeysToLower(result);
+
+        var challenge = this.loadByIdUnsterilized(challengeid);
+        var hintCost = 0;
+        for (var hint of challenge.hints){
+            if (!helper.isEmpty(hint.description) && hint.cost > hintCost){
+                hintCost = hint.cost;
+            }
+        }
+
+        var sql = 'UPDATE User SET Points=? WHERE UserID=?';
+        var params = [Math.floor(user.points +  (challenge.difficulty.points * (1 - (hintCost / 100)))), userid];
+        var statement = this._conn.prepare(sql);
+        var result = statement.run(params);
+
+        if (result.changes != 1) 
+            throw new Error('Could not update existing Record with given data: ' + params);
 
         const solvedDao = new SolvedDao(this._conn);
-        var tmp = solvedDao.loadByUserId(userid);
         if (!solvedDao.loadByUserId(userid).includes(challengeid))
             solvedDao.create(challengeid, userid, helper.getNow());
         

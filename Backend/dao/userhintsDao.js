@@ -1,5 +1,4 @@
 const helper = require('../helper.js');
-// const ChallengeDao = require('./challengeDao.js');
 
 class UserhintsDao {
 
