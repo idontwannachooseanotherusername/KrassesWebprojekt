@@ -521,6 +521,24 @@ function create_challenge_solved(){
     $('.challenge-tags:first').after($('<article/>').addClass("challenge-solved").text("You solved this challenge!"));
 }
 
+function delete_user(){
+    if (! window.confirm('Are you sure?')){return;}
+
+    $.ajax({
+        url: 'http://localhost:8001/wba2api/user/',
+        method: 'delete',
+        xhrFields: { withCredentials: true },
+        dataType: 'json'
+    }).done(function (response) {    
+        alert("User deleted successfully!");
+        logout();
+        window.location.replace("login.html");
+    }).fail(function (jqXHR, statusText, error) {
+        alert("Error deleting user! " + error);
+    });
+    return false;
+}
+
 function delete_challenge(){
     var challengeid = get_url_params().id;
     if (challengeid === undefined) {return};

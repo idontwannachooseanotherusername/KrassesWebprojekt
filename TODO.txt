@@ -1,6 +1,7 @@
 TODO (In this order)
 
 - Alle Forms überdenken (z.B. return false gegen even.preventDefault() austauschen)
+- Check if username already exists when renaming
 
 - Implement json Webtoken
  -> Do not set cookie via js

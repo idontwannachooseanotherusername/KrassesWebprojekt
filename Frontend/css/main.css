@@ -122,10 +122,10 @@ main, section{
     color: white;
     transition: all ease-in-out 0.3s;
 }
-
 .btn-challenge{
     width: 50px;
     float: left;
+    margin-top: 20px;
 }
 
 /*---------- NAVIGATION ----------*/

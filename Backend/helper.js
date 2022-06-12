@@ -78,6 +78,10 @@ module.exports.defaultData = function(data) {
             return path + "default_banner.png";
         case "profile":
             return path + "default_profile.png";
+        case "banner_d":
+            return path + "deleted_banner.png";
+        case "profile_d":
+            return path + "deleted_profile.png";
         case "bio":
             return "Empty void.";
         case "country":
