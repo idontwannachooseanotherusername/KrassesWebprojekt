@@ -1,6 +1,5 @@
 TODO (In this order)
 
-- profile top right script forgotten on account page
 - Alle Forms überdenken (z.B. return false gegen even.preventDefault() austauschen)
 
 - Implement json Webtoken
@@ -8,8 +7,6 @@ TODO (In this order)
  -> Login form without ajax call
  -> More checking needed?
 
-
-- Remove points from user when getting hint
 - Fix first login always fails
 - Show error if user does not have enough point to buy hint
 
@@ -17,7 +14,6 @@ TODO (In this order)
  -> Filter should combine search point (all math level 9)
 
 - Implement solution password button and checking of password
- -> Implement Coin adding
  -> Visual feedback in challenges.html and (DONE) challenge.html (Little star icon or something similar)
 
 - Finish implementing challengecreator
