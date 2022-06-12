@@ -1,38 +1,47 @@
-// const { fail } = require("assert");
 var userid = false;
 var challenges = [];
 
-function filter_challenges(field, value){
+function filter_challenges(){
     $(".challenge-wrapper").empty();
+    var filtered_challenges = [...challenges];
+    var fields = {};
 
-    switch(field){
-        case "level":
-            if (value == 0){$("#search-difficulty").val("");}
-            
-            $(".challenge-wrapper").empty();
-            for (var challenge of challenges){
-                if (value == 0 || challenge.difficulty == value){
-                    create_challenge(challenge);
-                }
+    if($('#search-difficulty').val())
+        fields.level = $('#search-difficulty').val();
+    if($('#search-name').val())
+        fields.name = $('#search-name').val();
+    if($('#search-category').val())
+        fields.category = $('#search-category').val();
+
+    if ("level" in fields){
+        var value = fields.level;
+        if (value == 0){$("#search-difficulty").val("");}
+        
+        for (var challenge of filtered_challenges){
+            if (challenge.difficulty != value && value != 0){
+                filtered_challenges.splice(filtered_challenges.indexOf(challenge),1);
             }
-            break;
-        case "name":
-            value = value.toLowerCase();
-            for (var challenge of challenges){
-                if (challenge.challengename.toLowerCase().includes(value) ||
-                    challenge.description.toLowerCase().includes(value) ||
-                    challenge.challengeid == value)
-                    create_challenge(challenge);
-            }
-            break;
-        case "category":
-            for (var challenge of challenges){
-                if (challenge.categoryid == value)
-                    create_challenge(challenge);
-            }
-            break;
+        }
     }
-    
+    if ("name" in fields){
+        var value = fields.name.toLowerCase();
+        for (var challenge of filtered_challenges){
+            if (!(challenge.challengename.toLowerCase().includes(value) ||
+                challenge.description.toLowerCase().includes(value) ||
+                challenge.challengeid == value))
+                filtered_challenges.splice(filtered_challenges.indexOf(challenge),1);
+        }
+    }
+    if ("category" in fields){
+        var value = fields.category;
+        for (var challenge of filtered_challenges){
+            if (!(challenge.categoryid == value))
+            filtered_challenges.splice(filtered_challenges.indexOf(challenge),1);
+        }
+    }
+    for (challenge of filtered_challenges){
+        create_challenge(challenge);
+    }
 }
 
 function load_challenges(){
