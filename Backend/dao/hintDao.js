@@ -1,6 +1,6 @@
 const helper = require('../helper.js');
-const UserhintsDao = require('./userhintsDao');
-const UserDao = require('./usersDao');
+const UserhintsDao = require('./userhintsDao.js');
+const UserDao = require('./userDao.js');
 
 class HintDao {
 
