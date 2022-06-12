@@ -176,6 +176,7 @@ function load(site=""){
             case "profile": load_profile(userid); break;
             case "profileeditor": if (userid) {load_profile_editor(userid);}
                 else {hide_loading();show_login_prompt();} break;
+            case "login": if (userid) {window.location.replace("profile.html?id=" + userid);};break;
         }
     }).fail(function(jqXHR, statusText, error){
         console.log("Login check failed, reason: " + error + " | " + jqXHR.status);
