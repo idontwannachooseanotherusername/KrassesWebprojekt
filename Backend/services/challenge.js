@@ -4,7 +4,6 @@ const HintDao = require('../dao/hintDao.js');
 const ChallengetagDao = require('../dao/challengetagDao.js');
 const express = require('express');
 const req = require('express/lib/request');
-const UserDao = require('../dao/userDao.js');
 var serviceRouter = express.Router();
 
 helper.log('- Service Challenge');
