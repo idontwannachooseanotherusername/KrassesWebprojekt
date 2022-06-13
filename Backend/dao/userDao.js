@@ -154,7 +154,7 @@ class UserDao {
 
         // Login user if username exists and pw matches
         var user = this.username_exists(username);
-        if (user != false){
+        if (user !== false){
             if (md5(password) === user.Password){
                 return webtoken.generate(username, user.UserID);
             }
@@ -178,6 +178,10 @@ class UserDao {
 
     update_data(id, username = '', bio = '', picturepath = '', bannerpath = '', countryid = '') {
         var old_data = this.loadById(id);
+        if (username != old_data.username && this.username_exists(username)){
+            throw new Error('Could not update profile: Username ' + username + ' already exists.');
+        }
+
         if (helper.isEmpty(username)){username = old_data.username;}
         if (helper.isEmpty(bio)){bio = old_data.bio;}
         if (helper.isEmpty(picturepath)){picturepath = old_data.picturepath;}
@@ -189,7 +193,7 @@ class UserDao {
         var statement = this._conn.prepare(sql);
         var result = statement.run(params);
 
-        if (result.changes != 1) 
+        if (result.changes != 1)
             throw new Error('Could not update existing Record with given data: ' + params);
     }
 

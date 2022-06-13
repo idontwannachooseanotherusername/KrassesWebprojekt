@@ -79,7 +79,7 @@ function load_challenges(){
         }
         hide_loading();
     }).fail(function (jqXHR, statusText, error) {
-        console.log("Could not load challenges: " + error);
+        response_handling(jqXHR, statusText, error);
     });
 }
 
@@ -179,7 +179,7 @@ function load(site=""){
             case "login": if (userid) {window.location.replace("profile.html?id=" + userid);};break;
         }
     }).fail(function(jqXHR, statusText, error){
-        console.log("Login check failed, reason: " + error + " | " + jqXHR.status);
+        response_handling(jqXHR, statusText, error);
     });
 }
 
@@ -191,7 +191,7 @@ function load_default(userid){
     }).done(function (response) {
         create_usermenu(response.daten);
     }).fail(function (jqXHR, statusText, error) {
-        console.log("Failed to create usermenu, reason: " + error)
+        response_handling(jqXHR, statusText, error);
     });
 }
 
@@ -265,7 +265,7 @@ function load_challenge(){
         
         hide_loading();
     }).fail(function (jqXHR, statusText, error) {
-        show_login_prompt();
+        response_handling(jqXHR, statusText, error);
     });
 }
 
@@ -328,7 +328,7 @@ function load_hint_preview(solved){
             }
         }
     }).fail(function (jqXHR, statusText, error) {
-    console.log("Error: " + error);
+        response_handling(jqXHR, statusText, error);
     });
 }
 function load_hint(hintclass){
@@ -345,8 +345,7 @@ function load_hint(hintclass){
         description.className = "hint-text loaded";
         $('.hint')[hintclass-1].onclick = undefined;
     }).fail(function (jqXHR, statusText, error) {
-        console.log('Response Code: ' + jqXHR.status + ' - Fehlermeldung: ' + jqXHR.responseText);
-        alert('An error occured.');
+        response_handling(jqXHR, statusText, error);
     });
 }
 
@@ -448,8 +447,7 @@ function load_profile(){
         h_created.innerHTML = `Created Challenges (${response.daten.created.length})`;
         hide_loading();
     }).fail(function (jqXHR, statusText, error) {
-        console.log('Response Code: ' + jqXHR.status + ' - Fehlermeldung: ' + jqXHR.responseText);
-        alert('An error occured.');
+        response_handling(jqXHR, statusText, error);
     });
 }
 
@@ -473,8 +471,7 @@ function submit_challenge(){
     }).done(function (response) {
         window.location.replace("challenge.html?id=" + response.daten.challengeid);
     }).fail(function (jqXHR, statusText, error) {
-        console.log("Could not upload challenge, reason: " + error);
-        if(jqXHR.status === 401){show_login_prompt();}
+        response_handling(jqXHR, statusText, error);
     });
     return false;
 }
@@ -491,8 +488,7 @@ function submit_user(){
         document.cookie = `token=${response.daten};SameSite=Lax;`;
         window.location.replace("challenges.html");
     }).fail(function (jqXHR, statusText, error) {
-        console.log('Response Code: ' + jqXHR.status + ' - Fehlermeldung: ' + jqXHR.responseText);
-        alert('An error occured.');
+        response_handling(jqXHR, statusText, error);
     });
     return false;
 }
@@ -534,7 +530,7 @@ function delete_user(){
         logout();
         window.location.replace("login.html");
     }).fail(function (jqXHR, statusText, error) {
-        alert("Error deleting user! " + error);
+        response_handling(jqXHR, statusText, error);
     });
     return false;
 }
@@ -553,7 +549,7 @@ function delete_challenge(){
         alert("Challenge deleted successfully!");
         window.location.replace("challenges.html");
     }).fail(function (jqXHR, statusText, error) {
-        alert("Error deleting challenge!\n\n" + error);
+        response_handling(jqXHR, statusText, error);
     });
 }
 
@@ -586,7 +582,7 @@ function load_challenge_editor(){
         hide_loading();
     }).fail(function (jqXHR, statusText, error) {
         console.log("Error fetching challenge, reason: " + error);
-        if(jqXHR.status === 401){show_login_prompt();}
+        response_handling(jqXHR, statusText, error);
     });
 }
 
@@ -609,13 +605,13 @@ function load_challenge_editor_tags(tags){
             tags_wrapper.append($(`<label class="editor-tag" for="tags[]">${tag.title}</label>`));
         }
     }).fail(function (jqXHR, statusText, error) {
-        console.log("Error fetching tags, reason: " + error);
+        response_handling(jqXHR, statusText, error);
     });
 }
 
 function load_profile_editor(){
     if (!userid){
-        if (show_prompt){show_login_prompt();}
+        show_login_prompt();
         return;
     }
 
@@ -634,55 +630,49 @@ function load_profile_editor(){
         $("#loading").hide();
         hide_loading();
     }).fail(function (jqXHR, statusText, error) {
-        if(jqXHR.status === 401){show_login_prompt();}
+        response_handling(jqXHR, statusText, error);
     });
     return false;
+}
+
+function response_handling(jqXHR, statusText, error){
+    if(jqXHR.status === 401){
+        show_login_prompt();
+    }
+    else {
+        show_error(jqXHR.responseJSON.nachricht);
+    }
+}
+
+function show_error(error){
+    var error_object = $('<div/>').prop("id", "error").text(error);
+    var scrollTop = scrollY;
+    $('main').prepend(error_object);
+    window.scrollTo(0,0);
+    window.setTimeout(function(){
+        error_object.remove();
+        window.scrollTo(0, scrollTop);
+    },5000);
 }
 
 function save_profile_editor(){
-    console.log($('#change-profile').serialize());
+    if (!userid){
+        show_login_prompt();
+        return;
+    }
+
     $.ajax({
-        url: 'http://localhost:8001/wba2api/login_check',
-        method: 'get',
+        url: 'http://localhost:8001/wba2api/user/update/' + userid,
+        method: 'put',
+        dataType: 'json',
         xhrFields: { withCredentials: true },
-        dataType: 'json'
-    }).done(function (r) {
-        $.ajax({
-            url: 'http://localhost:8001/wba2api/user/update/' + r.daten,
-            method: 'put',
-            dataType: 'json',
-            xhrFields: { withCredentials: true },
-            data: $('#change-profile').serialize()
-        }).done(function (response) {    
-            window.location.replace("profile.html");
-            return false;
-        }).fail(function (jqXHR, statusText, error) {
-            console.log("Could not update user, reason: " + error);
-            if(jqXHR.status === 401){show_login_prompt();}
-        });
+        data: $('#change-profile').serialize()
+    }).done(function (response) {    
+        window.location.replace("profile.html");
+        return false;
     }).fail(function (jqXHR, statusText, error) {
-        console.log("Error: " + error);
+        response_handling(jqXHR, statusText, error);
     });
-    return false;
-}
-
-function delete_profile(){
-    /*
-    var userid = get_url_params().id;
-    if (userid === undefined) {return};
-    if (! window.confirm('Are you sure?')){return;}
-
-    $.ajax({
-        url: 'http://localhost:8001/wba2api/user/'
-        method: 'delete',
-        xhrFields: { withCredentials: true },
-        dataType: 'json'
-    }).done(function (response) {
-        alert("User deleted successfully!");
-        window.location.replace("index.html");
-    }).fail(function (jqXHR, statusText, error) {
-        alert("Error deleting user!\n\n" + error);
-    });*/
     return false;
 }
 
@@ -703,8 +693,7 @@ function check_challenge_solution(){
         }
         show_right_solution();
     }).fail(function (jqXHR, statusText, error) {
-        console.log("Could not check solution, reason: " + error);
-        if(jqXHR.status === 401){show_login_prompt();}
+        response_handling(jqXHR, statusText, error);
     });
 }
 
