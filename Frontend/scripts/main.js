@@ -1,23 +1,3 @@
-window.onload = function() {
-    create_menu();
-};
-
-function create_menu(){
-
-    /*
-    var body = document.getElementsByTagName("body")[0];
-    var header = document.createElement("header");
-    var nav = document.createElement("nav");
-    nav.className = "main-menu";
-    var wrapper = document.createElement("div");
-    wrapper.className = "wrapper";
-    var ul = document.createElement("ul");
-    var li = document.createElement("li");
-    li.className = ""
-    */
-    // TODO: How to set current page in menu?
-}
-
 /* Usermenu dropdown */
 function show_dropdown(x=false){
     var drop = document.getElementById("menu-dropdown");
@@ -68,9 +48,3 @@ function logout(){
 function cancel_challenge_edit(){
     window.location.replace("challenges.html");
 }
-
-// Onload functions
-window.addEventListener("load", function(){
-    //load();
-});
-    

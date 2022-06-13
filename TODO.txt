@@ -1,7 +1,6 @@
 TODO (In this order)
 
-- Alle Forms überdenken (z.B. return false gegen even.preventDefault() austauschen)
-- Check if username already exists when renaming
+- Rething forms (e.g. swap return false against event.preventDefault())
 
 - Implement json Webtoken
  -> Do not set cookie via js
@@ -9,21 +8,12 @@ TODO (In this order)
  -> More checking needed? (FINAL)
 
 - Fix first login always fails
-
-- Implement solution password button and checking of password
- -> Visual feedback in challenges.html and (DONE) challenge.html (Little star icon or something similar)
+- Challengecreator is not allowed to solve own challenges
 
 - Finish implementing challengecreator
  -> Add file upload functionality
- -> Show 400 errors to user
  -> Implement challenge editing
    - Possibility to delete uploaded files
-
-- Implement profile editing
- - Updating is Bugged
- -> Add delete account button
-   - Don't delete challenges from user
-   - Create Banner and Image for deleted user
 
 - Implement challenge editing
  -> Add file upload
@@ -31,7 +21,7 @@ TODO (In this order)
  -> Uploaded files should be renamed to their hash value to avoid name conflicts
   and to make sure we aren't saving the same image over and over again
 
-- When getting challenge via ajax: Pass category as object and not only as id
+- (When getting challenge via ajax: Pass category as object and not only as id)
 
 FINAL
 - Remove unnecessary comments

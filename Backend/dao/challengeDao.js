@@ -68,7 +68,7 @@ class ChallengeDao {
         return result;
     }
 
-    loadAll() {
+    loadAll(userid) {
         const difficultyDao = new DifficultyDao(this._conn);
         var difficulties = difficultyDao.loadAll();
         const challengetagDao = new ChallengeTagDao(this._conn);
@@ -113,7 +113,10 @@ class ChallengeDao {
                 userimage: user.picturepath
             }
             delete result[i].userid;
-
+            
+            if (!helper.isEmpty(userid)){
+                result[i].solved = this.isSolved(userid, result[i].challengeid);
+            }     
             result[i].tags = challengetagDao.loadByParent(result[i].challengeid);
             result[i].category = categoryDao.loadById(result[i].categoryid).title;
 

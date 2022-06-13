@@ -136,12 +136,10 @@ header{
     z-index: 100;
 }
 .main-menu{
-    /*overflow:auto;*/
     height: 50px;
     width:100%;
     background: #191919;
-    color:white; 
-    /*box-shadow: 0 4px 9px black;*/
+    color:white;
     padding: 10px 0;
 }
 .main-menu ul{
@@ -319,11 +317,6 @@ main .teaser{
     transition: linear .3s;
     filter: drop-shadow(0 6px 6px black);
     scale: 1.02;
-    
-/*
-    scale: 1.05;
-    box-shadow: 0 0 15px #00000020;
-    transition: 0.3s;*/
 }
 
 /*---------- CHALLENGES ----------*/
@@ -377,6 +370,7 @@ main .teaser{
     height: 300px;
     margin: 1%;
     transition: linear .2s;
+    position: relative;
 }
 .challenge:hover{
     transition: linear .2s;
@@ -394,6 +388,12 @@ main .teaser{
         float: unset;
         width: 90%;
     }
+}
+.challenge-solved-marker{
+    height: 40px;
+    position: absolute;
+    right: -10px;
+    bottom: -10px;
 }
 .challenge:hover .challenge-color{
     filter: brightness(120%);
@@ -528,7 +528,6 @@ select option{
     cursor: pointer;
 }
 .change-banner{
-    position:absolute;
     display:inline-block;
     left: 15px;
     top: -115px;
@@ -584,7 +583,6 @@ select option{
     height: 170px;
     width: 170px;
     border-radius: 12px;
-    border-radius: 12px;
     border: 8px solid #212121;
     background-color: #007969;
 }
@@ -603,9 +601,7 @@ select option{
         width: 100%;
     }
 }
-
 .background{
-    background-image: url("../images/image.jpg");
     background-position: bottom;
     height: 270px;
     position: relative;
@@ -658,7 +654,6 @@ select option{
     cursor: pointer;
 }
 .challenge-tag{
-    /*display: inline-block;*/
     float: left;
     margin-right: 10px;
 }
@@ -900,15 +895,13 @@ select option{
 footer{
     clear: both;
     overflow: auto;
-    /*box-shadow: 0 0 9px black;*/
     background: #111111;
     height: 500px;
     position: relative;
     
     /*Background image*/
-    background-image: url("../images/Footer2.png");
+    background-image: url("../images/footer.png");
     background-repeat: no-repeat;
-    /*background-blend-mode: soft-light;*/
     background-position: center;
 }
 footer dl{
@@ -1063,4 +1056,13 @@ footer .btn-to-top:hover{
     width: 100px;
     position: relative;
     top: 40%;
+}
+
+/* error */
+#error{
+    background-color: #6c0129;
+    color: white;
+    font-weight: bold;
+    padding: 10px;
+    text-align: center;
 }

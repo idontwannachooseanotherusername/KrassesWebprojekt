@@ -94,9 +94,7 @@ try {
     //app.use(TOPLEVELPATH, serviceRouter);
 
     // send default error message if no matching endpoint found
-    // TODO differentiate between api calls and calls to html sites
     app.use(function (request, response) {
-        console.log(request.body);
         response.status(404).json(helper.jsonMsgError('Resource not found'));
     });
 

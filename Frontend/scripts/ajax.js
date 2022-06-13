@@ -16,10 +16,10 @@ function filter_challenges(){
 
     if ("level" in fields){
         var value = fields.level;
-        if (value == 0){$("#search-difficulty").val("");}
+        if (value === 0){$("#search-difficulty").val("");}
         var i=0;
         while(i<filtered_len){
-            if (filtered_challenges[i].difficulty != value && value != 0){
+            if (filtered_challenges[i].difficulty != value && value !== 0){
                 filtered_challenges.splice(i,1);
                 filtered_len--;
             }
@@ -30,8 +30,8 @@ function filter_challenges(){
     }
 
     if ("name" in fields){
-        var value = fields.name.toLowerCase();
-        var i=0;
+        value = fields.name.toLowerCase();
+        i=0;
         while(i<filtered_len){
             if (!(filtered_challenges[i].challengename.toLowerCase().includes(value) ||
                 filtered_challenges[i].description.toLowerCase().includes(value) ||
@@ -46,8 +46,8 @@ function filter_challenges(){
     }
 
     if ("category" in fields){
-        var value = fields.category;
-        var i=0;
+        value = fields.category;
+        i=0;
         while(i<filtered_len){
             if (!(filtered_challenges[i].categoryid == value)){
                 filtered_challenges.splice(i,1);
@@ -58,7 +58,7 @@ function filter_challenges(){
             }
         }
     }
-    for (challenge of filtered_challenges){
+    for (var challenge of filtered_challenges){
         create_challenge(challenge);
     }
 }
@@ -79,7 +79,7 @@ function load_challenges(){
         }
         hide_loading();
     }).fail(function (jqXHR, statusText, error) {
-        console.log("Could not load challenges: " + error);
+        response_handling(jqXHR, statusText, error);
     });
 }
 
@@ -94,6 +94,15 @@ function create_challenge(challenge_data){
     let challenge = document.createElement("div");
     challenge.className = "challenge";
 
+    if ("solved" in challenge_data && challenge_data.solved)
+    {
+        let solved = document.createElement("img");
+        solved.src = "images/icons/Point.svg";
+        solved.className = "challenge-solved-marker";
+        solved.title = "Solved";
+        challenge.appendChild(solved);
+    }
+
     // challenge color
     let color = document.createElement("div");
     color.className = `challenge-color level-${challenge_data.difficulty}`;
@@ -107,6 +116,7 @@ function create_challenge(challenge_data){
     let image = document.createElement("img");
     image.className = "challenge-picture img-border";
     image.src = challenge_data.user.userimage;
+    image.title = challenge_data.user.username;
 
     challenge.appendChild(image);
 
@@ -132,7 +142,7 @@ function get_url_params(){
     if (paramstring === undefined){return {id: undefined};}
 
     var params = {};
-    for (p of paramstring.split('&')){
+    for (var p of paramstring.split('&')){
         var p_split = p.split('=');
         params[p_split[0]] = p_split[1];
     }
@@ -150,7 +160,7 @@ function user_logged_in(){
         method: 'get',
         xhrFields: { withCredentials: true },
         dataType: 'json',
-    })
+    });
 }
 
 function load(site=""){
@@ -179,7 +189,7 @@ function load(site=""){
             case "login": if (userid) {window.location.replace("profile.html?id=" + userid);};break;
         }
     }).fail(function(jqXHR, statusText, error){
-        console.log("Login check failed, reason: " + error + " | " + jqXHR.status);
+        response_handling(jqXHR, statusText, error);
     });
 }
 
@@ -191,7 +201,7 @@ function load_default(userid){
     }).done(function (response) {
         create_usermenu(response.daten);
     }).fail(function (jqXHR, statusText, error) {
-        console.log("Failed to create usermenu, reason: " + error)
+        response_handling(jqXHR, statusText, error);
     });
 }
 
@@ -231,7 +241,7 @@ function load_challenge(){
         username.innerHTML = response.daten.user.username;
         attributes[3].appendChild(username);
         var date = document.createElement("p");
-        date.innerHTML = response.daten.creationdate;  // TODO: Only date, not time
+        date.innerHTML = response.daten.creationdate;
         attributes[4].appendChild(date);
 
         // Tags
@@ -265,7 +275,7 @@ function load_challenge(){
         
         hide_loading();
     }).fail(function (jqXHR, statusText, error) {
-        show_login_prompt();
+        response_handling(jqXHR, statusText, error);
     });
 }
 
@@ -328,7 +338,7 @@ function load_hint_preview(solved){
             }
         }
     }).fail(function (jqXHR, statusText, error) {
-    console.log("Error: " + error);
+        response_handling(jqXHR, statusText, error);
     });
 }
 function load_hint(hintclass){
@@ -345,8 +355,7 @@ function load_hint(hintclass){
         description.className = "hint-text loaded";
         $('.hint')[hintclass-1].onclick = undefined;
     }).fail(function (jqXHR, statusText, error) {
-        console.log('Response Code: ' + jqXHR.status + ' - Fehlermeldung: ' + jqXHR.responseText);
-        alert('An error occured.');
+        response_handling(jqXHR, statusText, error);
     });
 }
 
@@ -417,8 +426,6 @@ function load_profile(){
         $('#profile-description').html(response.daten.bio);
         $('#profile-country').html(response.daten.country);
         $('#profile-points').html(response.daten.points);
-
-        // Pfade anpassen
         $('.img-border').attr("src", `${response.daten.picturepath}`);
         $('.background').css("background-image", `url(${response.daten.bannerpath})`);
 
@@ -448,8 +455,7 @@ function load_profile(){
         h_created.innerHTML = `Created Challenges (${response.daten.created.length})`;
         hide_loading();
     }).fail(function (jqXHR, statusText, error) {
-        console.log('Response Code: ' + jqXHR.status + ' - Fehlermeldung: ' + jqXHR.responseText);
-        alert('An error occured.');
+        response_handling(jqXHR, statusText, error);
     });
 }
 
@@ -473,8 +479,7 @@ function submit_challenge(){
     }).done(function (response) {
         window.location.replace("challenge.html?id=" + response.daten.challengeid);
     }).fail(function (jqXHR, statusText, error) {
-        console.log("Could not upload challenge, reason: " + error);
-        if(jqXHR.status === 401){show_login_prompt();}
+        response_handling(jqXHR, statusText, error);
     });
     return false;
 }
@@ -491,8 +496,7 @@ function submit_user(){
         document.cookie = `token=${response.daten};SameSite=Lax;`;
         window.location.replace("challenges.html");
     }).fail(function (jqXHR, statusText, error) {
-        console.log('Response Code: ' + jqXHR.status + ' - Fehlermeldung: ' + jqXHR.responseText);
-        alert('An error occured.');
+        response_handling(jqXHR, statusText, error);
     });
     return false;
 }
@@ -534,7 +538,7 @@ function delete_user(){
         logout();
         window.location.replace("login.html");
     }).fail(function (jqXHR, statusText, error) {
-        alert("Error deleting user! " + error);
+        response_handling(jqXHR, statusText, error);
     });
     return false;
 }
@@ -553,7 +557,7 @@ function delete_challenge(){
         alert("Challenge deleted successfully!");
         window.location.replace("challenges.html");
     }).fail(function (jqXHR, statusText, error) {
-        alert("Error deleting challenge!\n\n" + error);
+        response_handling(jqXHR, statusText, error);
     });
 }
 
@@ -586,7 +590,7 @@ function load_challenge_editor(){
         hide_loading();
     }).fail(function (jqXHR, statusText, error) {
         console.log("Error fetching challenge, reason: " + error);
-        if(jqXHR.status === 401){show_login_prompt();}
+        response_handling(jqXHR, statusText, error);
     });
 }
 
@@ -609,13 +613,13 @@ function load_challenge_editor_tags(tags){
             tags_wrapper.append($(`<label class="editor-tag" for="tags[]">${tag.title}</label>`));
         }
     }).fail(function (jqXHR, statusText, error) {
-        console.log("Error fetching tags, reason: " + error);
+        response_handling(jqXHR, statusText, error);
     });
 }
 
 function load_profile_editor(){
     if (!userid){
-        if (show_prompt){show_login_prompt();}
+        show_login_prompt();
         return;
     }
 
@@ -628,61 +632,58 @@ function load_profile_editor(){
         document.getElementsByClassName("user-name")[0].innerHTML = r.daten.username;
         document.getElementById("profile-name").value = r.daten.username;
         document.getElementById("profile-bio").value = r.daten.bio;
-        document.getElementById("profile-country").value = r.daten.country;
+        document.getElementById("profile-country").value = r.daten.countryid;
         $('.img-border').attr("src", `${r.daten.picturepath}`);
         $('.background').css("background-image", `url(${r.daten.bannerpath})`);
         $("#loading").hide();
         hide_loading();
     }).fail(function (jqXHR, statusText, error) {
-        if(jqXHR.status === 401){show_login_prompt();}
+        response_handling(jqXHR, statusText, error);
     });
     return false;
+}
+
+function response_handling(jqXHR, statusText, error){
+    if(jqXHR.status === 401){
+        show_login_prompt();
+    }
+    else if (jqXHR.status === 404){
+        window.location.replace("errorsite.html");
+    }
+    else {
+        show_error(jqXHR.responseJSON.nachricht);
+    }
+}
+
+function show_error(error){
+    var error_object = $('<div/>').prop("id", "error").text(error);
+    var scrollTop = scrollY;
+    $('main').prepend(error_object);
+    window.scrollTo(0,0);
+    window.setTimeout(function(){
+        error_object.remove();
+        window.scrollTo(0, scrollTop);
+    },5000);
 }
 
 function save_profile_editor(){
-    console.log($('#change-profile').serialize());
+    if (!userid){
+        show_login_prompt();
+        return;
+    }
+
     $.ajax({
-        url: 'http://localhost:8001/wba2api/login_check',
-        method: 'get',
+        url: 'http://localhost:8001/wba2api/user/update/' + userid,
+        method: 'put',
+        dataType: 'json',
         xhrFields: { withCredentials: true },
-        dataType: 'json'
-    }).done(function (r) {
-        $.ajax({
-            url: 'http://localhost:8001/wba2api/user/update/' + r.daten,
-            method: 'put',
-            dataType: 'json',
-            xhrFields: { withCredentials: true },
-            data: $('#change-profile').serialize()
-        }).done(function (response) {    
-            window.location.replace("profile.html");
-            return false;
-        }).fail(function (jqXHR, statusText, error) {
-            console.log("Could not update user, reason: " + error);
-            if(jqXHR.status === 401){show_login_prompt();}
-        });
+        data: $('#change-profile').serialize()
+    }).done(function (response) {    
+        window.location.replace("profile.html");
+        return false;
     }).fail(function (jqXHR, statusText, error) {
-        console.log("Error: " + error);
+        response_handling(jqXHR, statusText, error);
     });
-    return false;
-}
-
-function delete_profile(){
-    /*
-    var userid = get_url_params().id;
-    if (userid === undefined) {return};
-    if (! window.confirm('Are you sure?')){return;}
-
-    $.ajax({
-        url: 'http://localhost:8001/wba2api/user/'
-        method: 'delete',
-        xhrFields: { withCredentials: true },
-        dataType: 'json'
-    }).done(function (response) {
-        alert("User deleted successfully!");
-        window.location.replace("index.html");
-    }).fail(function (jqXHR, statusText, error) {
-        alert("Error deleting user!\n\n" + error);
-    });*/
     return false;
 }
 
@@ -703,8 +704,7 @@ function check_challenge_solution(){
         }
         show_right_solution();
     }).fail(function (jqXHR, statusText, error) {
-        console.log("Could not check solution, reason: " + error);
-        if(jqXHR.status === 401){show_login_prompt();}
+        response_handling(jqXHR, statusText, error);
     });
 }
 

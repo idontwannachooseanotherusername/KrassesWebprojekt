@@ -39,13 +39,9 @@ try {
     helper.log('Binding enpoints, top level Path at ' + TOPLEVELPATH);
 
     // send default error message if no matching endpoint found
-    // TODO differentiate between api calls and calls to html sites
     app.use(function (request, response) {
-        console.log(request.body);
         response.status(404)
         response.sendFile('errorsite.html', {'root': path.resolve(TOPLEVELPATH)});
-        helper.log('Error occured, 404, resource not found');
-        //response.status(404).json(helper.jsonMsgError('Resource not found'));
     });
 
 
