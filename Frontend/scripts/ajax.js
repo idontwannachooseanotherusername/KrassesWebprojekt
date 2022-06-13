@@ -265,8 +265,12 @@ function load_challenge(){
         // TODO: Files!
 
         if(response.daten.solved){
-            create_challenge_solved();
+            create_challenge_message("You solved this challenge!");
             $('#solution').prop("disabled", true).prop("placeholder", "Already solved");
+            $('#solution-button').addClass("disabled").prop("onclick", "");
+        }else if(response.daten.user.userid == userid){
+            create_challenge_message("This is your own challenge!");
+            $('#solution').prop("disabled", true).prop("placeholder", "Own challenge");
             $('#solution-button').addClass("disabled").prop("onclick", "");
         }
 
@@ -325,13 +329,13 @@ function load_hint_preview(solved){
         var texts = document.getElementsByClassName("hint-text");
         var hints = document.getElementsByClassName("hint");
         for (var hintclass in response.daten){
-
-            hints[hintclass-1].onclick = function() {get_hint(this)};
-            texts[hintclass-1].classList.add("preview");
-            if((!(Number.isInteger(response.daten[hintclass]))) || solved){
+            if(!(Number.isInteger(response.daten[hintclass])) || solved){
                 load_hint(hintclass);
             }
             else{
+                if (response.daten[hintclass] == 0) {return;}
+                hints[hintclass-1].onclick = function() {get_hint(this)};
+                texts[hintclass-1].classList.add("preview");
                 var hint_len = response.daten[hintclass];
                 var start = Math.floor(Math.random() * (guide_max_len - hint_len));
                 texts[hintclass-1].innerHTML = guide.substr(start,hint_len);
@@ -379,7 +383,10 @@ function get_hint(hint){
             setTimeout(function() {
                 text.classList.remove("confirm");
                 warning.classList.remove("warning");
-                hint.removeChild(warning);
+                try{
+                    hint.removeChild(warning);
+                }
+                catch{}
             }, 5000);
         }
         /*Second click*/
@@ -521,8 +528,8 @@ function create_challenge_tools(challengeid){
     text.appendChild(tools);
 }
 
-function create_challenge_solved(){
-    $('.challenge-tags:first').after($('<article/>').addClass("challenge-solved").text("You solved this challenge!"));
+function create_challenge_message(text){
+    $('.challenge-tags:first').after($('<article/>').addClass("challenge-solved").text(text));
 }
 
 function delete_user(){

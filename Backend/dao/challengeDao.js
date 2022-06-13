@@ -127,12 +127,14 @@ class ChallengeDao {
     }
 
     checkSolution(challengeid, userid, entered){
-        var sql = 'SELECT Solution FROM Challenge WHERE ChallengeID=?';
+        var sql = 'SELECT * FROM Challenge WHERE ChallengeID=?';
         var statement = this._conn.prepare(sql);
         var result = statement.get(challengeid);
         if (helper.isUndefined(result)) {throw new Error('No Record found by id=' + id);}
+        challenge = helper.objectKeysToLower(result);
+        if (challenge.userid == userid) {throw new Error('You created this challenge and hence cannot solve it.');}
 
-        var correct = (md5(entered) === result.Solution)
+        var correct = (md5(entered) === challenge.solution)
         if (!correct) {return correct;}
         
         var sql = 'SELECT * FROM User WHERE UserID=?';
