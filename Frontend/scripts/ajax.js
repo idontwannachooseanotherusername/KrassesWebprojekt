@@ -94,6 +94,15 @@ function create_challenge(challenge_data){
     let challenge = document.createElement("div");
     challenge.className = "challenge";
 
+    if ("solved" in challenge_data && challenge_data.solved)
+    {
+        let solved = document.createElement("img");
+        solved.src = "images/icons/Point.svg";
+        solved.className = "challenge-solved-marker";
+        solved.title = "Solved";
+        challenge.appendChild(solved);
+    }
+
     // challenge color
     let color = document.createElement("div");
     color.className = `challenge-color level-${challenge_data.difficulty}`;
@@ -107,6 +116,7 @@ function create_challenge(challenge_data){
     let image = document.createElement("img");
     image.className = "challenge-picture img-border";
     image.src = challenge_data.user.userimage;
+    image.title = challenge_data.user.username;
 
     challenge.appendChild(image);
 

@@ -370,6 +370,7 @@ main .teaser{
     height: 300px;
     margin: 1%;
     transition: linear .2s;
+    position: relative;
 }
 .challenge:hover{
     transition: linear .2s;
@@ -387,6 +388,12 @@ main .teaser{
         float: unset;
         width: 90%;
     }
+}
+.challenge-solved-marker{
+    height: 40px;
+    position: absolute;
+    right: -10px;
+    bottom: -10px;
 }
 .challenge:hover .challenge-color{
     filter: brightness(120%);

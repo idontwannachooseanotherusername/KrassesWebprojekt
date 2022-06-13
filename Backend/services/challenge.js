@@ -60,7 +60,7 @@ serviceRouter.get('/challenge/all/', function(request, response) {
 
     const challengeDao = new ChallengeDao(request.app.locals.dbConnection);
     try {
-        var result = challengeDao.loadAll();
+        var result = challengeDao.loadAll(helper.IdFromToken(request.headers.cookie));
         helper.log('Service Challenge: Records loaded, count=' + result.length);
         response.status(200).json(helper.jsonMsgOK(result));
     } catch (ex) {
