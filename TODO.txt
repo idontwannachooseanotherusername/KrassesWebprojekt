@@ -8,9 +8,7 @@ TODO (In this order)
  -> More checking needed? (FINAL)
 
 - Fix first login always fails
-
-- Implement solution password button and checking of password
- -> Visual feedback in challenges.html and (DONE) challenge.html (Little star icon or something similar)
+- Challengecreator is not allowed to solve own challenges
 
 - Finish implementing challengecreator
  -> Add file upload functionality
