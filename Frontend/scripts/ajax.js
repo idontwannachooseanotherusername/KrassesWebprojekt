@@ -16,10 +16,10 @@ function filter_challenges(){
 
     if ("level" in fields){
         var value = fields.level;
-        if (value == 0){$("#search-difficulty").val("");}
+        if (value === 0){$("#search-difficulty").val("");}
         var i=0;
         while(i<filtered_len){
-            if (filtered_challenges[i].difficulty != value && value != 0){
+            if (filtered_challenges[i].difficulty != value && value !== 0){
                 filtered_challenges.splice(i,1);
                 filtered_len--;
             }
@@ -30,8 +30,8 @@ function filter_challenges(){
     }
 
     if ("name" in fields){
-        var value = fields.name.toLowerCase();
-        var i=0;
+        value = fields.name.toLowerCase();
+        i=0;
         while(i<filtered_len){
             if (!(filtered_challenges[i].challengename.toLowerCase().includes(value) ||
                 filtered_challenges[i].description.toLowerCase().includes(value) ||
@@ -46,8 +46,8 @@ function filter_challenges(){
     }
 
     if ("category" in fields){
-        var value = fields.category;
-        var i=0;
+        value = fields.category;
+        i=0;
         while(i<filtered_len){
             if (!(filtered_challenges[i].categoryid == value)){
                 filtered_challenges.splice(i,1);
@@ -58,7 +58,7 @@ function filter_challenges(){
             }
         }
     }
-    for (challenge of filtered_challenges){
+    for (var challenge of filtered_challenges){
         create_challenge(challenge);
     }
 }
@@ -132,7 +132,7 @@ function get_url_params(){
     if (paramstring === undefined){return {id: undefined};}
 
     var params = {};
-    for (p of paramstring.split('&')){
+    for (var p of paramstring.split('&')){
         var p_split = p.split('=');
         params[p_split[0]] = p_split[1];
     }
@@ -150,7 +150,7 @@ function user_logged_in(){
         method: 'get',
         xhrFields: { withCredentials: true },
         dataType: 'json',
-    })
+    });
 }
 
 function load(site=""){
@@ -231,7 +231,7 @@ function load_challenge(){
         username.innerHTML = response.daten.user.username;
         attributes[3].appendChild(username);
         var date = document.createElement("p");
-        date.innerHTML = response.daten.creationdate;  // TODO: Only date, not time
+        date.innerHTML = response.daten.creationdate;
         attributes[4].appendChild(date);
 
         // Tags
@@ -416,8 +416,6 @@ function load_profile(){
         $('#profile-description').html(response.daten.bio);
         $('#profile-country').html(response.daten.country);
         $('#profile-points').html(response.daten.points);
-
-        // Pfade anpassen
         $('.img-border').attr("src", `${response.daten.picturepath}`);
         $('.background').css("background-image", `url(${response.daten.bannerpath})`);
 
