@@ -1,6 +1,6 @@
 TODO (In this order)
 
-- Rething forms (e.g. swap return false against event.preventDefault())
+- Rethink forms (e.g. swap return false against event.preventDefault())
 
 - Implement json Webtoken
  -> Do not set cookie via js
