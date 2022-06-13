@@ -160,20 +160,6 @@ function restoreSelection(savedSel) {
     }
 }
 /**
- * Sets the current selected format buttons active/inactive
- */
-function selectionChange(e) {
-  /*for(let i = 0; i < buttons.length; i++) {
-    // don't remove active class on code toggle button
-    if(buttons[i].dataset.action === 'toggle-code') {continue;}
-    //buttons[i].classList.remove('active');
-  }
-  
-  if(!childOf(window.getSelection().anchorNode.parentNode, editor)) return false;
-  
-  parentTagActive(window.getSelection().anchorNode.parentNode);*/
-}
-/**
  * Checks if the passed child has the passed parent
  */
 function childOf(child, parent) {
