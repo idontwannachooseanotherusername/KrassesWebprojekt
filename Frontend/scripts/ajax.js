@@ -383,7 +383,10 @@ function get_hint(hint){
             setTimeout(function() {
                 text.classList.remove("confirm");
                 warning.classList.remove("warning");
-                hint.removeChild(warning);
+                try{
+                    hint.removeChild(warning);
+                }
+                catch{}
             }, 5000);
         }
         /*Second click*/
