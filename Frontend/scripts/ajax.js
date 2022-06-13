@@ -628,7 +628,7 @@ function load_profile_editor(){
         document.getElementsByClassName("user-name")[0].innerHTML = r.daten.username;
         document.getElementById("profile-name").value = r.daten.username;
         document.getElementById("profile-bio").value = r.daten.bio;
-        document.getElementById("profile-country").value = r.daten.country;
+        document.getElementById("profile-country").value = r.daten.countryid;
         $('.img-border').attr("src", `${r.daten.picturepath}`);
         $('.background').css("background-image", `url(${r.daten.bannerpath})`);
         $("#loading").hide();

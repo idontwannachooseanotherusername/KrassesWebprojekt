@@ -28,13 +28,12 @@ class UserDao {
         result = helper.objectKeysToLower(result);
 
         // Country and bio
-        if (!helper.isEmpty(result.country)){
+        if (!helper.isEmpty(result.countryid)){
             result.country = countryDao.loadById(result.countryid).countryname;
         }
         else{
             result.country = helper.defaultData("country");
         }
-        delete result.countryid;
 
         if (helper.isEmpty(result.bio)){
             result.bio = helper.defaultData("bio");
@@ -83,8 +82,20 @@ class UserDao {
         delete result.password;
 
         // Add default images
-        if (helper.isEmpty(result.bannerpath)) {result.bannerpath = helper.defaultData("banner");}
-        if (helper.isEmpty(result.picturepath)) {result.picturepath = helper.defaultData("profile");}
+        if (helper.isEmpty(result.bannerpath)){
+            if (result.deleted){
+                result.bannerpath = helper.defaultData("banner_d");
+            }else{
+                result.bannerpath = helper.defaultData("banner");
+            }
+        }
+        if (helper.isEmpty(result.picturepath)) {
+            if (result.deleted){
+                result.picturepath = helper.defaultData("profile_d");
+            }else{
+                result.picturepath = helper.defaultData("profile");
+            }
+        }
 
         return result;
     }
@@ -169,6 +180,7 @@ class UserDao {
         var old_data = this.loadById(id);
         if (helper.isEmpty(username)){username = old_data.username;}
         if (helper.isEmpty(bio)){bio = old_data.bio;}
+        if (helper.isEmpty(picturepath)){picturepath = old_data.picturepath;}
         if (helper.isEmpty(bannerpath)){bannerpath = old_data.bannerpath;}
         if (helper.isEmpty(countryid)){countryid = old_data.countryid;}
 
@@ -198,7 +210,7 @@ class UserDao {
 
     delete(id) {
         var sql = 'UPDATE User SET Username=?,Bio=?,PicturePath=?,BannerPath=?,CountryID=?, Password=?, Deleted=? WHERE UserID=?';
-        var params = ["Deleted User", "deleted", helper.defaultData("profile_d"), helper.defaultData("banner_d"), null, "", 1, id];
+        var params = ["Deleted User", "deleted", "", "", null, "", 1, id];
         var statement = this._conn.prepare(sql);
         var result = statement.run(params);
 
