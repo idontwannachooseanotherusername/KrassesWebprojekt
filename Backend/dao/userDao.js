@@ -28,13 +28,12 @@ class UserDao {
         result = helper.objectKeysToLower(result);
 
         // Country and bio
-        if (!helper.isEmpty(result.country)){
+        if (!helper.isEmpty(result.countryid)){
             result.country = countryDao.loadById(result.countryid).countryname;
         }
         else{
             result.country = helper.defaultData("country");
         }
-        delete result.countryid;
 
         if (helper.isEmpty(result.bio)){
             result.bio = helper.defaultData("bio");
@@ -83,8 +82,20 @@ class UserDao {
         delete result.password;
 
         // Add default images
-        if (helper.isEmpty(result.bannerpath)) {result.bannerpath = helper.defaultData("banner");}
-        if (helper.isEmpty(result.picturepath)) {result.picturepath = helper.defaultData("profile");}
+        if (helper.isEmpty(result.bannerpath)){
+            if (result.deleted){
+                result.bannerpath = helper.defaultData("banner_d");
+            }else{
+                result.bannerpath = helper.defaultData("banner");
+            }
+        }
+        if (helper.isEmpty(result.picturepath)) {
+            if (result.deleted){
+                result.picturepath = helper.defaultData("profile_d");
+            }else{
+                result.picturepath = helper.defaultData("profile");
+            }
+        }
 
         return result;
     }
@@ -143,7 +154,7 @@ class UserDao {
 
         // Login user if username exists and pw matches
         var user = this.username_exists(username);
-        if (user != false){
+        if (user !== false){
             if (md5(password) === user.Password){
                 return webtoken.generate(username, user.UserID);
             }
@@ -167,8 +178,13 @@ class UserDao {
 
     update_data(id, username = '', bio = '', picturepath = '', bannerpath = '', countryid = '') {
         var old_data = this.loadById(id);
+        if (username != old_data.username && this.username_exists(username)){
+            throw new Error('Could not update profile: Username ' + username + ' already exists.');
+        }
+
         if (helper.isEmpty(username)){username = old_data.username;}
         if (helper.isEmpty(bio)){bio = old_data.bio;}
+        if (helper.isEmpty(picturepath)){picturepath = old_data.picturepath;}
         if (helper.isEmpty(bannerpath)){bannerpath = old_data.bannerpath;}
         if (helper.isEmpty(countryid)){countryid = old_data.countryid;}
 
@@ -177,7 +193,7 @@ class UserDao {
         var statement = this._conn.prepare(sql);
         var result = statement.run(params);
 
-        if (result.changes != 1) 
+        if (result.changes != 1)
             throw new Error('Could not update existing Record with given data: ' + params);
     }
 
@@ -198,7 +214,7 @@ class UserDao {
 
     delete(id) {
         var sql = 'UPDATE User SET Username=?,Bio=?,PicturePath=?,BannerPath=?,CountryID=?, Password=?, Deleted=? WHERE UserID=?';
-        var params = ["Deleted User", "deleted", helper.defaultData("profile_d"), helper.defaultData("banner_d"), null, "", 1, id];
+        var params = ["Deleted User", "deleted", "", "", null, "", 1, id];
         var statement = this._conn.prepare(sql);
         var result = statement.run(params);
 

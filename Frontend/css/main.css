@@ -1050,3 +1050,12 @@ footer .btn-to-top:hover{
     position: relative;
     top: 40%;
 }
+
+/* error */
+#error{
+    background-color: #6c0129;
+    color: white;
+    font-weight: bold;
+    padding: 10px;
+    text-align: center;
+}
