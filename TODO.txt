@@ -1,6 +1,6 @@
 TODO (In this order)
 
-- Alle Forms überdenken (z.B. return false gegen even.preventDefault() austauschen)
+- Rething forms (e.g. swap return false against event.preventDefault())
 - Check if username already exists when renaming
 
 - Implement json Webtoken
@@ -19,19 +19,13 @@ TODO (In this order)
  -> Implement challenge editing
    - Possibility to delete uploaded files
 
-- Implement profile editing
- - Updating is Bugged
- -> Add delete account button
-   - Don't delete challenges from user
-   - Create Banner and Image for deleted user
-
 - Implement challenge editing
  -> Add file upload
  -> load current files into fields
  -> Uploaded files should be renamed to their hash value to avoid name conflicts
   and to make sure we aren't saving the same image over and over again
 
-- When getting challenge via ajax: Pass category as object and not only as id
+- (When getting challenge via ajax: Pass category as object and not only as id)
 
 FINAL
 - Remove unnecessary comments
