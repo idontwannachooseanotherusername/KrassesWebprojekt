@@ -639,6 +639,9 @@ function response_handling(jqXHR, statusText, error){
     if(jqXHR.status === 401){
         show_login_prompt();
     }
+    else if (jqXHR.status === 404){
+        window.location.replace("errorsite.html");
+    }
     else {
         show_error(jqXHR.responseJSON.nachricht);
     }
