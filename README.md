@@ -1,11 +1,11 @@
 # Webproject - MindBreaker
 
 ## Mindbreaker
-MindBreaker is a website for solving and creating challenges/riddles and gaining points in doing so. It features
- - A simple login system
- - Profile editing with cutom images and banner
+MindBreaker is a website for solving and creating challenges/riddles and gaining points in doing so. It features:
+ - A simple reqister/login system
+ - Profile editing with custom images and banner
  - Challenge Creator/Editor
- - Challenges have tags, difficultylevels and categories by which tey can be sorted
+ - Challenges have tags, difficultylevels and categories by which they can be sorted
  - A simple pointsystem that rewards users for solving and creating challenges
 
 ## Be careful
