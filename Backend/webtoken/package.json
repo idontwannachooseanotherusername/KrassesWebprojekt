@@ -4,7 +4,8 @@
   "description": "JSON WebToken for MindBreaker",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "echo You cannot \"start\" the JSON webtoken scripts. Are you in the right directory? && exit 1"
   },
   "repository": {
     "type": "git",

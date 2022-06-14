@@ -1,5 +1,6 @@
 TODO (In this order)
 
+- Should users gain points for creating challenges (or for other users solving them)?
 - Rethink forms (e.g. swap return false against event.preventDefault())
 
 - Implement json Webtoken

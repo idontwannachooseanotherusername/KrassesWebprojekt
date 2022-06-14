@@ -1,77 +1,30 @@
-# Webprojekt - To Be Determined (WA2)
+# Webproject - MindBreaker
 
-## Grundidee
- - Rätselwebseite, Community
- - Rätsel können erstellt, hochgeladen und gelöst werden
- - Man hat ein Profil und Basics von Social Media (PB, Banner, Bio, Herkunft, ...)
- - Wenn noch Zeit ist: Nachrichten zwischen Accounts (Wie Insta DMs)
+## Mindbreaker
+MindBreaker is a website for solving and creating challenges/riddles and gaining points in doing so. It features
+ - A simple login system
+ - Profile editing with cutom images and banner
+ - Challenge Creator/Editor
+ - Challenges have tags, difficultylevels and categories by which tey can be sorted
+ - A simple pointsystem that rewards users for solving and creating challenges
 
-## Inspiration
- - HackTheBox https://www.hackthebox.com/
- - HackThisSite https://hackthissite.org
- - Geocaching https://geocaching.com
- - YouTube https://youtube.com
+## Be careful
+This is just a simple test project and should not be used for anything other than fun and testing. Passwords are hashed saltless with MD5, the RSA key for the webtoken is publicly available and there most definitely are some bugs.
 
-## Challenges
- - 9 Schwierigkeitsstufen
- - Lösen bring Punkte (Schwerer -> mehr Punkte)
- - Können von jedem Nutzer erstellt werden
- - Können von jedem Nutzer gelöst werden
- - Man muss vom Ersteller festgelegtes Password / String angeben, um eine Challenge zu lösen
- - Challenges müssen nach der Lösung bewertet werden
- - Hat Attribute
- - Hat Tags
-### *Attribute*
- - *Schwierigkeit*
- - *Kategorie* (Verschlüsselung, Logik, Bildrätsel, ...)
- - *Code* (Eindeutige ChallengeID)
- - *Ersteller*
- - *Erstelldatum*
- - Bewertung (Durchschnitt aus Bewertungen für Schwierigkeit, Kreativität &  Allgemein)
-### *Tags*
-Geben weitere Informationen zur Challenge, z.B. ob besondere Kenntnisse oder Material benötigt werden, z.B.
- - Benötigt Programmierkenntnisse
- - Benötigt Internet
- - Benötigt besondere Software (z.B. Tor, ssh o.Ä.)
- - Benötigt besondere Hardware (z.B. besonders starke Grafikkarte, bestimmte Werkzeug, ...)
- - ...
-### *Hinweise*
- - 3 Stück (Kosten: 0, 20%, 50%)
- - Reduzieren die möglichen Gewinnpunkte
- - Müssen nicht unbedingt angegeben werden
- - Hinweis 1 darf leer sein, die anderen müssen Text enthalten (falls sie optional hinzugefügt werden)
- - Zum Kaufen: ChallengeID und HintNr werden an Server übergeben, dieser schickt Hint zurück und erniedrigt mögliche gewinnpunkte
+## Installation
+This installation guide was tested for Ubuntu based systems but can be, with some minor changes, applied to others and Windows as well.
 
-### *Bewertung*
- - Nach einer gelösten Challenge Pflicht
- - In 1-5 *Sternen*
- - *Kommentare(+abgeschlossen Flag)* vor Abschluss sichtbar bevor Abschluss, alle Kommentare nach Abschluss sichtbar
- - Bewertbar sind *Schwierigkeit*, *Kreativität* und *Allgemein*
+1. Install NodeJS, instructions are provided here: 
+https://nodejs.dev/learn/how-to-install-nodejs/
 
-## *Profil*
- - *E-Mail*
- - *PW*
- - *Profilbild* (optional)
- - *Profilbanner* (optional)
- - *Profil-/Accountname*
- - *Profilbiografie* (optional)
- - *Herkunftsland* (optional)
- - (*Nachrichten*)
- - Aus Daten ermittelte Darstellung aus letzem Rätsel, bestbewertseses Rätsel
- - *gelöste Rästel*
+1. Clone the GitHub repo or download the zip 
+`git clone https://github.com/idontwannachooseanotherusername/KrassesWebprojekt.git`
 
-## Seiten
- - Startseite  
-    Mit Infos für neue User
- - Challenges  
-    Ähnlich wie "Trending" auf YouTube, zeigt neuste und gut bewertete Chalenges (filterbar nach Tags & Kategorien)
- -  Login  
-    Login & Sign up!
- - Accounteinstellungen
-    Profilbearbeitung & Passwortupdate
- - (Verwaltung von Abos)
- - Challenge  
-    Beschreibung und Infos der Challenge  
-    (Sollte über https://seite/challenge/>ChallengeID< abrufbar sein)
+2. Run `npm install` to intall all required node modules
 
-*Data needs to be stored*
+3. `cd webtoken` and `npm install` to intall all required node modules for the JSON webtoken
+
+3. `cd ..` and `npm start` to start frontend and backend
+
+4. Open your browser and navigate to http://localhost:8002  
+(the backend uses port 8001, the frontend port 8002)
