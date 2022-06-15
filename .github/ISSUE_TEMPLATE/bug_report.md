@@ -28,8 +28,8 @@ assignees: ''
 4.
 
 ## Context (Environment)
-<!--- How has this issue affected you? What are you trying to accomplish? -->
-<!--- Providing context helps us come up with a solution that is most useful in the real world -->
+<!--- What setup are you using? What are you trying to accomplish? -->
+OS:
 
 ## Detailed Description
 <!--- Provide a detailed description of the change or addition you are proposing -->
