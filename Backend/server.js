@@ -38,7 +38,12 @@ try {
             fileSize: 2 * 1024 * 1024 * 1024        // limit to 2MB
         }
     }));
-    app.use(cors());
+    app.use(cors({
+        "origin": "http://localhost:8002",
+        "methods": "GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS",
+        "preflightContinue": true,
+        "optionsSuccessStatus": 204
+    }));
     app.use(bodyParser.urlencoded({ extended: true}));
     app.use(bodyParser.json());
     app.use(function(request, response, next) {
