@@ -159,8 +159,7 @@ class UserDao {
                 return webtoken.generate(username, user.UserID);
             }
             else{
-                // TODO: Do not throw error, show string in frontend that pw does not match
-                throw new Error('No user found with username: ' + username);
+                throw new Error('Password does not match for username: ' + username);
             }
         }
         
