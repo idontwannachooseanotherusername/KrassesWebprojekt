@@ -333,7 +333,7 @@ function load_hint_preview(solved){
                 load_hint(hintclass);
             }
             else{
-                if (response.daten[hintclass] == 0) {return;}
+                if (response.daten[hintclass] == 0) {continue;}
                 hints[hintclass-1].onclick = function() {get_hint(this)};
                 texts[hintclass-1].classList.add("preview");
                 var hint_len = response.daten[hintclass];
