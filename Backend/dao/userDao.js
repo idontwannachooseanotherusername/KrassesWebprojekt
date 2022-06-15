@@ -14,7 +14,7 @@ class UserDao {
         return this._conn;
     }
 
-    loadById(id) {
+    loadById(id, password = false) {
         const countryDao = new CountryDao(this._conn);
         const challengeDao = new ChallengeDao(this._conn);
 
@@ -79,7 +79,7 @@ class UserDao {
         result.created = created_list;
 
         // Strip user password
-        delete result.password;
+        if (!password) {delete result.password;}
 
         // Add default images
         if (helper.isEmpty(result.bannerpath)){
@@ -198,11 +198,11 @@ class UserDao {
 
     update_password(id, newpassword, oldpassword){
         var sql = 'UPDATE User SET Password=? WHERE UserID=?';
-        if (this.loadById(id).password == md5(oldpassword)){  // Check if old password matches
+        if (this.loadById(id, true).password == md5(oldpassword)){  // Check if old password matches
             var params = [ md5(newpassword), id];
         }
         else{
-            throw new Error('Old passwords do not match - userid:' + id);
+            throw new Error('Old passwords do not match - userid: ' + id);
         }
 
         var statement = this._conn.prepare(sql);
