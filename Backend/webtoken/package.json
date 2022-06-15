@@ -1,22 +1,13 @@
 {
-  "name": "webtoken",
+  "name": "webtokendemo",
   "version": "1.0.0",
-  "description": "JSON WebToken for MindBreaker",
+  "description": "Beispielimplementierung eines JSON WebTokens",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "echo You cannot \"start\" the JSON webtoken scripts. Are you in the right directory? && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/idontwannachooseanotherusername/krasseswebprojekt.git"
-  },
-  "author": "MindBreaker",
+  "author": "Robert Kuti",
   "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/idontwannachooseanotherusername/krasseswebprojekt/issues"
-  },
-  "homepage": "https://github.com/idontwannachooseanotherusername/krasseswebprojekt#readme",
   "dependencies": {
     "jsonwebtoken": "^8.5.1"
   }
