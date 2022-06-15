@@ -196,6 +196,15 @@ class UserDao {
             throw new Error('Could not update existing Record with given data: ' + params);
     }
 
+    update_points(userid, points){
+        var sql = 'UPDATE User SET Points=? WHERE UserID=?';
+        var params = [points, userid];
+        var statement = this._conn.prepare(sql);
+        var result = statement.run(params);
+        if (result.changes != 1)
+            throw new Error('Could not update userpoints with given data: ' + params);
+    }
+
     update_password(id, newpassword, oldpassword){
         var sql = 'UPDATE User SET Password=? WHERE UserID=?';
         if (this.loadById(id, true).password == md5(oldpassword)){  // Check if old password matches

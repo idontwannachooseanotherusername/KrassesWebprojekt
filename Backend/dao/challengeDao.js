@@ -199,8 +199,8 @@ class ChallengeDao {
         if (result.changes != 1) 
             throw new Error('Could not insert new Record. Data: ' + params);
 
-        var newObj = this.loadByIdUnsterilized(result.lastInsertRowid);
-        return newObj;
+        var challenge = this.loadByIdUnsterilized(result.lastInsertRowid);
+        return challenge;
     }
 
     update(id, challengename = '',  description = '', solution = '', difficultyid = '', categoryid = '', tags = []) {
