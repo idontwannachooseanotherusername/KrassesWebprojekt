@@ -16,10 +16,10 @@ function filter_challenges(){
 
     if ("level" in fields){
         var value = fields.level;
-        if (value === 0){$("#search-difficulty").val("");}
+        if (value === "0"){$("#search-difficulty").val("");}
         var i=0;
         while(i<filtered_len){
-            if (filtered_challenges[i].difficulty != value && value !== 0){
+            if (filtered_challenges[i].difficulty != value && value !== "0"){
                 filtered_challenges.splice(i,1);
                 filtered_len--;
             }
@@ -657,8 +657,11 @@ function response_handling(jqXHR, statusText, error){
     else if (jqXHR.status === 404){
         window.location.replace("errorsite.html");
     }
-    else {
+    else if (jqXHR.responseJSON !== undefined){
         show_error(jqXHR.responseJSON.nachricht);
+    }
+    else{
+        show_error(statusText + " | " + error);
     }
 }
 
