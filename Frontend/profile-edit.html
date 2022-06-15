@@ -56,7 +56,7 @@
             <section class="profile">
                 <article class="profile-customize">
                     <h2>Customize your profile</h2>
-                    <form id="change-profile" class="change-profile" action="" method="post" onsubmit="return save_profile_editor()">
+                    <form id="change-profile" class="change-profile" action="" method="post" onsubmit="save_profile_editor(event)">
                         <label for="profile-name"><b>Username</b></label></br>
                         <input type="text" id="profile-name" name="username"></br>
                         <label for="profile-bio"><b>Bio</b></label></br>
@@ -306,19 +306,19 @@
                         </select>
                         </br>
                         <button class="btn-primary" type="submit">Update profile</button>
-                        <button class="btn-delete" onclick="return delete_user()" >Delete profile</button>
+                        <button class="btn-delete" onclick="delete_user(event)" >Delete profile</button>
                     </form>
                 </article>
                 <article class="profile-password">
                     <h2>Change your password</h2>
-                    <form id="change-pw" class="change-pw" action="" method="post" onsubmit="return save_profile_editor()">
+                    <form id="change-pw" class="change-pw" action="" method="post" onsubmit="save_profile_password(event)"}>
                         <label for="old-pw"><b>Old password</b></label></br>
                         <input type="password" placeholder="Old password" id="old-pw" name="pw_old" required>
                         </br>
                         </br>
                         <label for="new-pw"><b>New password</b></label></br>
-                        <input type="password" placeholder="new password" id="new-pw" name="pw_new" onkeyup="check_password(); return false;" required></br>
-                        <input type="password" placeholder="repeat password" id="rep-pw" name="pw_new2" onkeyup="check_password(); return false;" required></br>
+                        <input type="password" placeholder="new password" id="new-pw" name="pw_new" onkeyup="check_password()" required></br>
+                        <input type="password" placeholder="repeat password" id="rep-pw" name="pw_new2" onkeyup="check_password()" required></br>
                         <p id="errors" style="color: red; margin-top: 0;"></p>
                         <button id="pw-submit" class="btn-primary" type="submit">Change password</button>
                     </form>

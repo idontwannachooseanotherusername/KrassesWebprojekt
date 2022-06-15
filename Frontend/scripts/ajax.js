@@ -467,7 +467,8 @@ function load_profile(){
 }
 
 // Create challenge
-function submit_challenge(){
+function submit_challenge(event){
+    event.preventDefault();
     var challengeid = get_url_params().id;
     var url = "http://localhost:8001/wba2api/challenge/";
     var method = "post";
@@ -488,11 +489,11 @@ function submit_challenge(){
     }).fail(function (jqXHR, statusText, error) {
         response_handling(jqXHR, statusText, error);
     });
-    return false;
 }
 
 // Create user or log in
-function submit_user(){
+function submit_user(event){
+    event.preventDefault();
     $.ajax({
         url: 'http://localhost:8001/wba2api/user',
         method: 'post',
@@ -505,7 +506,6 @@ function submit_user(){
     }).fail(function (jqXHR, statusText, error) {
         response_handling(jqXHR, statusText, error);
     });
-    return false;
 }
 
 // Challenge
@@ -532,8 +532,9 @@ function create_challenge_message(text){
     $('.challenge-tags:first').after($('<article/>').addClass("challenge-solved").text(text));
 }
 
-function delete_user(){
+function delete_user(event){
     if (! window.confirm('Are you sure?')){return;}
+    event.preventDefault();
 
     $.ajax({
         url: 'http://localhost:8001/wba2api/user/',
@@ -547,7 +548,6 @@ function delete_user(){
     }).fail(function (jqXHR, statusText, error) {
         response_handling(jqXHR, statusText, error);
     });
-    return false;
 }
 
 function delete_challenge(){
@@ -629,7 +629,6 @@ function load_profile_editor(){
         show_login_prompt();
         return;
     }
-
     $.ajax({
         url: 'http://localhost:8001/wba2api/user/get/' + userid,
         method: 'get',
@@ -647,7 +646,6 @@ function load_profile_editor(){
     }).fail(function (jqXHR, statusText, error) {
         response_handling(jqXHR, statusText, error);
     });
-    return false;
 }
 
 function response_handling(jqXHR, statusText, error){
@@ -676,17 +674,34 @@ function show_error(error){
     },5000);
 }
 
-function save_profile_editor(){
+function save_profile_password(event){
     if (!userid){
         show_login_prompt();
         return;
     }
     event.preventDefault();
-    if(!($("#old-pw").val() === "" && $("#new-pw").val() === "" && $("#rep-pw").val() === "")){
-        if(!check_password()){
-            return;
-        }
+    if(!check_password()){
+        return;
     }
+    $.ajax({
+        url: 'http://localhost:8001/wba2api/user/update/' + userid,
+        method: 'put',
+        dataType: 'json',
+        xhrFields: { withCredentials: true },
+        data: $('#change-pw').serialize()
+    }).done(function (response) {
+        logout();
+    }).fail(function (jqXHR, statusText, error) {
+        response_handling(jqXHR, statusText, error);
+    });
+}
+
+function save_profile_editor(event){
+    if (!userid){
+        show_login_prompt();
+        return;
+    }
+    event.preventDefault();
     $.ajax({
         url: 'http://localhost:8001/wba2api/user/update/' + userid,
         method: 'put',
@@ -695,11 +710,9 @@ function save_profile_editor(){
         data: $('#change-profile').serialize()
     }).done(function (response) {    
         window.location.replace("profile.html");
-        return false;
     }).fail(function (jqXHR, statusText, error) {
         response_handling(jqXHR, statusText, error);
     });
-    return false;
 }
 
 function check_challenge_solution(){

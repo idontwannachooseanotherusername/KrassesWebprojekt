@@ -41,7 +41,7 @@
                     <h1>Create your challenge</h1>
                 </article>
                 <article class="challenge-information">
-                    <form id="challengecreator" onsubmit="return submit_challenge()">
+                    <form id="challengecreator" onsubmit="submit_challenge(event)">
                         <label for="challengename"><h2>Challengename</h2></label>
                         <input id="challengename" name="challengename" type="text" placeholder="Challengename" required></br>
                         <label for="difficulty"><h2>Difficulty</h2></label>
@@ -293,7 +293,7 @@
                         <input id="password" name="password" type="text" placeholder="super secret password" required></input>
                         <br><br>
                         <button type="submit" class="btn-primary">Save</button>
-                        <button class="btn-delete" onclick="cancel_challenge_edit()">Cancel</button>
+                        <button class="btn-delete" onclick="cancel_challenge_edit(event)">Cancel</button>
                     </form>
                 </article>
             </section>
