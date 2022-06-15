@@ -598,6 +598,9 @@ select option{
     border: 8px solid #212121;
     background-color: #007969;
 }
+.profile-info{
+    word-break: break-word;
+}
 .user-name{
     font-size: 2.6em;
     float: left;

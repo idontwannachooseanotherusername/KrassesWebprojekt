@@ -1,4 +1,6 @@
-TODO (In this order)
+TODO
+
+- Add Change_Password
 
 - Should users gain points for creating challenges (or for other users solving them)?
 - Rethink forms (e.g. swap return false against event.preventDefault())
@@ -25,8 +27,6 @@ TODO (In this order)
 - (When getting challenge via ajax: Pass category as object and not only as id)
 
 FINAL
-- Remove unnecessary comments
-- Remove outcommented code
 - Remove unused functions from api
 - Remove unused functions from frontend JavaScripts
 - Test everything

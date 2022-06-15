@@ -333,7 +333,7 @@ function load_hint_preview(solved){
                 load_hint(hintclass);
             }
             else{
-                if (response.daten[hintclass] == 0) {return;}
+                if (response.daten[hintclass] == 0) {continue;}
                 hints[hintclass-1].onclick = function() {get_hint(this)};
                 texts[hintclass-1].classList.add("preview");
                 var hint_len = response.daten[hintclass];
@@ -681,7 +681,12 @@ function save_profile_editor(){
         show_login_prompt();
         return;
     }
-
+    event.preventDefault();
+    if(!($("#old-pw").val() === "" && $("#new-pw").val() === "" && $("#rep-pw").val() === "")){
+        if(!check_password()){
+            return;
+        }
+    }
     $.ajax({
         url: 'http://localhost:8001/wba2api/user/update/' + userid,
         method: 'put',
