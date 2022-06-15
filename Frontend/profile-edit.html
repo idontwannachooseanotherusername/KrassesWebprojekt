@@ -311,14 +311,14 @@
                 </article>
                 <article class="profile-password">
                     <h2>Change your password</h2>
-                    <form id="change-pw" class="change-pw" action="" method="post" onsubmit="return check_password()">
+                    <form id="change-pw" class="change-pw" action="" method="post" onsubmit="return save_profile_editor()">
                         <label for="old-pw"><b>Old password</b></label></br>
                         <input type="password" placeholder="Old password" id="old-pw" name="pw_old" required>
                         </br>
                         </br>
                         <label for="new-pw"><b>New password</b></label></br>
-                        <input type="password" placeholder="new password" id="new-pw" name="pw_new" onkeyup="return check_password()" required></br>
-                        <input type="password" placeholder="repeat password" id="rep-pw" name="pw_new2" onkeyup="return check_password()" required></br>
+                        <input type="password" placeholder="new password" id="new-pw" name="pw_new" onkeyup="check_password(); return false;" required></br>
+                        <input type="password" placeholder="repeat password" id="rep-pw" name="pw_new2" onkeyup="check_password(); return false;" required></br>
                         <p id="errors" style="color: red; margin-top: 0;"></p>
                         <button id="pw-submit" class="btn-primary" type="submit">Change password</button>
                     </form>

@@ -25,12 +25,12 @@ function check_password(){
     let errors = document.getElementById("errors");
     
     if (new_pw.value != rep_pw.value){
-        errors.innerHTML = "Passwords do not match"
+        errors.innerHTML = "Passwords do not match";
         return false;
     }
     else{
-        errors.innerHTML = ""
-        return true
+        errors.innerHTML = "";
+        return true;
     }
 }
 

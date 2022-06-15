@@ -678,7 +678,12 @@ function save_profile_editor(){
         show_login_prompt();
         return;
     }
-
+    event.preventDefault();
+    if(!($("#old-pw").val() === "" && $("#new-pw").val() === "" && $("#rep-pw").val() === "")){
+        if(!check_password()){
+            return;
+        }
+    }
     $.ajax({
         url: 'http://localhost:8001/wba2api/user/update/' + userid,
         method: 'put',
