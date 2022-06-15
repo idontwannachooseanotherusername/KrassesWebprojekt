@@ -17,13 +17,17 @@ This installation guide was only tested for Ubuntu based systems! It should work
 1. Ubuntu: Install NodeJS `sudo apt install nodejs`  
 Win: Download and install NodeJS from https://nodejs.org/en/blog/release/v12.10.0/ (tick the box to install Chocolatery)
 
+2. Install Python 2.7  
+Ubuntu: `sudo apt install python2.7`
+Win: https://www.python.org/downloads/release/python-2718/
+
 2. Ubuntu: Install node version 12.10 `nvm install v12.10` and `nvm use v12.10`  
 Win: not needed
 
 3. Clone the GitHub repo or download the zip 
 `git clone https://github.com/idontwannachooseanotherusername/KrassesWebprojekt.git`
 
-4. If not already done so, open terminal: `cd KrassesWebprojekt` and `npm install` to intall all required node modules
+4. If not already done so, open a terminal where the project was downloaded to and `cd KrassesWebprojekt` and `npm install` to intall all required node modules
 
 5. `cd webtoken` and `npm install` to intall all required node modules for the JSON webtoken
 
