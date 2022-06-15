@@ -1,77 +1,36 @@
-# Webprojekt - To Be Determined (WA2)
+# Webproject - MindBreaker
 
-## Grundidee
- - Rätselwebseite, Community
- - Rätsel können erstellt, hochgeladen und gelöst werden
- - Man hat ein Profil und Basics von Social Media (PB, Banner, Bio, Herkunft, ...)
- - Wenn noch Zeit ist: Nachrichten zwischen Accounts (Wie Insta DMs)
+## Mindbreaker
+MindBreaker is a website for solving and creating challenges/riddles and gaining points in doing so. It features:
+ - A simple reqister/login system
+ - Profile editing with custom images and banner
+ - Challenge Creator/Editor
+ - Challenges have tags, difficultylevels and categories by which they can be sorted
+ - A simple pointsystem that rewards users for solving and creating challenges
 
-## Inspiration
- - HackTheBox https://www.hackthebox.com/
- - HackThisSite https://hackthissite.org
- - Geocaching https://geocaching.com
- - YouTube https://youtube.com
+## Be careful
+This is just a simple test project and should not be used for anything other than fun and testing. Passwords are hashed saltless with MD5, the RSA key for the webtoken is publicly available, the node version is way too old and there most definitely are some bugs.
 
-## Challenges
- - 9 Schwierigkeitsstufen
- - Lösen bring Punkte (Schwerer -> mehr Punkte)
- - Können von jedem Nutzer erstellt werden
- - Können von jedem Nutzer gelöst werden
- - Man muss vom Ersteller festgelegtes Password / String angeben, um eine Challenge zu lösen
- - Challenges müssen nach der Lösung bewertet werden
- - Hat Attribute
- - Hat Tags
-### *Attribute*
- - *Schwierigkeit*
- - *Kategorie* (Verschlüsselung, Logik, Bildrätsel, ...)
- - *Code* (Eindeutige ChallengeID)
- - *Ersteller*
- - *Erstelldatum*
- - Bewertung (Durchschnitt aus Bewertungen für Schwierigkeit, Kreativität &  Allgemein)
-### *Tags*
-Geben weitere Informationen zur Challenge, z.B. ob besondere Kenntnisse oder Material benötigt werden, z.B.
- - Benötigt Programmierkenntnisse
- - Benötigt Internet
- - Benötigt besondere Software (z.B. Tor, ssh o.Ä.)
- - Benötigt besondere Hardware (z.B. besonders starke Grafikkarte, bestimmte Werkzeug, ...)
- - ...
-### *Hinweise*
- - 3 Stück (Kosten: 0, 20%, 50%)
- - Reduzieren die möglichen Gewinnpunkte
- - Müssen nicht unbedingt angegeben werden
- - Hinweis 1 darf leer sein, die anderen müssen Text enthalten (falls sie optional hinzugefügt werden)
- - Zum Kaufen: ChallengeID und HintNr werden an Server übergeben, dieser schickt Hint zurück und erniedrigt mögliche gewinnpunkte
+## Installation
+This installation guide was only tested for Ubuntu based systems! It should work on Windows but could throw unexpected errors.
 
-### *Bewertung*
- - Nach einer gelösten Challenge Pflicht
- - In 1-5 *Sternen*
- - *Kommentare(+abgeschlossen Flag)* vor Abschluss sichtbar bevor Abschluss, alle Kommentare nach Abschluss sichtbar
- - Bewertbar sind *Schwierigkeit*, *Kreativität* und *Allgemein*
+1. Ubuntu: Install NodeJS `sudo apt install nodejs`  
+Win: Download and install NodeJS from https://nodejs.org/en/blog/release/v12.10.0/ (tick the box to install Chocolatery)
 
-## *Profil*
- - *E-Mail*
- - *PW*
- - *Profilbild* (optional)
- - *Profilbanner* (optional)
- - *Profil-/Accountname*
- - *Profilbiografie* (optional)
- - *Herkunftsland* (optional)
- - (*Nachrichten*)
- - Aus Daten ermittelte Darstellung aus letzem Rätsel, bestbewertseses Rätsel
- - *gelöste Rästel*
+2. Install Python 2.7  
+Ubuntu: `sudo apt install python2.7`
+Win: https://www.python.org/downloads/release/python-2718/
 
-## Seiten
- - Startseite  
-    Mit Infos für neue User
- - Challenges  
-    Ähnlich wie "Trending" auf YouTube, zeigt neuste und gut bewertete Chalenges (filterbar nach Tags & Kategorien)
- -  Login  
-    Login & Sign up!
- - Accounteinstellungen
-    Profilbearbeitung & Passwortupdate
- - (Verwaltung von Abos)
- - Challenge  
-    Beschreibung und Infos der Challenge  
-    (Sollte über https://seite/challenge/>ChallengeID< abrufbar sein)
+2. Ubuntu: Install node version 12.10 `nvm install v12.10` and `nvm use v12.10`  
+Win: not needed
 
-*Data needs to be stored*
+3. Clone the GitHub repo or download the zip 
+`git clone https://github.com/idontwannachooseanotherusername/KrassesWebprojekt.git`
+
+4. If not already done so, open a terminal where the project was downloaded to and `cd KrassesWebprojekt` and `npm install` to intall all required node modules
+
+5. `cd webtoken` and `npm install` to intall all required node modules for the JSON webtoken
+
+6. `cd ..` and `npm start` to start frontend and backend
+
+7. Open your browser and navigate to http://localhost:8002 (the backend api uses port 8001)

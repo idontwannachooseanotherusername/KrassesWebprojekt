@@ -5,8 +5,10 @@
   "main": "server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
+    "backend": "node ./server.js",
+    "frontend": "node ./frontend.js",
     "dev": "nodemon ./server.js",
-    "start": "node ./server.js"
+    "start": "npm run backend & npm run frontend"
   },
   "author": "Robert Kuti",
   "license": "ISC",

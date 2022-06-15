@@ -14,7 +14,7 @@ class UserDao {
         return this._conn;
     }
 
-    loadById(id) {
+    loadById(id, password = false) {
         const countryDao = new CountryDao(this._conn);
         const challengeDao = new ChallengeDao(this._conn);
 
@@ -79,7 +79,7 @@ class UserDao {
         result.created = created_list;
 
         // Strip user password
-        delete result.password;
+        if (!password) {delete result.password;}
 
         // Add default images
         if (helper.isEmpty(result.bannerpath)){
@@ -159,8 +159,7 @@ class UserDao {
                 return webtoken.generate(username, user.UserID);
             }
             else{
-                // TODO: Do not throw error, show string in frontend that pw does not match
-                throw new Error('No user found with username: ' + username);
+                throw new Error('Password does not match for username: ' + username);
             }
         }
         
@@ -197,13 +196,22 @@ class UserDao {
             throw new Error('Could not update existing Record with given data: ' + params);
     }
 
+    update_points(userid, points){
+        var sql = 'UPDATE User SET Points=? WHERE UserID=?';
+        var params = [points, userid];
+        var statement = this._conn.prepare(sql);
+        var result = statement.run(params);
+        if (result.changes != 1)
+            throw new Error('Could not update userpoints with given data: ' + params);
+    }
+
     update_password(id, newpassword, oldpassword){
         var sql = 'UPDATE User SET Password=? WHERE UserID=?';
-        if (this.loadById(id).password == md5(oldpassword)){  // Check if old password matches
+        if (this.loadById(id, true).password == md5(oldpassword)){  // Check if old password matches
             var params = [ md5(newpassword), id];
         }
         else{
-            throw new Error('Old passwords do not match - userid:' + id);
+            throw new Error('Old passwords do not match - userid: ' + id);
         }
 
         var statement = this._conn.prepare(sql);

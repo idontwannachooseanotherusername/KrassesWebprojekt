@@ -162,7 +162,7 @@ serviceRouter.put('/user/update/:id', function(request, response) {
             helper.log('Service User: Record updated, id=' + request.body.id);
         }
         else{  // profile pw
-            var result = userDao.update_password(request.params.id, request.body.newpassword, request.body.oldpassword);
+            var result = userDao.update_password(request.params.id, request.body.pw_new, request.body.pw_old);
             helper.log('Service User: Record updated, id=' + request.body.id);
         }
         response.status(200).json(helper.jsonMsgOK(result));

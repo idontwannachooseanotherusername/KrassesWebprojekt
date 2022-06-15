@@ -1,31 +1,20 @@
-TODO (In this order)
-
-- Rething forms (e.g. swap return false against event.preventDefault())
+TODO
 
 - Implement json Webtoken
- -> Do not set cookie via js
- -> Login form without ajax call
+ -> (Do not set cookie via js)
+ -> (Login form without ajax call)
  -> More checking needed? (FINAL)
-
-- Fix first login always fails
-- Challengecreator is not allowed to solve own challenges
 
 - Finish implementing challengecreator
  -> Add file upload functionality
- -> Implement challenge editing
-   - Possibility to delete uploaded files
-
-- Implement challenge editing
- -> Add file upload
+ -> Possibility to delete uploaded files
  -> load current files into fields
  -> Uploaded files should be renamed to their hash value to avoid name conflicts
   and to make sure we aren't saving the same image over and over again
 
-- (When getting challenge via ajax: Pass category as object and not only as id)
+- (When getting challenge via ajax: Pass category as object and not only as Name)
 
 FINAL
-- Remove unnecessary comments
-- Remove outcommented code
 - Remove unused functions from api
 - Remove unused functions from frontend JavaScripts
 - Test everything

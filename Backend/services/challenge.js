@@ -4,6 +4,7 @@ const HintDao = require('../dao/hintDao.js');
 const ChallengetagDao = require('../dao/challengetagDao.js');
 const express = require('express');
 const req = require('express/lib/request');
+const UserDao = require('../dao/userDao.js');
 var serviceRouter = express.Router();
 
 helper.log('- Service Challenge');
@@ -138,6 +139,7 @@ serviceRouter.post('/challenge/', function(request, response) {
     const challengeDao = new ChallengeDao(request.app.locals.dbConnection);
     const hintDao = new HintDao(request.app.locals.dbConnection);
     const challengetagDao = new ChallengetagDao(request.app.locals.dbConnection);
+    const userDao = new UserDao(request.app.locals.dbConnection);
     var b = request.body;
 
     try {
@@ -148,6 +150,8 @@ serviceRouter.post('/challenge/', function(request, response) {
         for (var tagid of request.body.tags){
             challengetagDao.create(result.challengeid, tagid);
         }
+        var user = userDao.loadById(b.id);
+        userDao.update_points(user.userid, user.points + result.difficulty.level);
         helper.log('Service Challenge: Record inserted');
         response.status(200).json(helper.jsonMsgOK(result));
     } catch (ex) {

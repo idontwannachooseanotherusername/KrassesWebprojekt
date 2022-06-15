@@ -16,10 +16,10 @@ function filter_challenges(){
 
     if ("level" in fields){
         var value = fields.level;
-        if (value === 0){$("#search-difficulty").val("");}
+        if (value === "0"){$("#search-difficulty").val("");}
         var i=0;
         while(i<filtered_len){
-            if (filtered_challenges[i].difficulty != value && value !== 0){
+            if (filtered_challenges[i].difficulty != value && value !== "0"){
                 filtered_challenges.splice(i,1);
                 filtered_len--;
             }
@@ -265,8 +265,12 @@ function load_challenge(){
         // TODO: Files!
 
         if(response.daten.solved){
-            create_challenge_solved();
+            create_challenge_message("You solved this challenge!");
             $('#solution').prop("disabled", true).prop("placeholder", "Already solved");
+            $('#solution-button').addClass("disabled").prop("onclick", "");
+        }else if(response.daten.user.userid == userid){
+            create_challenge_message("This is your own challenge!");
+            $('#solution').prop("disabled", true).prop("placeholder", "Own challenge");
             $('#solution-button').addClass("disabled").prop("onclick", "");
         }
 
@@ -325,13 +329,13 @@ function load_hint_preview(solved){
         var texts = document.getElementsByClassName("hint-text");
         var hints = document.getElementsByClassName("hint");
         for (var hintclass in response.daten){
-
-            hints[hintclass-1].onclick = function() {get_hint(this)};
-            texts[hintclass-1].classList.add("preview");
-            if((!(Number.isInteger(response.daten[hintclass]))) || solved){
+            if(!(Number.isInteger(response.daten[hintclass])) || solved){
                 load_hint(hintclass);
             }
             else{
+                if (response.daten[hintclass] == 0) {continue;}
+                hints[hintclass-1].onclick = function() {get_hint(this)};
+                texts[hintclass-1].classList.add("preview");
                 var hint_len = response.daten[hintclass];
                 var start = Math.floor(Math.random() * (guide_max_len - hint_len));
                 texts[hintclass-1].innerHTML = guide.substr(start,hint_len);
@@ -379,7 +383,10 @@ function get_hint(hint){
             setTimeout(function() {
                 text.classList.remove("confirm");
                 warning.classList.remove("warning");
-                hint.removeChild(warning);
+                try{
+                    hint.removeChild(warning);
+                }
+                catch{}
             }, 5000);
         }
         /*Second click*/
@@ -460,7 +467,8 @@ function load_profile(){
 }
 
 // Create challenge
-function submit_challenge(){
+function submit_challenge(event){
+    event.preventDefault();
     var challengeid = get_url_params().id;
     var url = "http://localhost:8001/wba2api/challenge/";
     var method = "post";
@@ -481,11 +489,11 @@ function submit_challenge(){
     }).fail(function (jqXHR, statusText, error) {
         response_handling(jqXHR, statusText, error);
     });
-    return false;
 }
 
 // Create user or log in
-function submit_user(){
+function submit_user(event){
+    event.preventDefault();
     $.ajax({
         url: 'http://localhost:8001/wba2api/user',
         method: 'post',
@@ -498,7 +506,6 @@ function submit_user(){
     }).fail(function (jqXHR, statusText, error) {
         response_handling(jqXHR, statusText, error);
     });
-    return false;
 }
 
 // Challenge
@@ -521,12 +528,13 @@ function create_challenge_tools(challengeid){
     text.appendChild(tools);
 }
 
-function create_challenge_solved(){
-    $('.challenge-tags:first').after($('<article/>').addClass("challenge-solved").text("You solved this challenge!"));
+function create_challenge_message(text){
+    $('.challenge-tags:first').after($('<article/>').addClass("challenge-solved").text(text));
 }
 
-function delete_user(){
+function delete_user(event){
     if (! window.confirm('Are you sure?')){return;}
+    event.preventDefault();
 
     $.ajax({
         url: 'http://localhost:8001/wba2api/user/',
@@ -540,7 +548,6 @@ function delete_user(){
     }).fail(function (jqXHR, statusText, error) {
         response_handling(jqXHR, statusText, error);
     });
-    return false;
 }
 
 function delete_challenge(){
@@ -622,7 +629,6 @@ function load_profile_editor(){
         show_login_prompt();
         return;
     }
-
     $.ajax({
         url: 'http://localhost:8001/wba2api/user/get/' + userid,
         method: 'get',
@@ -640,7 +646,6 @@ function load_profile_editor(){
     }).fail(function (jqXHR, statusText, error) {
         response_handling(jqXHR, statusText, error);
     });
-    return false;
 }
 
 function response_handling(jqXHR, statusText, error){
@@ -650,8 +655,11 @@ function response_handling(jqXHR, statusText, error){
     else if (jqXHR.status === 404){
         window.location.replace("errorsite.html");
     }
-    else {
+    else if (jqXHR.responseJSON !== undefined){
         show_error(jqXHR.responseJSON.nachricht);
+    }
+    else{
+        show_error(statusText + " | " + error);
     }
 }
 
@@ -666,12 +674,34 @@ function show_error(error){
     },5000);
 }
 
-function save_profile_editor(){
+function save_profile_password(event){
     if (!userid){
         show_login_prompt();
         return;
     }
+    event.preventDefault();
+    if(!check_password()){
+        return;
+    }
+    $.ajax({
+        url: 'http://localhost:8001/wba2api/user/update/' + userid,
+        method: 'put',
+        dataType: 'json',
+        xhrFields: { withCredentials: true },
+        data: $('#change-pw').serialize()
+    }).done(function (response) {
+        logout();
+    }).fail(function (jqXHR, statusText, error) {
+        response_handling(jqXHR, statusText, error);
+    });
+}
 
+function save_profile_editor(event){
+    if (!userid){
+        show_login_prompt();
+        return;
+    }
+    event.preventDefault();
     $.ajax({
         url: 'http://localhost:8001/wba2api/user/update/' + userid,
         method: 'put',
@@ -680,11 +710,9 @@ function save_profile_editor(){
         data: $('#change-profile').serialize()
     }).done(function (response) {    
         window.location.replace("profile.html");
-        return false;
     }).fail(function (jqXHR, statusText, error) {
         response_handling(jqXHR, statusText, error);
     });
-    return false;
 }
 
 function check_challenge_solution(){

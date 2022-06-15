@@ -26,7 +26,6 @@ function init(){
     // add copy to textarea event
     // visuellView.addEventListener("DOMCharacterDataModified", textareaUpdate)
     // add active tag event
-    document.addEventListener('selectionchange', selectionChange);
     // add paste event
     visuellView.addEventListener('paste', pasteEvent);
     // add paragraph tag on new line
