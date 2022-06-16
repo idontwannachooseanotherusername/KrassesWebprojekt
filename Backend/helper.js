@@ -8,8 +8,8 @@ module.exports.CookieDict = function(cookiestring='') {
     
     var cookies = {};
     var cookielist = cookiestring.split(';');
-    for (let i=0; i < cookielist.length; i +=  2){
-        let c = cookielist[i].split('=')
+    for (let i=0; i < cookielist.length; i ++){
+        let c = cookielist[i].replace(' ', '').split('=', 2)
         cookies[c[0]] = c[1];
     }
     return cookies
@@ -21,7 +21,7 @@ module.exports.IdFromToken = function(cookiestring){
     if (cookies === undefined || !'token' in cookies){
         return undefined;
     }
-    return webtoken.GetUserID(cookies['token']);
+    return webtoken.GetUserID(cookies.token);
 }
 
 // Check if user has access
