@@ -33,12 +33,7 @@ module.exports.UserHasAccess = function(cookiestring){
     if (!'token' in cookies){
         return false;
     }
-    if (webtoken.valid(cookies['token'])){
-        return true
-    }
-    else{
-        return false;
-    }
+    return webtoken.valid(cookies['token']);
 }
 
 module.exports.SameUser = function (cookiestring, userid){
