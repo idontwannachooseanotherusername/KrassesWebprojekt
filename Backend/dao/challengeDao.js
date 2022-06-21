@@ -208,7 +208,7 @@ class ChallengeDao {
         var params = [challengename, description];
         if (!helper.isEmpty(solution)){
             sql += ", Solution=?";
-            params.push(solution);
+            params.push(md5(solution));
         }
         if (!helper.isEmpty(difficultyid)){
             sql += ", DifficultyID=?";
