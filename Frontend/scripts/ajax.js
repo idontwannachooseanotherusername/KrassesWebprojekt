@@ -71,7 +71,6 @@ function load_challenges(){
         dataType: 'json'
     }).done(function (response) {
         console.log('Number of challenges in db: ' + response.daten.length);
-
         // create challenges
         for (let i = 0; i < response.daten.length; i++) {
             create_challenge(response.daten[i]);
@@ -217,6 +216,7 @@ function load_challenge(){
     }).done(function (response) {   
         load_hint_preview(response.daten.solved);
         console.log(response.daten); 
+        document.title = "MB - " + response.daten.challengename;
         // Heading
         var challenge = document.getElementsByClassName("challenge-attributes")[0];
         var title = document.createElement("h1");
