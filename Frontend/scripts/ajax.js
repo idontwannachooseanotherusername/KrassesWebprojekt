@@ -469,6 +469,37 @@ function load_profile(){
 // Create challenge
 function submit_challenge(event){
     event.preventDefault();
+    
+    // Dateien einlesen----------------------------------------------------
+    var inpFile = document.getElementById("files");
+    formdata = new FormData();
+            
+    for (var file of inpFile.files){
+            formdata.append("myFiles[]", file);
+    }
+    // Dateiname Auslesen 
+    for (var value of formdata.entries()){
+        console.log(value[1].name)  
+    } 
+
+            /*
+            var url = "http://localhost:8001/wba2api/challenge/";
+            var method = "post";
+            $.ajax({
+                    url: url,
+                method: method,
+                data: formdata,
+                processData: false,
+                contentType: false,
+            }).done(function (response) {
+                //window.location.replace("challenge.html?id=" + response.daten.challengeid);
+            }).fail(function (jqXHR, statusText, error) {
+                response_handling(jqXHR, statusText, error);
+            });
+            */
+    //----------------------------------------------------    
+    
+    
     var challengeid = get_url_params().id;
     var url = "http://localhost:8001/wba2api/challenge/";
     var method = "post";
@@ -477,7 +508,8 @@ function submit_challenge(event){
         method = "put";
     }
     $('#description')[0].value = $('.visuell-view')[0].innerHTML;
-
+    
+    
     $.ajax({
         url: url,
         method: method,
@@ -490,6 +522,7 @@ function submit_challenge(event){
         response_handling(jqXHR, statusText, error);
     });
 }
+
 
 // Create user or log in
 function submit_user(event){
@@ -747,3 +780,4 @@ function show_wrong_solution(){
         $('#solution')[0].classList.add("wrong");
     },500);
 }
+

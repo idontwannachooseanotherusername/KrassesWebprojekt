@@ -198,7 +198,9 @@ class ChallengeDao {
 
         if (result.changes != 1) 
             throw new Error('Could not insert new Record. Data: ' + params);
-
+        // Ordner mit id als name anlegen 
+        // Datei speichern 
+        // 
         var challenge = this.loadByIdUnsterilized(result.lastInsertRowid);
         return challenge;
     }
