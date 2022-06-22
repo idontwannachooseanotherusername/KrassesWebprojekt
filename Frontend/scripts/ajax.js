@@ -470,7 +470,7 @@ function load_profile(){
 function submit_challenge(event){
     event.preventDefault();
     
-    // Dateien einlesen----------------------------------------------------
+    /* Dateien einlesen----------------------------------------------------
     var inpFile = document.getElementById("files");
     formdata = new FormData();
             
@@ -482,7 +482,7 @@ function submit_challenge(event){
         console.log(value[1].name)  
     } 
 
-            /*
+            
             var url = "http://localhost:8001/wba2api/challenge/";
             var method = "post";
             $.ajax({
