@@ -8,6 +8,7 @@ const UserhintsDao = require('./userhintsDao.js');
 const md5 = require('md5');
 const { result } = require('lodash');
 const { param } = require('express/lib/request');
+const fs = require('fs');
 
 class ChallengeDao {
 
@@ -189,7 +190,7 @@ class ChallengeDao {
         return false;
     }
 
-    create(userid, challengename = 'Challengename', difficultyid = 1, categoryid = 0, tags = [], description = '', password = '', creationdate = '') {       
+    create(userid, challengename = 'Challengename', difficultyid = 1, categoryid, tags = [], description = '', password = 'password', creationdate = '') {       
         var sql = 'INSERT INTO Challenge (ChallengeName, DifficultyID, CategoryID, Description, CreationDate, Solution, UserID) VALUES (?,?,?,?,?,?,?)';
         var statement = this._conn.prepare(sql);
 
@@ -198,11 +199,21 @@ class ChallengeDao {
 
         if (result.changes != 1) 
             throw new Error('Could not insert new Record. Data: ' + params);
-        // Ordner mit id als name anlegen 
-        // Datei speichern 
-        // 
-        var challenge = this.loadByIdUnsterilized(result.lastInsertRowid);
-        return challenge;
+
+        return this.loadByIdUnsterilized(result.lastInsertRowid);
+    }
+
+    save_file(path, file){
+        try {
+            if (!fs.existsSync(path)) {fs.mkdirSync(path,);}
+        } catch (err) {
+            console.error(err);
+        }
+
+        fs.writeFile(path + file.name, file.data, function (err) {
+            if (err) {return console.log(err);}
+        });
+
     }
 
     update(id, challengename = '',  description = '', solution = '', difficultyid = '', categoryid = '', tags = []) {
