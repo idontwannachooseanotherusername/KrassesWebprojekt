@@ -470,14 +470,14 @@ function load_profile(){
 function submit_challenge(event){
     event.preventDefault();
     
-    /* Dateien einlesen----------------------------------------------------
+    //Dateien einlesen----------------------------------------------------
     var inpFile = document.getElementById("files");
     formdata = new FormData();
             
     for (var file of inpFile.files){
             formdata.append("myFiles[]", file);
     }
-    // Dateiname Auslesen 
+    /* Dateiname Auslesen 
     for (var value of formdata.entries()){
         console.log(value[1].name)  
     } 
@@ -496,8 +496,8 @@ function submit_challenge(event){
             }).fail(function (jqXHR, statusText, error) {
                 response_handling(jqXHR, statusText, error);
             });
-            */
-    //----------------------------------------------------    
+            
+    */
     
     
     var challengeid = get_url_params().id;
@@ -507,14 +507,25 @@ function submit_challenge(event){
         url += challengeid;
         method = "put";
     }
-    $('#description')[0].value = $('.visuell-view')[0].innerHTML;
+    $('#description')[0].value = $('.visuell-view')[0].innerHTML
+    
+    var daten = $('form').serializeArray();
+    
+    for (var i = 0; i< daten.length; i++ ){
+        formdata.append(daten[i].name, daten[i].value);
+    } 
     
     
+    
+
     $.ajax({
         url: url,
         method: method,
         dataType: 'json',
-        data: $('form').serialize(),
+        //data: $('form').serialize(), 
+        data: formdata,
+        processData: false,
+        contentType: false,
         xhrFields: { withCredentials: true }
     }).done(function (response) {
         window.location.replace("challenge.html?id=" + response.daten.challengeid);
