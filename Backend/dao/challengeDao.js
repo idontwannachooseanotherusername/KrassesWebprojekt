@@ -203,7 +203,7 @@ class ChallengeDao {
         return this.loadByIdUnsterilized(result.lastInsertRowid);
     }
 
-    save_file(path, file){
+    save_file(path, file, challengeid){
         try {
             if (!fs.existsSync(path)) {fs.mkdirSync(path,);}
         } catch (err) {
@@ -214,6 +214,17 @@ class ChallengeDao {
             if (err) {return console.log(err);}
         });
 
+        var sql = 'INSERT INTO Challengefile (ChallengeID, FilePath) VALUES (?,?)';
+        var statement = this._conn.prepare(sql);
+
+        
+        var params = [challengeid, path + file.name];
+        var result = statement.run(params);
+
+        if (result.changes != 1) 
+            throw new Error('Could not insert new Record. Data: ' + params);
+
+        
     }
 
     update(id, challengename = '',  description = '', solution = '', difficultyid = '', categoryid = '', tags = []) {
