@@ -265,26 +265,14 @@ function load_challenge(){
         if(response.daten.files){
             for (var i = 0; i < response.daten.files.length; i++){
                 var data = document.createElement('ul');
-                data.innerTest = response.daten.files[i].toString();
+                data.innerText = response.daten.files[i].toString();
                 var data_link = document.createElement("a");
                 data_link.href = response.daten.files[i].toString();
                 data_link.appendChild(data);
                 document.getElementsByClassName("challenge-downloads")[0].append(data_link);
                 $('.challenge-downloads')[0].append.data;
             }
-        }/*
-        $('.challenge-data')[0].innerHTML = response.daten.files;
-
-                    var edit_link = document.createElement("a");
-            edit_link.href = "profile-edit.html";
-            var edit_button = document.createElement("div");
-            edit_button.className = "btn-primary";
-            edit_button.innerHTML = "edit";
-            var text = document.getElementsByClassName("profile")[0];
-            edit_link.appendChild(edit_button);
-            tools.appendChild(edit_link);
-            */
-
+        }
 
         if(response.daten.solved){
             create_challenge_message("You solved this challenge!");
