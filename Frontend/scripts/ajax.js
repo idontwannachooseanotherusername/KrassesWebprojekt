@@ -718,12 +718,33 @@ function save_profile_editor(event){
         return;
     }
     event.preventDefault();
-    $.ajax({
+
+    var profilePic = document.getElementById("profile-pic");
+    var profileBanner = document.getElementById("profile-banner");
+    formdata = new FormData();
+            
+
+    for (var file of profilePic.files){
+        formdata.append("profilePic", file);
+    }
+
+    for (var file of profileBanner.files){
+        formdata.append("profileBanner", file);
+    }
+    
+    var daten = $('form').serializeArray();
+    for (var i = 0; i< daten.length; i++ ){
+        formdata.append(daten[i].name, daten[i].value);
+    } 
+
+    $.ajax({ 
         url: 'http://localhost:8001/wba2api/user/update/' + userid,
         method: 'put',
         dataType: 'json',
+        data: formdata,
+        processData: false,
+        contentType: false,
         xhrFields: { withCredentials: true },
-        data: $('#change-profile').serialize()
     }).done(function (response) {    
         window.location.replace("profile.html");
     }).fail(function (jqXHR, statusText, error) {
