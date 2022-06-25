@@ -235,7 +235,7 @@ header{
     max-width: 300px;
 }
 .top-image{
-    background-image: url("../images/main-banner.jpg");
+    background-image: url("../data/main-banner.jpg");
     background-position: bottom;
     height: 700px;
     position: relative;
@@ -454,7 +454,7 @@ main .teaser{
     border-radius: 9px;
     
     background-color: #00e1c2;
-    background-image: url("../images/Login.svg");
+    background-image: url("../data/Login.svg");
     background-repeat: no-repeat;
     background-size: cover;
     color: #212121;
@@ -915,7 +915,7 @@ footer{
     position: relative;
     
     /*Background image*/
-    background-image: url("../images/footer.png");
+    background-image: url("../data/footer.png");
     background-repeat: no-repeat;
     background-position: center;
 }

@@ -3,6 +3,7 @@ const helper = require('../helper.js');
 const CountryDao = require('./countryDao.js');
 const ChallengeDao = require('./challengeDao.js');
 const webtoken = require('../webtoken/index.js');
+const fs = require('fs');
 
 class UserDao {
 
@@ -173,6 +174,19 @@ class UserDao {
 
         var newObj = this.loadById(result.lastInsertRowid);
         return webtoken.generate(username, newObj.userid);
+    }
+
+    save_file(path, file, namedtype){
+        try {
+            if (!fs.existsSync(path)) {fs.mkdirSync(path,{ recursive: true });}
+        } catch (err) {
+            console.error(err);
+        }
+
+        fs.writeFile(path + namedtype, file.data, function (err) {
+            if (err) {return console.log(err);}
+        });
+
     }
 
     update_data(id, username = '', bio = '', picturepath = '', bannerpath = '', countryid = '') {

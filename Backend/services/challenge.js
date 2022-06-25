@@ -173,8 +173,7 @@ serviceRouter.post('/challenge/', function(request, response) {
 
         if (fileHelper.hasUploadedFiles(request)) {
             files.forEach(function(item) {
-                challengeDao.save_file('./db/data/' + challenge.challengeid + '/', item, challenge.challengeid);
-                
+                challengeDao.save_file('../Frontend/data/challenge_data/' + challenge.challengeid + '/', item, challenge.challengeid);
             });
 
             var res = [];
