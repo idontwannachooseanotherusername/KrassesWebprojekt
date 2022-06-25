@@ -71,6 +71,7 @@ function load_challenges(){
         dataType: 'json'
     }).done(function (response) {
         console.log('Number of challenges in db: ' + response.daten.length);
+
         // create challenges
         for (let i = 0; i < response.daten.length; i++) {
             create_challenge(response.daten[i]);
@@ -96,7 +97,7 @@ function create_challenge(challenge_data){
     if ("solved" in challenge_data && challenge_data.solved)
     {
         let solved = document.createElement("img");
-        solved.src = "data/icons/Point.svg";
+        solved.src = "images/icons/Point.svg";
         solved.className = "challenge-solved-marker";
         solved.title = "Solved";
         challenge.appendChild(solved);
@@ -216,7 +217,6 @@ function load_challenge(){
     }).done(function (response) {   
         load_hint_preview(response.daten.solved);
         console.log(response.daten); 
-        document.title = "MB - " + response.daten.challengename;
         // Heading
         var challenge = document.getElementsByClassName("challenge-attributes")[0];
         var title = document.createElement("h1");
@@ -262,16 +262,22 @@ function load_challenge(){
 
         $('.challenge-text')[0].innerHTML = response.daten.description;
 
-        if(response.daten.files){
+        if(response.daten.files.length!==0){
+            var downloadlist = document.createElement('ul');
+            $(downloadlist).css('list-style', 'none');
+            downloadlist.style.padding = 'unset';
+            downloadlist.innerHTML="DOWNLOADS:";
             for (var i = 0; i < response.daten.files.length; i++){
-                var data = document.createElement('ul');
+                var data = document.createElement('li');
                 data.innerText = response.daten.files[i].toString();
                 var data_link = document.createElement("a");
                 data_link.href = response.daten.files[i].toString();
+                data_link.download = response.daten.files[i].toString();
                 data_link.appendChild(data);
-                document.getElementsByClassName("challenge-downloads")[0].append(data_link);
-                $('.challenge-downloads')[0].append.data;
+                downloadlist.appendChild(data_link);
             }
+            document.getElementsByClassName("challenge-downloads")[0].append(downloadlist);
+            $('.challenge-downloads')[0].append.downloadlist;
         }
 
         if(response.daten.solved){
@@ -757,7 +763,7 @@ function save_profile_editor(event){
 
     for (var file of profilePic.files){
         formdata.append("profilePic", file);
-    }
+    } 
 
     for (var file of profileBanner.files){
         formdata.append("profileBanner", file);

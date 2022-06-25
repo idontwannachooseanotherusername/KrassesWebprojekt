@@ -165,7 +165,7 @@ serviceRouter.put('/user/update/:id', function(request, response) {
                     response.status(413).json(helper.jsonMsgError("Uploaded file too large. Max file size: 100Mb"));
                     return;
                 }
-                userDao.save_file('../Frontend/data/user_data/' + userid + '/', request.files.profilePic, 'profile-picture.jpg');
+                userDao.save_file('../Frontend/data/user_data/' + userid + '/', request.files.profilePic, 'profile-picture.jpg',userid);
                 request.body.picturepath = userid + '/profile-picture.jpg';
             }
             if(!helper.isEmpty(request.files.profileBanner)){
@@ -173,7 +173,7 @@ serviceRouter.put('/user/update/:id', function(request, response) {
                     response.status(413).json(helper.jsonMsgError("Uploaded file too large. Max file size: 100Mb"));
                     return;
                 }
-                userDao.save_file('../Frontend/data/user_data/' + userid + '/', request.files.profileBanner, 'profile-banner.jpg');
+                userDao.save_file('../Frontend/data/user_data/' + userid + '/', request.files.profileBanner, 'profile-banner.jpg', userid);
                 request.body.bannerpath = userid + '/profile-banner.jpg';
             }
         }
