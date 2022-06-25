@@ -460,6 +460,21 @@ function load_profile(){
         h_solved.innerHTML = `Solved Challenges (${response.daten.solved.length})`;
         var h_created = document.getElementById("created-heading");
         h_created.innerHTML = `Created Challenges (${response.daten.created.length})`;
+
+        if(response.daten.userid == userid){
+            var tools = document.createElement("article");
+            tools.className = "profile-tools";
+            var edit_link = document.createElement("a");
+            edit_link.href = "profile-edit.html";
+            var edit_button = document.createElement("div");
+            edit_button.className = "btn-primary";
+            edit_button.innerHTML = "edit";
+            var text = document.getElementsByClassName("profile")[0];
+            edit_link.appendChild(edit_button);
+            tools.appendChild(edit_link);
+            text.appendChild(tools);
+            console.log("hey");
+        }
         hide_loading();
     }).fail(function (jqXHR, statusText, error) {
         response_handling(jqXHR, statusText, error);

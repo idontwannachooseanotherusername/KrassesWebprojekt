@@ -56,6 +56,7 @@ main, section{
     display: initial;
 }
 .btn-primary, .login-button{
+    display: initial;
     padding: 15px 35px;
     background-color: #00e1c2;
     background-image: linear-gradient(150deg, #00e1c2, #00e1c2, #007969);
