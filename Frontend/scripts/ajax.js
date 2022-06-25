@@ -262,16 +262,22 @@ function load_challenge(){
 
         $('.challenge-text')[0].innerHTML = response.daten.description;
 
-        if(response.daten.files){
+        if(response.daten.files.length!==0){
+            var downloadlist = document.createElement('ul');
+            $(downloadlist).css('list-style', 'none');
+            downloadlist.style.padding = 'unset';
+            downloadlist.innerHTML="DOWNLOADS:";
             for (var i = 0; i < response.daten.files.length; i++){
-                var data = document.createElement('ul');
+                var data = document.createElement('li');
                 data.innerText = response.daten.files[i].toString();
                 var data_link = document.createElement("a");
                 data_link.href = response.daten.files[i].toString();
+                data_link.download = response.daten.files[i].toString();
                 data_link.appendChild(data);
-                document.getElementsByClassName("challenge-downloads")[0].append(data_link);
-                $('.challenge-downloads')[0].append.data;
+                downloadlist.appendChild(data_link);
             }
+            document.getElementsByClassName("challenge-downloads")[0].append(downloadlist);
+            $('.challenge-downloads')[0].append.downloadlist;
         }
 
         if(response.daten.solved){
