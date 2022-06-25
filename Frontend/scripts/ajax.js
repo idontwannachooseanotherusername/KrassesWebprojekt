@@ -469,6 +469,15 @@ function load_profile(){
 // Create challenge
 function submit_challenge(event){
     event.preventDefault();
+    
+    //Dateien einlesen----------------------------------------------------
+    var inpFile = document.getElementById("files");
+    formdata = new FormData();
+            
+    for (var file of inpFile.files){
+            formdata.append("myFiles[]", file);
+    }
+    
     var challengeid = get_url_params().id;
     var url = "http://localhost:8001/wba2api/challenge/";
     var method = "post";
@@ -476,13 +485,19 @@ function submit_challenge(event){
         url += challengeid;
         method = "put";
     }
-    $('#description')[0].value = $('.visuell-view')[0].innerHTML;
+    $('#description')[0].value = $('.visuell-view')[0].innerHTML
+    var daten = $('form').serializeArray();
+    for (var i = 0; i< daten.length; i++ ){
+        formdata.append(daten[i].name, daten[i].value);
+    } 
 
     $.ajax({
         url: url,
         method: method,
         dataType: 'json',
-        data: $('form').serialize(),
+        data: formdata,
+        processData: false,
+        contentType: false,
         xhrFields: { withCredentials: true }
     }).done(function (response) {
         window.location.replace("challenge.html?id=" + response.daten.challengeid);
@@ -490,6 +505,7 @@ function submit_challenge(event){
         response_handling(jqXHR, statusText, error);
     });
 }
+
 
 // Create user or log in
 function submit_user(event){
@@ -609,7 +625,7 @@ function load_challenge_editor_tags(tags){
     }).done(function (response_tags) {
         var tags_wrapper = $("#tags-wrapper")
         for (var tag of response_tags.daten){
-            var checkbox = $(`<input class="editor-tag" name="tags[]" value=${tag.tagid} type="checkbox">`)
+            var checkbox = $(`<input class="editor-tag" name="tags" value=${tag.tagid} type="checkbox">`)
             for (var challenge_tag of tags){
                 if (challenge_tag.tagid === tag.tagid){
                     checkbox.attr("checked", "");
@@ -747,3 +763,4 @@ function show_wrong_solution(){
         $('#solution')[0].classList.add("wrong");
     },500);
 }
+

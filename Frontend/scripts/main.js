@@ -48,3 +48,9 @@ function logout(){
 function cancel_challenge_edit(){
     window.location.replace("challenges.html");
 }
+
+
+
+    
+
+

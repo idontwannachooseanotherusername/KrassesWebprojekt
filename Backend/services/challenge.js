@@ -6,6 +6,7 @@ const express = require('express');
 const req = require('express/lib/request');
 const UserDao = require('../dao/userDao.js');
 var serviceRouter = express.Router();
+const fileHelper = require('../fileHelper.js');
 
 helper.log('- Service Challenge');
 
@@ -141,19 +142,59 @@ serviceRouter.post('/challenge/', function(request, response) {
     const challengetagDao = new ChallengetagDao(request.app.locals.dbConnection);
     const userDao = new UserDao(request.app.locals.dbConnection);
     var b = request.body;
+    var challengeid;
 
     try {
-        var result = challengeDao.create(b.id, b.challengename, b.difficulty, b.categoryid, b.tags, b.description, b.password, b.creationdate);
-        hintDao.create(result.challengeid, 1, request.body.hint1);
-        hintDao.create(result.challengeid, 2, request.body.hint2);
-        hintDao.create(result.challengeid, 3, request.body.hint3);
+        if (fileHelper.hasUploadedFiles(request)) {
+            var files = fileHelper.getAllUplodedFilesAsArray(request, true);
+
+            if (files.length > 10){
+                response.status(413).json(helper.jsonMsgError("Too many files! Max amount is 10."));
+                return;
+            }
+            files.forEach(function(item) {
+                if (item.size > 10 * 1024 * 1024){
+                    response.status(413).json(helper.jsonMsgError("Uploaded file too large. Max file size: 10Mb"));
+                    return;
+                }
+            });
+        }
+
+        challenge = challengeDao.create(b.id, b.challengename, b.difficulty, b.categoryid,
+                                            b.tags, b.description, b.password, b.creationdate);
+        hintDao.create(challenge.challengeid, 1, request.body.hint1);
+        hintDao.create(challenge.challengeid, 2, request.body.hint2);
+        hintDao.create(challenge.challengeid, 3, request.body.hint3);
         for (var tagid of request.body.tags){
-            challengetagDao.create(result.challengeid, tagid);
+            challengetagDao.create(challenge.challengeid, tagid);
         }
         var user = userDao.loadById(b.id);
-        userDao.update_points(user.userid, user.points + result.difficulty.level);
+        userDao.update_points(user.userid, user.points + challenge.difficulty.level);
+
+        if (fileHelper.hasUploadedFiles(request)) {
+            files.forEach(function(item) {
+                challengeDao.save_file('./db/data/' + challenge.challengeid + '/', item);
+            });
+
+            var res = [];
+            files.forEach(function(item) {
+                res.push({
+                    status: true,
+                    fileSaved: true,
+                    fileName: item.name,
+                    fileSize: item.size,
+                    fileMimeType: item.mimetype,
+                    fileEncoding: item.encoding,
+                    fileHandle: item.handleName,
+                    fileNameOnly: item.nameOnly,
+                    fileExtension: item.extension,
+                    fileIsPicture: item.isPicture
+                });
+            });
+        }
+
         helper.log('Service Challenge: Record inserted');
-        response.status(200).json(helper.jsonMsgOK(result));
+        response.status(200).json(helper.jsonMsgOK(challenge));
     } catch (ex) {
         helper.logError('Service Challenge: Error creating new record. Exception occured: ' + ex.message);
         response.status(400).json(helper.jsonMsgError(ex.message));
