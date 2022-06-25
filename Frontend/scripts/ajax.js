@@ -258,11 +258,27 @@ function load_challenge(){
             tag.appendChild(img);
             tag.appendChild(description);
             wrapper.appendChild(tag);
-
-            $('.challenge-text')[0].innerHTML = response.daten.description;
         }
 
-        // TODO: Files!
+        $('.challenge-text')[0].innerHTML = response.daten.description;
+
+        if(response.daten.files.length!==0){
+            var downloadlist = document.createElement('ul');
+            $(downloadlist).css('list-style', 'none');
+            downloadlist.style.padding = 'unset';
+            downloadlist.innerHTML="DOWNLOADS:";
+            for (var i = 0; i < response.daten.files.length; i++){
+                var data = document.createElement('li');
+                data.innerText = response.daten.files[i].toString();
+                var data_link = document.createElement("a");
+                data_link.href = response.daten.files[i].toString();
+                data_link.download = response.daten.files[i].toString();
+                data_link.appendChild(data);
+                downloadlist.appendChild(data_link);
+            }
+            document.getElementsByClassName("challenge-downloads")[0].append(downloadlist);
+            $('.challenge-downloads')[0].append.downloadlist;
+        }
 
         if(response.daten.solved){
             create_challenge_message("You solved this challenge!");
@@ -460,6 +476,21 @@ function load_profile(){
         h_solved.innerHTML = `Solved Challenges (${response.daten.solved.length})`;
         var h_created = document.getElementById("created-heading");
         h_created.innerHTML = `Created Challenges (${response.daten.created.length})`;
+
+        if(response.daten.userid == userid){
+            var tools = document.createElement("article");
+            tools.className = "profile-tools";
+            var edit_link = document.createElement("a");
+            edit_link.href = "profile-edit.html";
+            var edit_button = document.createElement("div");
+            edit_button.className = "btn-primary";
+            edit_button.innerHTML = "edit";
+            var text = document.getElementsByClassName("profile")[0];
+            edit_link.appendChild(edit_button);
+            tools.appendChild(edit_link);
+            text.appendChild(tools);
+            console.log("hey");
+        }
         hide_loading();
     }).fail(function (jqXHR, statusText, error) {
         response_handling(jqXHR, statusText, error);
@@ -487,9 +518,15 @@ function submit_challenge(event){
     }
     $('#description')[0].value = $('.visuell-view')[0].innerHTML
     var daten = $('form').serializeArray();
+    var tags = [];
     for (var i = 0; i< daten.length; i++ ){
+        if (daten[i].name == "tags"){
+            tags.push(daten[i].value);
+            continue;
+        }
         formdata.append(daten[i].name, daten[i].value);
     } 
+    formdata.append("tags", tags);
 
     $.ajax({
         url: url,
