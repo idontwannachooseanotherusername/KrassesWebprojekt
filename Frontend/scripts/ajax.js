@@ -266,7 +266,9 @@ function load_challenge(){
             var downloadlist = document.createElement('ul');
             $(downloadlist).css('list-style', 'none');
             downloadlist.style.padding = 'unset';
-            downloadlist.innerHTML="DOWNLOADS:";
+            var heading = document.createElement('h3');
+            heading.innerHTML = "Downloads";
+            downloadlist.append(heading);
             for (var i = 0; i < response.daten.files.length; i++){
                 var data = document.createElement('li');
                 data.innerText = response.daten.files[i].toString();
