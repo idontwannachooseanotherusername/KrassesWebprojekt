@@ -66,7 +66,7 @@ class ChallengeDao {
         var files = challengefileDao.loadByChallengeId(id);
         result.files = [];
         for (var file of files){
-            result.files.push(file.filepath);
+            result.files.push("/data/challenge_data/" + id + "/" + file.filepath);
         }
 
         result.difficulty = difficultyDao.loadById(result.difficultyid);
@@ -227,7 +227,7 @@ class ChallengeDao {
         var statement = this._conn.prepare(sql);
 
         
-        var params = [challengeid, path + file.name];
+        var params = [challengeid, file.name];
         var result = statement.run(params);
 
         if (result.changes != 1) 
