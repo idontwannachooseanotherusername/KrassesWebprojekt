@@ -97,7 +97,7 @@ function create_challenge(challenge_data){
     if ("solved" in challenge_data && challenge_data.solved)
     {
         let solved = document.createElement("img");
-        solved.src = "images/icons/Point.svg";
+        solved.src = "data/icons/Point.svg";
         solved.className = "challenge-solved-marker";
         solved.title = "Solved";
         challenge.appendChild(solved);

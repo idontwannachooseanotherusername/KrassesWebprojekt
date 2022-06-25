@@ -4,7 +4,6 @@ Object.fromEntries = l => l.reduce((a, [k,v]) => ({...a, [k]: v}), {})
 /////////////////
 
 const helper = require('./helper.js');
-const fileHelper = require('./fileHelper.js');
 helper.log('Starting server...');
 
 try {
@@ -24,7 +23,13 @@ try {
     helper.log('Binding middleware...');
     app.use(cors());
     app.use(bodyParser.urlencoded({ extended: true}));
-    app.use(bodyParser.json());
+    app.get('/data/challenge_data/:file', function(request, response) {
+        if (!helper.UserHasAccess(request.headers.cookie)){
+            helper.logError('Request for challengedata: User not logged in.');
+            response.status(404);
+            response.sendFile('errorsite.html', {'root': path.resolve(TOPLEVELPATH)});
+        }
+    });
     app.use(express.static(path.resolve('../Frontend')));
     app.use(function(request, response, next) {
         response.setHeader('Access-Control-Allow-Origin', 'http://localhost:8002'); 
@@ -40,7 +45,7 @@ try {
 
     // send default error message if no matching endpoint found
     app.use(function (request, response) {
-        response.status(404)
+        response.status(404);
         response.sendFile('errorsite.html', {'root': path.resolve(TOPLEVELPATH)});
     });
 

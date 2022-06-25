@@ -67,7 +67,7 @@ function allowed(tag){
 
 // Default image paths
 module.exports.defaultData = function(data) {
-    path = "/images/default_data/";
+    path = "/data/default_data/";
     switch(data.toLowerCase()){
         case "banner":
             return path + "default_banner.png";
