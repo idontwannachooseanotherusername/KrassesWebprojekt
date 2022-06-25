@@ -205,7 +205,7 @@ class ChallengeDao {
 
     save_file(path, file){
         try {
-            if (!fs.existsSync(path)) {fs.mkdirSync(path,);}
+            if (!fs.existsSync(path)) {fs.mkdirSync(path,{ recursive: true });}
         } catch (err) {
             console.error(err);
         }
