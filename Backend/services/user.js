@@ -2,6 +2,7 @@ const helper = require('../helper.js');
 const UserDao = require('../dao/userDao.js');
 const express = require('express');
 var serviceRouter = express.Router();
+const fileHelper = require('../fileHelper.js');
 
 helper.log('- Service User');
 
@@ -157,6 +158,25 @@ serviceRouter.put('/user/update/:id', function(request, response) {
 
     const userDao = new UserDao(request.app.locals.dbConnection);
     try {
+        if (fileHelper.hasUploadedFiles(request)) {
+            if(!helper.isEmpty(request.files.profilepicture)){
+                if (request.files.profilepicture.size > 100 * 1024 * 1024){
+                    response.status(413).json(helper.jsonMsgError("Uploaded file too large. Max file size: 100Mb"));
+                    return;
+                }
+                userDao.save_file('./Frontend/data/user_data/'   + user.userid + '/', request.files.profilepicture);
+                request.body.picturepath = user.userid + '/profile-picture.jpg';
+            }
+            if(!helper.isEmpty(request.files.profilebanner)){
+                if (request.files.profilebanner.size > 100 * 1024 * 1024){
+                    response.status(413).json(helper.jsonMsgError("Uploaded file too large. Max file size: 100Mb"));
+                    return;
+                }
+                userDao.save_file('./Frontend/data/user_data/'   + user.userid + '/', request.files.profilebanner);
+                request.body.bannerpath = user.userid + '/profile-banner.jpg';
+            }
+        }
+
         if((helper.isEmpty(request.body.pw_old))){ // profile data
             var result = userDao.update_data(request.params.id, request.body.username, request.body.bio, request.body.picturepath, request.body.bannerpath, request.body.country);
             helper.log('Service User: Record updated, id=' + request.body.id);
