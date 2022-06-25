@@ -23,11 +23,14 @@ try {
     helper.log('Binding middleware...');
     app.use(cors());
     app.use(bodyParser.urlencoded({ extended: true}));
-    app.get('/data/challenge_data/:file', function(request, response) {
+    app.get('/data/challenge_data/:id/:file', function(request, response, next) {
         if (!helper.UserHasAccess(request.headers.cookie)){
             helper.logError('Request for challengedata: User not logged in.');
             response.status(404);
             response.sendFile('errorsite.html', {'root': path.resolve(TOPLEVELPATH)});
+        }
+        else{
+            next();
         }
     });
     app.use(express.static(path.resolve('../Frontend')));

@@ -229,7 +229,7 @@ serviceRouter.put('/challenge/:id', function(request, response) {
         hintDao.update(request.params.id, 3, request.body.hint3);
         var result = challengeDao.update(request.params.id, request.body.challengename, request.body.description,
                                          request.body.password, request.body.difficulty, request.body.categoryid,
-                                         request.body.tags);
+                                         request.body.tags.split(','));
         helper.log('Service Challenge: Record updated, id=' + request.body.id);
         response.status(200).json(helper.jsonMsgOK(result));
     } catch (ex) {
