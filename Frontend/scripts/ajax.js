@@ -725,11 +725,11 @@ function save_profile_editor(event){
             
 
     for (var file of profilePic.files){
-        formdata.append("profile-pic", file);
+        formdata.append("profilePic", file);
     }
 
     for (var file of profileBanner.files){
-        formdata.append("profile-banner", file);
+        formdata.append("profileBanner", file);
     }
     
     var daten = $('form').serializeArray();
