@@ -71,6 +71,7 @@ function load_challenges(){
         dataType: 'json'
     }).done(function (response) {
         console.log('Number of challenges in db: ' + response.daten.length);
+
         // create challenges
         for (let i = 0; i < response.daten.length; i++) {
             create_challenge(response.daten[i]);
@@ -96,7 +97,7 @@ function create_challenge(challenge_data){
     if ("solved" in challenge_data && challenge_data.solved)
     {
         let solved = document.createElement("img");
-        solved.src = "data/icons/Point.svg";
+        solved.src = "images/icons/Point.svg";
         solved.className = "challenge-solved-marker";
         solved.title = "Solved";
         challenge.appendChild(solved);
@@ -216,7 +217,6 @@ function load_challenge(){
     }).done(function (response) {   
         load_hint_preview(response.daten.solved);
         console.log(response.daten); 
-        document.title = "MB - " + response.daten.challengename;
         // Heading
         var challenge = document.getElementsByClassName("challenge-attributes")[0];
         var title = document.createElement("h1");
@@ -726,7 +726,7 @@ function save_profile_editor(event){
 
     for (var file of profilePic.files){
         formdata.append("profilePic", file);
-    }
+    } 
 
     for (var file of profileBanner.files){
         formdata.append("profileBanner", file);

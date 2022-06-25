@@ -176,7 +176,7 @@ class UserDao {
         return webtoken.generate(username, newObj.userid);
     }
 
-    save_file(path, file, namedtype){
+    save_file(path, file, namedtype,id){
         try {
             if (!fs.existsSync(path)) {fs.mkdirSync(path,{ recursive: true });}
         } catch (err) {
@@ -186,7 +186,27 @@ class UserDao {
         fs.writeFile(path + namedtype, file.data, function (err) {
             if (err) {return console.log(err);}
         });
+        
+        if(namedtype == 'profile-picture.jpg'){
+            var sql = 'UPDATE User SET PicturePath=? WHERE UserID=?';
+            var params = [namedtype,id];
+            var statement = this._conn.prepare(sql);           
+            var result = statement.run(params);
 
+            if (result.changes != 1)
+                throw new Error('Could not update existing Record with given data: ' + params);
+            
+        }
+        else{
+            var sql = 'UPDATE User SET BannerPath=? WHERE UserID=?';
+            var params = [namedtype,id];
+            var statement = this._conn.prepare(sql);
+            var result = statement.run(params);
+    
+            if (result.changes != 1)
+                throw new Error('Could not update existing Record with given data: ' + params);
+            
+        }   
     }
 
     update_data(id, username = '', bio = '', picturepath = '', bannerpath = '', countryid = '') {
