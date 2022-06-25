@@ -1,6 +1,6 @@
 const helper = require('../helper.js');
 
-class ChallengeFileDao {
+class ChallengefileDao {
 
     constructor(dbConnection) {
         this._conn = dbConnection;
@@ -10,23 +10,15 @@ class ChallengeFileDao {
         return this._conn;
     }
 
-    loadById(id) {
-        var sql = 'SELECT * FROM ChallengeFile WHERE ChallengeFileID=?';
+    loadByChallengeId(id) {
+        var sql = 'SELECT * FROM ChallengeFile WHERE ChallengeID=?';
         var statement = this._conn.prepare(sql);
-        var result = statement.get(id);
+        var result = statement.all(id);
 
         if (helper.isUndefined(result)) 
             throw new Error('No Record found by id=' + id);
 
-        result = helper.objectKeysToLower(result);
-
-        result.challenge = challengeDao.loadById(result.challengeid);
-        delete result.challengeid;
-
-        result.file = fileDao.loadById(result.fileid);
-        delete result.fileid;
-
-        return result;
+        return helper.arrayObjectKeysToLower(result);
     }
 
     loadAll() {;
@@ -125,4 +117,4 @@ class ChallengeFileDao {
     }
 }
 
-module.exports = ChallengeFileDao;
+module.exports = ChallengefileDao;
