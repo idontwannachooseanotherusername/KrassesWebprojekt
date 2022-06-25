@@ -71,7 +71,6 @@ function load_challenges(){
         dataType: 'json'
     }).done(function (response) {
         console.log('Number of challenges in db: ' + response.daten.length);
-
         // create challenges
         for (let i = 0; i < response.daten.length; i++) {
             create_challenge(response.daten[i]);
@@ -217,6 +216,7 @@ function load_challenge(){
     }).done(function (response) {   
         load_hint_preview(response.daten.solved);
         console.log(response.daten); 
+        document.title = "MB - " + response.daten.challengename;
         // Heading
         var challenge = document.getElementsByClassName("challenge-attributes")[0];
         var title = document.createElement("h1");
@@ -718,12 +718,33 @@ function save_profile_editor(event){
         return;
     }
     event.preventDefault();
-    $.ajax({
+
+    var profilePic = document.getElementById("profile-pic");
+    var profileBanner = document.getElementById("profile-banner");
+    formdata = new FormData();
+            
+
+    for (var file of profilePic.files){
+        formdata.append("profilePic", file);
+    }
+
+    for (var file of profileBanner.files){
+        formdata.append("profileBanner", file);
+    }
+    
+    var daten = $('form').serializeArray();
+    for (var i = 0; i< daten.length; i++ ){
+        formdata.append(daten[i].name, daten[i].value);
+    } 
+
+    $.ajax({ 
         url: 'http://localhost:8001/wba2api/user/update/' + userid,
         method: 'put',
         dataType: 'json',
+        data: formdata,
+        processData: false,
+        contentType: false,
         xhrFields: { withCredentials: true },
-        data: $('#change-profile').serialize()
     }).done(function (response) {    
         window.location.replace("profile.html");
     }).fail(function (jqXHR, statusText, error) {

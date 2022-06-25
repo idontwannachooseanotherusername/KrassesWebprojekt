@@ -205,7 +205,7 @@ class ChallengeDao {
 
     save_file(path, file){
         try {
-            if (!fs.existsSync(path)) {fs.mkdirSync(path,);}
+            if (!fs.existsSync(path)) {fs.mkdirSync(path,{ recursive: true });}
         } catch (err) {
             console.error(err);
         }
@@ -221,7 +221,7 @@ class ChallengeDao {
         var params = [challengename, description];
         if (!helper.isEmpty(solution)){
             sql += ", Solution=?";
-            params.push(solution);
+            params.push(md5(solution));
         }
         if (!helper.isEmpty(difficultyid)){
             sql += ", DifficultyID=?";

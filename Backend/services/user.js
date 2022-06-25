@@ -2,6 +2,7 @@ const helper = require('../helper.js');
 const UserDao = require('../dao/userDao.js');
 const express = require('express');
 var serviceRouter = express.Router();
+const fileHelper = require('../fileHelper.js');
 
 helper.log('- Service User');
 
@@ -156,13 +157,33 @@ serviceRouter.put('/user/update/:id', function(request, response) {
     }
 
     const userDao = new UserDao(request.app.locals.dbConnection);
+    var userid = helper.IdFromToken(request.headers.cookie);
     try {
+        if (fileHelper.hasUploadedFiles(request)) {
+            if(!helper.isEmpty(request.files.profilePic)){
+                if (request.files.profilePic.size > 100 * 1024 * 1024){
+                    response.status(413).json(helper.jsonMsgError("Uploaded file too large. Max file size: 100Mb"));
+                    return;
+                }
+                userDao.save_file('../Frontend/data/user_data/' + userid + '/', request.files.profilePic, 'profile-picture.jpg');
+                request.body.picturepath = userid + '/profile-picture.jpg';
+            }
+            if(!helper.isEmpty(request.files.profileBanner)){
+                if (request.files.profileBanner.size > 100 * 1024 * 1024){
+                    response.status(413).json(helper.jsonMsgError("Uploaded file too large. Max file size: 100Mb"));
+                    return;
+                }
+                userDao.save_file('../Frontend/data/user_data/' + userid + '/', request.files.profileBanner, 'profile-banner.jpg');
+                request.body.bannerpath = userid + '/profile-banner.jpg';
+            }
+        }
+
         if((helper.isEmpty(request.body.pw_old))){ // profile data
-            var result = userDao.update_data(request.params.id, request.body.username, request.body.bio, request.body.picturepath, request.body.bannerpath, request.body.country);
+            var result = userDao.update_data(userid, request.body.username, request.body.bio, request.body.picturepath, request.body.bannerpath, request.body.country);
             helper.log('Service User: Record updated, id=' + request.body.id);
         }
         else{  // profile pw
-            var result = userDao.update_password(request.params.id, request.body.pw_new, request.body.pw_old);
+            var result = userDao.update_password(userid, request.body.pw_new, request.body.pw_old);
             helper.log('Service User: Record updated, id=' + request.body.id);
         }
         response.status(200).json(helper.jsonMsgOK(result));
