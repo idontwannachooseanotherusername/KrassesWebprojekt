@@ -487,9 +487,15 @@ function submit_challenge(event){
     }
     $('#description')[0].value = $('.visuell-view')[0].innerHTML
     var daten = $('form').serializeArray();
+    var tags = [];
     for (var i = 0; i< daten.length; i++ ){
+        if (daten[i].name == "tags"){
+            tags.push(daten[i].value);
+            continue;
+        }
         formdata.append(daten[i].name, daten[i].value);
     } 
+    formdata.append("tags", tags);
 
     $.ajax({
         url: url,
