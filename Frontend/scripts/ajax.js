@@ -835,3 +835,24 @@ function show_wrong_solution(){
     },500);
 }
 
+function show_uploaded_files(files){
+    var label = $("#fileupload")[0];
+    var filenames = ""
+
+    if (files.length > 10){
+        label.innerHTML = "Too many files. Max is 10.";
+        label.style.color = "#950239";
+        return;
+    }
+    else{label.style.color = "white";}
+    
+    if (files.length == 0){
+        return;
+    }
+
+    for (var i = 0; i < files.length; i++){
+        if (i+1 === files.length){filenames += files[i].name}
+        else{filenames += files[i].name + ", "}
+    }
+    label.innerHTML = filenames;
+}

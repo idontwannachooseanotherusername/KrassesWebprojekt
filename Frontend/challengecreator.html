@@ -66,7 +66,7 @@
                         <label for="description"><h2>Description</h2></label>
 
                         
-                        <!--https://webdeasy.de/en/program-wysiwyg-editor/-->
+                        <!--Code taken from https://webdeasy.de/en/program-wysiwyg-editor/ and modified-->
                         <div class="wp-webdeasy-comment-editor">
                             <div class="toolbar">
                                 <div class="line">
@@ -288,7 +288,7 @@
                         </div>
                         <h2>Files</h2>
                         <label id="fileupload" for="files">Click here to upload files.</label>
-                        <input id="files" name="files" type="file" multiple></input><br>
+                        <input id="files" name="files" type="file" onchange="show_uploaded_files(this.files)" multiple></input><br>
                         <label for="password"><h2>Solution password</h2></label>
                         <input id="password" name="password" type="text" placeholder="super secret password" required></input>
                         <br><br>
