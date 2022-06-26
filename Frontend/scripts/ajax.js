@@ -271,12 +271,23 @@ function load_challenge(){
             downloadlist.append(heading);
             for (var i = 0; i < response.daten.files.length; i++){
                 var data = document.createElement('li');
-                data.innerText = response.daten.files[i].toString();
+                data.className = "challenge-file-entry"
+                var file = document.createElement('div');
+                file.className = "challenge-file";
+                var span = document.createElement("span");
                 var data_link = document.createElement("a");
-                data_link.href = response.daten.files[i].toString();
-                data_link.download = response.daten.files[i].toString();
-                data_link.appendChild(data);
-                downloadlist.appendChild(data_link);
+                var filename = document.createElement("div");
+                var filepath = response.daten.files[i].split('/');
+                filename.innerHTML = filepath[filepath.length-1].split('.')[0];
+                span.innerHTML = filepath[filepath.length-1].split('.')[1];
+                filename.className = "challenge-filename";
+                data_link.href = response.daten.files[i];
+                data_link.setAttribute('download',"");
+                file.appendChild(span);
+                data_link.appendChild(file);
+                data_link.appendChild(filename);
+                data.appendChild(data_link);
+                downloadlist.appendChild(data);
             }
             document.getElementsByClassName("challenge-downloads")[0].append(downloadlist);
             $('.challenge-downloads')[0].append.downloadlist;
@@ -316,7 +327,7 @@ function create_usermenu(user){
     // Icon
     var menu_bar = $(".wrapper")[0];
     var image_wrapper = $('<div class="pb-image-wrapper"></div>')[0];
-    var image = $(`<image id="pb" src="${user.picturepath}" onclick="show_dropdown()">`)[0];
+    var image = $(`<image id="pb" src="/${user.picturepath}" onclick="show_dropdown()">`)[0];
     image_wrapper.append(image);
     menu_bar.append(image_wrapper);
 
