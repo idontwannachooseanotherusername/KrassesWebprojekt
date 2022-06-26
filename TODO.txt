@@ -4,9 +4,6 @@ TODO
  -> Possibility to delete uploaded files
  -> load current files into fields
 
-- Profileditor
- -> Prevent creation of empty images
-
 - Implement json Webtoken
  -> (Do not set cookie via js)
  -> (Login form without ajax call)
