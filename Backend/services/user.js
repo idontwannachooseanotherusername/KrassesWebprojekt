@@ -133,8 +133,6 @@ serviceRouter.put('/user/update/:id', function(request, response) {
         return;
     }
 
-    console.log(request.body);
-
     var errorMsgs=[];
     if (!(helper.isEmpty(request.body.pw_old) || helper.isEmpty(request.body.pw_new) || helper.isEmpty(request.body.pw_new2))){
         if (helper.isEmpty(request.body.pw_old)){

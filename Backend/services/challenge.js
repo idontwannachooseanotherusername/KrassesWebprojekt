@@ -106,7 +106,6 @@ serviceRouter.get('/challenge/exists/:id', function(request, response) {
 
 serviceRouter.post('/challenge/', function(request, response) {
     helper.log('Service Challenge: Client requested creation of new record');
-    console.log(request.body);
 
     if (!helper.UserHasAccess(request.headers.cookie)){
         helper.logError('Service Challenge: User not logged in.');

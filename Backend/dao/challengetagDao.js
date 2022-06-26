@@ -83,7 +83,6 @@ class ChallengeTagDao {
             return [];
 
         result = helper.arrayObjectKeysToLower(result);
-        console.log(result);
 
         for (var i = 0; i < result.length; i++) {
             for (var element of tags) {
@@ -154,8 +153,7 @@ class ChallengeTagDao {
             var result = statement.run(id);
 
             if (result.changes != 1)
-                console.log('challengeTagDao - Could not delete records with challengeID=' + id + ". Records might have been deleted already.")
-                // throw new Error('Could not delete Records with challengeid=' + id);
+                helper.log('challengeTagDao - Could not delete records with challengeID=' + id + ". Records might have been deleted already.")
 
             return true;
         } catch (ex) {

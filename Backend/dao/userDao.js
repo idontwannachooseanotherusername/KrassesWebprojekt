@@ -64,7 +64,7 @@ class UserDao {
         }
         result.solved = solved_list;
 
-        // Get last 10 created challenges
+        // Get created challenges
         var created_list = [];
         for (var e of challengeDao.loadAll()){
             if (e.user.userid == result.userid){
@@ -73,8 +73,6 @@ class UserDao {
                     challengename: e.challengename,
                     ts: e.creationdate
                 });
-
-                if (created_list.length >= 10){break;}
             }
         }
         result.created = created_list;
