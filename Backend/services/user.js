@@ -173,7 +173,7 @@ serviceRouter.put('/user/update/:id', function(request, response) {
                     response.status(413).json(helper.jsonMsgError("Error in uploaded files"));
                     return;
                 }
-                var split = request.files.profilePic.name.split('.');
+                var split = request.files.profileBanner.name.split('.');
                 var type = "." + split[split.length-1];
                 userDao.save_file('../Frontend/data/user_data/' + userid + '/', request.files.profileBanner, "profile-banner" + type, userid);
                 request.body.bannerpath = userid + "/profile-banner" + type;
