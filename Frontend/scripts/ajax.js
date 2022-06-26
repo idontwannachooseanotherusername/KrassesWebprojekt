@@ -73,7 +73,7 @@ function load_challenges(){
         console.log('Number of challenges in db: ' + response.daten.length);
 
         // create challenges
-        for (let i = 0; i < response.daten.length; i++) {
+        for (let i = response.daten.length-1; i >= 0; i--) {
             create_challenge(response.daten[i]);
             challenges.push(response.daten[i]);
         }
