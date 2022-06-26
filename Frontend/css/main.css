@@ -203,6 +203,7 @@ header{
     font-weight: bold;
 }
 .dropdown-entry{
+    word-break: break-word;
     margin: 0;
     padding: 7px;
 }
