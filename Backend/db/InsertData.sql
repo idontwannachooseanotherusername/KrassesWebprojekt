@@ -1,3 +1,29 @@
+INSERT INTO Category (Title) VALUES ('Math');
+INSERT INTO Category (Title) VALUES ('Trivia');
+INSERT INTO Category (Title) VALUES ('Logic');
+INSERT INTO Category (Title) VALUES ('Coding');
+INSERT INTO Category (Title) VALUES ('Cryptography');
+INSERT INTO Category (Title) VALUES ('Visual');
+INSERT INTO Category (Title) VALUES ('Auditorial');
+INSERT INTO Category (Title) VALUES ('Computer');
+INSERT INTO Category (Title) VALUES ('Physical');
+
+INSERT INTO Tag (PicturePath, Title) VALUES ('/data/icons/internet.png', 'Internet required');
+INSERT INTO Tag (PicturePath, Title) VALUES ('/data/icons/knowledge.png', 'Special knowledge');
+INSERT INTO Tag (PicturePath, Title) VALUES ('/data/icons/software.png', 'Special software');
+INSERT INTO Tag (PicturePath, Title) VALUES ('/data/icons/hardware.png', 'Special hardware');
+INSERT INTO Tag (PicturePath, Title) VALUES ('/data/icons/location.png', 'Physical location');
+
+INSERT INTO Difficulty (Level, Points) VALUES (1, 10);
+INSERT INTO Difficulty (Level, Points) VALUES (2, 15);
+INSERT INTO Difficulty (Level, Points) VALUES (3, 20);
+INSERT INTO Difficulty (Level, Points) VALUES (4, 25);
+INSERT INTO Difficulty (Level, Points) VALUES (5, 30);
+INSERT INTO Difficulty (Level, Points) VALUES (6, 35);
+INSERT INTO Difficulty (Level, Points) VALUES (7, 40);
+INSERT INTO Difficulty (Level, Points) VALUES (8, 45);
+INSERT INTO Difficulty (Level, Points) VALUES (9, 50);
+
 INSERT INTO Country (CountryName) VALUES ("Afghanistan");
 INSERT INTO Country (CountryName) VALUES ("Albania");
 INSERT INTO Country (CountryName) VALUES ("Algeria");
