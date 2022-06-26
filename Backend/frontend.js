@@ -23,6 +23,13 @@ try {
     helper.log('Binding middleware...');
     app.use(cors());
     app.use(bodyParser.urlencoded({ extended: true}));
+    app.use(express.static(path.resolve('../Frontend')));
+    app.use(function(request, response, next) {
+        response.setHeader('Access-Control-Allow-Origin', 'http://localhost:8002');
+        response.setHeader('Access-Control-Allow-Methods', 'GET, POST');
+        response.setHeader('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
+        next();
+    });
     app.get('/data/challenge_data/:id/:file', function(request, response, next) {
         if (!helper.UserHasAccess(request.headers.cookie)){
             helper.logError('Request for challengedata: User not logged in.');
@@ -32,14 +39,7 @@ try {
         else{
             next();
         }
-    });
-    app.use(express.static(path.resolve('../Frontend')));
-    app.use(function(request, response, next) {
-        response.setHeader('Access-Control-Allow-Origin', 'http://localhost:8002'); 
-        response.setHeader('Access-Control-Allow-Methods', 'GET, POST');
-        response.setHeader('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
-        next();
-    });
+    })
     app.use(morgan('dev'));
 
     // binding endpoints

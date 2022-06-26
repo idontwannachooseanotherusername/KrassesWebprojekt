@@ -192,3 +192,15 @@ module.exports.createRandomFilename = function(fileNameLength, extension) {
     
     return randomName;
 }
+
+module.exports.isImageOkay = function(file) {
+    return (file.size <= 100 * 1024 * 1024 && this.isFileObjectPicture(file))
+}
+
+module.exports.isFileOkay = function(file) {
+    var extentions = ["image/png", "image/jpeg", "application/pdf", "text/plain", "image/svg+xml", "image/gif",
+                      "video/mp4", "video/quicktime", "video/x-matroska", "audio/mpeg", "audio/aac",
+                      "text/javascript", "audio/midi", "audio/x-midi", "audio/ogg", "audio/wav",
+                      "text/x-script.phyton", "text/x-csrc", "text/x-java-source"];
+    return (file.size <= 100 * 1024 * 1024 && extentions.includes(file.mimetype))
+}

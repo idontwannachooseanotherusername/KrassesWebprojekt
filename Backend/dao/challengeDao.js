@@ -66,7 +66,7 @@ class ChallengeDao {
         var files = challengefileDao.loadByChallengeId(id);
         result.files = [];
         for (var file of files){
-            result.files.push(file.filepath);
+            result.files.push("/data/challenge_data/" + id + "/" + file.filepath);
         }
 
         result.difficulty = difficultyDao.loadById(result.difficultyid);
@@ -116,7 +116,14 @@ class ChallengeDao {
             result[i].creationdate = helper.formatToGermanDateTime(dt)
 
             // Resolve ids
-            if (helper.isEmpty(user.picturepath)) {user.picturepath = helper.defaultData("profile");}
+            if (helper.isEmpty(user.picturepath)) {
+                if (user.deleted){
+                    user.picturepath = helper.defaultData("profile_d");
+                }else{
+                    user.picturepath = helper.defaultData("profile");
+                }
+            }
+            else{user.picturepath = "/data/user_data/" + user.userid + "/" + user.picturepath;}
             result[i].user = {
                 username: user.username,
                 userid: user.userid,
@@ -227,7 +234,7 @@ class ChallengeDao {
         var statement = this._conn.prepare(sql);
 
         
-        var params = [challengeid, path + file.name];
+        var params = [challengeid, file.name];
         var result = statement.run(params);
 
         if (result.changes != 1) 

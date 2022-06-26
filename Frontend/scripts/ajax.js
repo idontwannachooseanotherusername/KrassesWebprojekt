@@ -97,7 +97,7 @@ function create_challenge(challenge_data){
     if ("solved" in challenge_data && challenge_data.solved)
     {
         let solved = document.createElement("img");
-        solved.src = "images/icons/Point.svg";
+        solved.src = "data/icons/Point.svg";
         solved.className = "challenge-solved-marker";
         solved.title = "Solved";
         challenge.appendChild(solved);
@@ -266,15 +266,28 @@ function load_challenge(){
             var downloadlist = document.createElement('ul');
             $(downloadlist).css('list-style', 'none');
             downloadlist.style.padding = 'unset';
-            downloadlist.innerHTML="DOWNLOADS:";
+            var heading = document.createElement('h3');
+            heading.innerHTML = "Downloads";
+            downloadlist.append(heading);
             for (var i = 0; i < response.daten.files.length; i++){
                 var data = document.createElement('li');
-                data.innerText = response.daten.files[i].toString();
+                data.className = "challenge-file-entry"
+                var file = document.createElement('div');
+                file.className = "challenge-file";
+                var span = document.createElement("span");
                 var data_link = document.createElement("a");
-                data_link.href = response.daten.files[i].toString();
-                data_link.download = response.daten.files[i].toString();
-                data_link.appendChild(data);
-                downloadlist.appendChild(data_link);
+                var filename = document.createElement("div");
+                var filepath = response.daten.files[i].split('/');
+                filename.innerHTML = filepath[filepath.length-1].split('.')[0];
+                span.innerHTML = filepath[filepath.length-1].split('.')[1];
+                filename.className = "challenge-filename";
+                data_link.href = response.daten.files[i];
+                data_link.setAttribute('download',"");
+                file.appendChild(span);
+                data_link.appendChild(file);
+                data_link.appendChild(filename);
+                data.appendChild(data_link);
+                downloadlist.appendChild(data);
             }
             document.getElementsByClassName("challenge-downloads")[0].append(downloadlist);
             $('.challenge-downloads')[0].append.downloadlist;
@@ -822,3 +835,24 @@ function show_wrong_solution(){
     },500);
 }
 
+function show_uploaded_files(files){
+    var label = $("#fileupload")[0];
+    var filenames = ""
+
+    if (files.length > 10){
+        label.innerHTML = "Too many files. Max is 10.";
+        label.style.color = "#950239";
+        return;
+    }
+    else{label.style.color = "white";}
+    
+    if (files.length == 0){
+        return;
+    }
+
+    for (var i = 0; i < files.length; i++){
+        if (i+1 === files.length){filenames += files[i].name}
+        else{filenames += files[i].name + ", "}
+    }
+    label.innerHTML = filenames;
+}
