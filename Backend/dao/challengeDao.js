@@ -116,8 +116,14 @@ class ChallengeDao {
             result[i].creationdate = helper.formatToGermanDateTime(dt)
 
             // Resolve ids
-            if (helper.isEmpty(user.picturepath)) {user.picturepath = helper.defaultData("profile");}
-            else{user.picturepath = "data/user_data/" + user.userid + "/" + user.picturepath;}
+            if (helper.isEmpty(user.picturepath)) {
+                if (user.deleted){
+                    user.picturepath = helper.defaultData("profile_d");
+                }else{
+                    user.picturepath = helper.defaultData("profile");
+                }
+            }
+            else{user.picturepath = "/data/user_data/" + user.userid + "/" + user.picturepath;}
             result[i].user = {
                 username: user.username,
                 userid: user.userid,

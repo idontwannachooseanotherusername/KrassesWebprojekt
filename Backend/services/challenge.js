@@ -149,12 +149,12 @@ serviceRouter.post('/challenge/', function(request, response) {
             var files = fileHelper.getAllUplodedFilesAsArray(request, true);
 
             if (files.length > 10){
-                response.status(413).json(helper.jsonMsgError("Too many files! Max amount is 10."));
+                response.status(400).json(helper.jsonMsgError("Too many files! Max amount is 10."));
                 return;
             }
             files.forEach(function(file) {
                 if (!fileHelper.isFileOkay(file)){
-                    response.status(413).json(helper.jsonMsgError("Error in uploaded files"));
+                    response.status(400).json(helper.jsonMsgError("Error in uploaded files"));
                     return;
                 }
             });
@@ -174,7 +174,7 @@ serviceRouter.post('/challenge/', function(request, response) {
         if (fileHelper.hasUploadedFiles(request)) {
             files.forEach(function(file) {
                 if (!fileHelper.isFileOkay(file)){
-                    response.status(413).json(helper.jsonMsgError("Error in uploaded files"));
+                    response.status(400).json(helper.jsonMsgError("Error in uploaded files"));
                     return;
                 }
                 challengeDao.save_file('../Frontend/data/challenge_data/' + challenge.challengeid + '/', file, challenge.challengeid);
