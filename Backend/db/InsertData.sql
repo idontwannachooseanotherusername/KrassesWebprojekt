@@ -220,7 +220,7 @@ INSERT INTO Country (CountryName) VALUES ("Solomon Islands");
 INSERT INTO Country (CountryName) VALUES ("Somalia");
 INSERT INTO Country (CountryName) VALUES ("South Africa");
 INSERT INTO Country (CountryName) VALUES ("South Georgia");
-INSERT INTO Country (CountryName) VALUES ("Span");
+INSERT INTO Country (CountryName) VALUES ("Spain");
 INSERT INTO Country (CountryName) VALUES ("SriLanka");
 INSERT INTO Country (CountryName) VALUES ("St. Helena");
 INSERT INTO Country (CountryName) VALUES ("St. Pierre and Miguelon");
