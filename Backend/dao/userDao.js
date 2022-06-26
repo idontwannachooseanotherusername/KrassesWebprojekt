@@ -101,7 +101,7 @@ class UserDao {
             }
         }
         else{
-            result.picturepath = "data/user_data/" + result.userid + "/" + result.picturepath;
+            result.picturepath = "/data/user_data/" + result.userid + "/" + result.picturepath;
         }
 
         return result;
@@ -182,7 +182,7 @@ class UserDao {
         return webtoken.generate(username, newObj.userid);
     }
 
-    save_file(path, file, namedtype,id){
+    save_file(path, file, namedtype, id){
         try {
             if (!fs.existsSync(path)) {fs.mkdirSync(path,{ recursive: true });}
         } catch (err) {
@@ -193,7 +193,7 @@ class UserDao {
             if (err) {return console.log(err);}
         });
         
-        if(namedtype == 'profile-picture.jpg'){
+        if(namedtype.includes('profile-picture')){
             var sql = 'UPDATE User SET PicturePath=? WHERE UserID=?';
             var params = [namedtype,id];
             var statement = this._conn.prepare(sql);           

@@ -165,16 +165,20 @@ serviceRouter.put('/user/update/:id', function(request, response) {
                     response.status(413).json(helper.jsonMsgError("Error in uploaded files"));
                     return;
                 }
-                userDao.save_file('../Frontend/data/user_data/' + userid + '/', request.files.profilePic, 'profile-picture.jpg',userid);
-                request.body.picturepath = userid + '/profile-picture.jpg';
+                var split = request.files.profilePic.name.split('.');
+                var type = "." + split[split.length-1];
+                userDao.save_file('../Frontend/data/user_data/' + userid + '/', request.files.profilePic, "profile-picture" + type, userid);
+                request.body.picturepath = userid + "/profile-picture" + type;
             }
             if(!helper.isEmpty(request.files.profileBanner)){
                 if (!fileHelper.isImageOkay(request.files.profileBanner)){
                     response.status(413).json(helper.jsonMsgError("Error in uploaded files"));
                     return;
                 }
-                userDao.save_file('../Frontend/data/user_data/' + userid + '/', request.files.profileBanner, 'profile-banner.jpg', userid);
-                request.body.bannerpath = userid + '/profile-banner.jpg';
+                var split = request.files.profilePic.name.split('.');
+                var type = "." + split[split.length-1];
+                userDao.save_file('../Frontend/data/user_data/' + userid + '/', request.files.profileBanner, "profile-banner" + type, userid);
+                request.body.bannerpath = userid + "/profile-banner" + type;
             }
         }
 
