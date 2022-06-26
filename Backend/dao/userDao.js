@@ -183,7 +183,7 @@ class UserDao {
             console.error(err);
         }
 
-        fs.writeFile(path + namedtype, file.data, function (err) {
+        fs.writeFile(path + namedtype, file, function (err) {
             if (err) {return console.log(err);}
         });
         
