@@ -97,7 +97,7 @@ function create_challenge(challenge_data){
     if ("solved" in challenge_data && challenge_data.solved)
     {
         let solved = document.createElement("img");
-        solved.src = "images/icons/Point.svg";
+        solved.src = "data/icons/Point.svg";
         solved.className = "challenge-solved-marker";
         solved.title = "Solved";
         challenge.appendChild(solved);
@@ -327,7 +327,7 @@ function create_usermenu(user){
     // Icon
     var menu_bar = $(".wrapper")[0];
     var image_wrapper = $('<div class="pb-image-wrapper"></div>')[0];
-    var image = $(`<image id="pb" src="/${user.picturepath}" onclick="show_dropdown()">`)[0];
+    var image = $(`<image id="pb" src="${user.picturepath}" onclick="show_dropdown()">`)[0];
     image_wrapper.append(image);
     menu_bar.append(image_wrapper);
 
