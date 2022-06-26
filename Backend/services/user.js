@@ -161,16 +161,16 @@ serviceRouter.put('/user/update/:id', function(request, response) {
     try {
         if (fileHelper.hasUploadedFiles(request)) {
             if(!helper.isEmpty(request.files.profilePic)){
-                if (request.files.profilePic.size > 100 * 1024 * 1024){
-                    response.status(413).json(helper.jsonMsgError("Uploaded file too large. Max file size: 100Mb"));
+                if (!fileHelper.isImageOkay(request.files.profilePic)){
+                    response.status(413).json(helper.jsonMsgError("Error in uploaded files"));
                     return;
                 }
                 userDao.save_file('../Frontend/data/user_data/' + userid + '/', request.files.profilePic, 'profile-picture.jpg',userid);
                 request.body.picturepath = userid + '/profile-picture.jpg';
             }
             if(!helper.isEmpty(request.files.profileBanner)){
-                if (request.files.profileBanner.size > 100 * 1024 * 1024){
-                    response.status(413).json(helper.jsonMsgError("Uploaded file too large. Max file size: 100Mb"));
+                if (!fileHelper.isImageOkay(request.files.profileBanner)){
+                    response.status(413).json(helper.jsonMsgError("Error in uploaded files"));
                     return;
                 }
                 userDao.save_file('../Frontend/data/user_data/' + userid + '/', request.files.profileBanner, 'profile-banner.jpg', userid);

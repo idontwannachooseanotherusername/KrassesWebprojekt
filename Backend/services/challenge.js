@@ -152,9 +152,9 @@ serviceRouter.post('/challenge/', function(request, response) {
                 response.status(413).json(helper.jsonMsgError("Too many files! Max amount is 10."));
                 return;
             }
-            files.forEach(function(item) {
-                if (item.size > 10 * 1024 * 1024){
-                    response.status(413).json(helper.jsonMsgError("Uploaded file too large. Max file size: 10Mb"));
+            files.forEach(function(file) {
+                if (!fileHelper.isFileOkay(file)){
+                    response.status(413).json(helper.jsonMsgError("Error in uploaded files"));
                     return;
                 }
             });
@@ -172,24 +172,12 @@ serviceRouter.post('/challenge/', function(request, response) {
         userDao.update_points(user.userid, user.points + challenge.difficulty.level);
 
         if (fileHelper.hasUploadedFiles(request)) {
-            files.forEach(function(item) {
-                challengeDao.save_file('../Frontend/data/challenge_data/' + challenge.challengeid + '/', item, challenge.challengeid);
-            });
-
-            var res = [];
-            files.forEach(function(item) {
-                res.push({
-                    status: true,
-                    fileSaved: true,
-                    fileName: item.name,
-                    fileSize: item.size,
-                    fileMimeType: item.mimetype,
-                    fileEncoding: item.encoding,
-                    fileHandle: item.handleName,
-                    fileNameOnly: item.nameOnly,
-                    fileExtension: item.extension,
-                    fileIsPicture: item.isPicture
-                });
+            files.forEach(function(file) {
+                if (!fileHelper.isFileOkay(file)){
+                    response.status(413).json(helper.jsonMsgError("Error in uploaded files"));
+                    return;
+                }
+                challengeDao.save_file('../Frontend/data/challenge_data/' + challenge.challengeid + '/', file, challenge.challengeid);
             });
         }
 
