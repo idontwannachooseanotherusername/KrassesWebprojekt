@@ -8,8 +8,8 @@ module.exports.CookieDict = function(cookiestring='') {
     
     var cookies = {};
     var cookielist = cookiestring.split(';');
-    for (let i=0; i < cookielist.length; i +=  2){
-        let c = cookielist[i].split('=')
+    for (let i=0; i < cookielist.length; i ++){
+        let c = cookielist[i].replace(' ', '').split('=', 2)
         cookies[c[0]] = c[1];
     }
     return cookies
@@ -21,7 +21,7 @@ module.exports.IdFromToken = function(cookiestring){
     if (cookies === undefined || !'token' in cookies){
         return undefined;
     }
-    return webtoken.GetUserID(cookies['token']);
+    return webtoken.GetUserID(cookies.token);
 }
 
 // Check if user has access
@@ -33,12 +33,7 @@ module.exports.UserHasAccess = function(cookiestring){
     if (!'token' in cookies){
         return false;
     }
-    if (webtoken.valid(cookies['token'])){
-        return true
-    }
-    else{
-        return false;
-    }
+    return webtoken.valid(cookies['token']);
 }
 
 module.exports.SameUser = function (cookiestring, userid){
@@ -72,7 +67,7 @@ function allowed(tag){
 
 // Default image paths
 module.exports.defaultData = function(data) {
-    path = "/images/default_data/";
+    path = "/data/default_data/";
     switch(data.toLowerCase()){
         case "banner":
             return path + "default_banner.png";
@@ -86,6 +81,10 @@ module.exports.defaultData = function(data) {
             return "Empty void.";
         case "country":
             return "Planet Earth";
+        case "user":
+            return "../Frontend/data/user_data/";
+        case "challenge":
+            return "../Frontend/data/challenge_data/";
         default:
             return "";
     }

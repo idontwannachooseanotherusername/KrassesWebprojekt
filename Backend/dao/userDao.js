@@ -3,6 +3,7 @@ const helper = require('../helper.js');
 const CountryDao = require('./countryDao.js');
 const ChallengeDao = require('./challengeDao.js');
 const webtoken = require('../webtoken/index.js');
+const fs = require('fs');
 
 class UserDao {
 
@@ -63,7 +64,7 @@ class UserDao {
         }
         result.solved = solved_list;
 
-        // Get last 10 created challenges
+        // Get created challenges
         var created_list = [];
         for (var e of challengeDao.loadAll()){
             if (e.user.userid == result.userid){
@@ -72,8 +73,6 @@ class UserDao {
                     challengename: e.challengename,
                     ts: e.creationdate
                 });
-
-                if (created_list.length >= 10){break;}
             }
         }
         result.created = created_list;
@@ -89,12 +88,18 @@ class UserDao {
                 result.bannerpath = helper.defaultData("banner");
             }
         }
+        else{
+            result.bannerpath = "/data/user_data/" + result.userid + "/" + result.bannerpath;
+        }
         if (helper.isEmpty(result.picturepath)) {
             if (result.deleted){
                 result.picturepath = helper.defaultData("profile_d");
             }else{
                 result.picturepath = helper.defaultData("profile");
             }
+        }
+        else{
+            result.picturepath = "/data/user_data/" + result.userid + "/" + result.picturepath;
         }
 
         return result;
@@ -175,7 +180,40 @@ class UserDao {
         return webtoken.generate(username, newObj.userid);
     }
 
-    update_data(id, username = '', bio = '', picturepath = '', bannerpath = '', countryid = '') {
+    save_file(path, file, namedtype, id){
+        try {
+            if (!fs.existsSync(path)) {fs.mkdirSync(path,{ recursive: true });}
+        } catch (err) {
+            console.error(err);
+        }
+
+        fs.writeFile(path + namedtype, file.data, function (err) {
+            if (err) {return console.log(err);}
+        });
+        
+        if(namedtype.includes('profile-picture')){
+            var sql = 'UPDATE User SET PicturePath=? WHERE UserID=?';
+            var params = [namedtype,id];
+            var statement = this._conn.prepare(sql);           
+            var result = statement.run(params);
+
+            if (result.changes != 1)
+                throw new Error('Could not update existing Record with given data: ' + params);
+            
+        }
+        else{
+            var sql = 'UPDATE User SET BannerPath=? WHERE UserID=?';
+            var params = [namedtype,id];
+            var statement = this._conn.prepare(sql);
+            var result = statement.run(params);
+    
+            if (result.changes != 1)
+                throw new Error('Could not update existing Record with given data: ' + params);
+            
+        }   
+    }
+
+    update_data(id, username = '', bio = '', countryid = '') {
         var old_data = this.loadById(id);
         if (username != old_data.username && this.username_exists(username)){
             throw new Error('Could not update profile: Username ' + username + ' already exists.');
@@ -183,12 +221,10 @@ class UserDao {
 
         if (helper.isEmpty(username)){username = old_data.username;}
         if (helper.isEmpty(bio)){bio = old_data.bio;}
-        if (helper.isEmpty(picturepath)){picturepath = old_data.picturepath;}
-        if (helper.isEmpty(bannerpath)){bannerpath = old_data.bannerpath;}
         if (helper.isEmpty(countryid)){countryid = old_data.countryid;}
 
-        var sql = 'UPDATE User SET Username=?,Bio=?,PicturePath=?,BannerPath=?,CountryID=? WHERE UserID=?';
-        var params = [username, bio, picturepath, bannerpath, countryid, id];
+        var sql = 'UPDATE User SET Username=?,Bio=?,CountryID=? WHERE UserID=?';
+        var params = [username, bio, countryid, id];
         var statement = this._conn.prepare(sql);
         var result = statement.run(params);
 

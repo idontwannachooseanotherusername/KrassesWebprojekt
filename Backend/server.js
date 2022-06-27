@@ -35,7 +35,7 @@ try {
     app.use(fileUpload({
         createParentPath: true,
         limits: {
-            fileSize: 2 * 1024 * 1024 * 1024        // limit to 2MB
+            fileSize: 10 * 1024 * 1024        // limit to 10MB
         }
     }));
     app.use(cors({

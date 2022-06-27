@@ -73,7 +73,7 @@ function load_challenges(){
         console.log('Number of challenges in db: ' + response.daten.length);
 
         // create challenges
-        for (let i = 0; i < response.daten.length; i++) {
+        for (let i = response.daten.length-1; i >= 0; i--) {
             create_challenge(response.daten[i]);
             challenges.push(response.daten[i]);
         }
@@ -97,7 +97,7 @@ function create_challenge(challenge_data){
     if ("solved" in challenge_data && challenge_data.solved)
     {
         let solved = document.createElement("img");
-        solved.src = "images/icons/Point.svg";
+        solved.src = "data/icons/Point.svg";
         solved.className = "challenge-solved-marker";
         solved.title = "Solved";
         challenge.appendChild(solved);
@@ -258,11 +258,13 @@ function load_challenge(){
             tag.appendChild(img);
             tag.appendChild(description);
             wrapper.appendChild(tag);
-
-            $('.challenge-text')[0].innerHTML = response.daten.description;
         }
 
-        // TODO: Files!
+        $('.challenge-text')[0].innerHTML = response.daten.description;
+
+        if(response.daten.files.length!==0){
+            create_challenge_files(response.daten.files);
+        }
 
         if(response.daten.solved){
             create_challenge_message("You solved this challenge!");
@@ -281,6 +283,62 @@ function load_challenge(){
     }).fail(function (jqXHR, statusText, error) {
         response_handling(jqXHR, statusText, error);
     });
+}
+
+function create_challenge_files(files, deletable=false){
+    var downloadlist = document.createElement('ul');
+    $(downloadlist).css('list-style', 'none');
+    downloadlist.style.padding = 'unset';
+    if (!deletable){
+        var heading = document.createElement('h3');
+        heading.innerHTML = "Downloads";
+        downloadlist.append(heading);
+    }
+    
+    for (var i = 0; i < files.length; i++){
+        var data = document.createElement('li');
+        data.className = "challenge-file-entry";
+        data.id = "file-" + files[i].id;
+        var file = document.createElement('div');
+        file.className = "challenge-file";
+        var span = document.createElement("span");
+        var data_link = document.createElement("a");
+        var filename = document.createElement("div");
+        var filepath = files[i].path.split('/');
+        filename.innerHTML = filepath[filepath.length-1].split('.')[0];
+        span.innerHTML = filepath[filepath.length-1].split('.')[1];
+        filename.className = "challenge-filename";
+        data_link.href = files[i].path;
+        data_link.setAttribute('download',"");
+
+        if (deletable){
+            var del = document.createElement("div");
+            del.className = "challenge-filedelete";
+            del.innerHTML = "🗑️";
+            del.title = "delete";
+            del.onclick = (function() {delete_challengefile_toggle(this)});
+            data.appendChild(del);
+        }
+
+        file.appendChild(span);
+        data_link.appendChild(file);
+        data_link.appendChild(filename);
+        data.appendChild(data_link);
+        downloadlist.appendChild(data);
+    }
+    document.getElementsByClassName("challenge-downloads")[0].append(downloadlist);
+    $('.challenge-downloads')[0].append.downloadlist;
+}
+
+function delete_challengefile_toggle(icon){
+    var file = icon.parentNode;
+
+    if (file.classList && file.classList.contains("deleted")){
+        file.classList.remove("deleted");
+    }
+    else{
+        file.classList.add("deleted");
+    }
 }
 
 function show_login_prompt(){
@@ -460,6 +518,21 @@ function load_profile(){
         h_solved.innerHTML = `Solved Challenges (${response.daten.solved.length})`;
         var h_created = document.getElementById("created-heading");
         h_created.innerHTML = `Created Challenges (${response.daten.created.length})`;
+
+        if(response.daten.userid == userid){
+            var tools = document.createElement("article");
+            tools.className = "profile-tools";
+            var edit_link = document.createElement("a");
+            edit_link.href = "profile-edit.html";
+            var edit_button = document.createElement("div");
+            edit_button.className = "btn-primary";
+            edit_button.innerHTML = "edit";
+            var text = document.getElementsByClassName("profile")[0];
+            edit_link.appendChild(edit_button);
+            tools.appendChild(edit_link);
+            text.appendChild(tools);
+            console.log("hey");
+        }
         hide_loading();
     }).fail(function (jqXHR, statusText, error) {
         response_handling(jqXHR, statusText, error);
@@ -469,6 +542,15 @@ function load_profile(){
 // Create challenge
 function submit_challenge(event){
     event.preventDefault();
+    
+    //Dateien einlesen----------------------------------------------------
+    var inpFile = document.getElementById("files");
+    formdata = new FormData();
+            
+    for (var file of inpFile.files){
+        formdata.append("myFiles[]", file);
+    }
+    
     var challengeid = get_url_params().id;
     var url = "http://localhost:8001/wba2api/challenge/";
     var method = "post";
@@ -476,13 +558,32 @@ function submit_challenge(event){
         url += challengeid;
         method = "put";
     }
-    $('#description')[0].value = $('.visuell-view')[0].innerHTML;
+    $('#description')[0].value = $('.visuell-view')[0].innerHTML
+    var daten = $('form').serializeArray();
+    var tags = [];
+    for (var i = 0; i< daten.length; i++ ){
+        if (daten[i].name == "tags"){
+            tags.push(daten[i].value);
+            continue;
+        }
+        formdata.append(daten[i].name, daten[i].value);
+    }
+    var deleted = [];
+    for(var file of document.getElementsByClassName("challenge-file-entry")){
+        if (file.classList.contains("deleted")){
+            deleted.push(file.id.split("-")[1]);
+        }
+    }
+    formdata.append("deleted", deleted);
+    formdata.append("tags", tags);
 
     $.ajax({
         url: url,
         method: method,
         dataType: 'json',
-        data: $('form').serialize(),
+        data: formdata,
+        processData: false,
+        contentType: false,
         xhrFields: { withCredentials: true }
     }).done(function (response) {
         window.location.replace("challenge.html?id=" + response.daten.challengeid);
@@ -490,6 +591,7 @@ function submit_challenge(event){
         response_handling(jqXHR, statusText, error);
     });
 }
+
 
 // Create user or log in
 function submit_user(event){
@@ -591,7 +693,11 @@ function load_challenge_editor(){
         }
         $("#password").attr("placeholder", "unchanged");
         $("#password").removeAttr('required');
-        // TODO: Possibility to delete and upload files
+        
+        if(response.daten.files.length!==0){
+            create_challenge_files(response.daten.files, true);
+        }
+
         load_challenge_editor_tags(response.daten.tags);
         $(".visuell-view")[0].innerHTML = response.daten.description;
         hide_loading();
@@ -609,7 +715,7 @@ function load_challenge_editor_tags(tags){
     }).done(function (response_tags) {
         var tags_wrapper = $("#tags-wrapper")
         for (var tag of response_tags.daten){
-            var checkbox = $(`<input class="editor-tag" name="tags[]" value=${tag.tagid} type="checkbox">`)
+            var checkbox = $(`<input class="editor-tag" name="tags" value=${tag.tagid} type="checkbox">`)
             for (var challenge_tag of tags){
                 if (challenge_tag.tagid === tag.tagid){
                     checkbox.attr("checked", "");
@@ -702,12 +808,33 @@ function save_profile_editor(event){
         return;
     }
     event.preventDefault();
-    $.ajax({
+
+    var profilePic = document.getElementById("profile-pic");
+    var profileBanner = document.getElementById("profile-banner");
+    formdata = new FormData();
+            
+
+    for (var file of profilePic.files){
+        formdata.append("profilePic", file);
+    } 
+
+    for (var file of profileBanner.files){
+        formdata.append("profileBanner", file);
+    }
+    
+    var daten = $('form').serializeArray();
+    for (var i = 0; i< daten.length; i++ ){
+        formdata.append(daten[i].name, daten[i].value);
+    } 
+
+    $.ajax({ 
         url: 'http://localhost:8001/wba2api/user/update/' + userid,
         method: 'put',
         dataType: 'json',
+        data: formdata,
+        processData: false,
+        contentType: false,
         xhrFields: { withCredentials: true },
-        data: $('#change-profile').serialize()
     }).done(function (response) {    
         window.location.replace("profile.html");
     }).fail(function (jqXHR, statusText, error) {
@@ -746,4 +873,26 @@ function show_wrong_solution(){
     window.setTimeout(function(){
         $('#solution')[0].classList.add("wrong");
     },500);
+}
+
+function show_uploaded_files(files){
+    var label = $("#fileupload")[0];
+    var filenames = ""
+
+    if (files.length > 10){
+        label.innerHTML = "Too many files. Max is 10.";
+        label.style.color = "#950239";
+        return;
+    }
+    else{label.style.color = "white";}
+    
+    if (files.length == 0){
+        return;
+    }
+
+    for (var i = 0; i < files.length; i++){
+        if (i+1 === files.length){filenames += files[i].name}
+        else{filenames += files[i].name + ", "}
+    }
+    label.innerHTML = filenames;
 }
