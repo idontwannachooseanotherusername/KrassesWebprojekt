@@ -9,7 +9,6 @@ const ChallengefileDao = require('./challengefileDao.js');
 const md5 = require('md5');
 const { result } = require('lodash');
 const { param } = require('express/lib/request');
-const fs = require('fs');
 
 class ChallengeDao {
 
@@ -66,7 +65,10 @@ class ChallengeDao {
         var files = challengefileDao.loadByChallengeId(id);
         result.files = [];
         for (var file of files){
-            result.files.push("/data/challenge_data/" + id + "/" + file.filepath);
+            result.files.push({
+                id: file.fileid,
+                path: "/data/challenge_data/" + id + "/" + file.filepath
+            });
         }
 
         result.difficulty = difficultyDao.loadById(result.difficultyid);
@@ -217,30 +219,6 @@ class ChallengeDao {
             throw new Error('Could not insert new Record. Data: ' + params);
 
         return this.loadByIdUnsterilized(result.lastInsertRowid);
-    }
-
-    save_file(path, file, challengeid){
-        try {
-            if (!fs.existsSync(path)) {fs.mkdirSync(path,{ recursive: true });}
-        } catch (err) {
-            console.error(err);
-        }
-
-        fs.writeFile(path + file.name, file.data, function (err) {
-            if (err) {return console.log(err);}
-        });
-
-        var sql = 'INSERT INTO Challengefile (ChallengeID, FilePath) VALUES (?,?)';
-        var statement = this._conn.prepare(sql);
-
-        
-        var params = [challengeid, file.name];
-        var result = statement.run(params);
-
-        if (result.changes != 1) 
-            throw new Error('Could not insert new Record. Data: ' + params);
-
-        
     }
 
     update(id, challengename = '',  description = '', solution = '', difficultyid = '', categoryid = '', tags = []) {

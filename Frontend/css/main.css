@@ -777,6 +777,7 @@ select option{
     color: #ffffff20;
     position: relative;
     margin-top: 5px;
+    user-select: none;
 }
 .challenge-file:before {
     content: '';
@@ -795,6 +796,25 @@ select option{
 }
 .challenge-downloads h3{
     margin-bottom: 0;
+}
+.challenge-filedelete{
+    margin: 5px 10px 0 10px;
+    line-height: 70px;
+    float: left;
+    user-select: none;
+}
+.challenge-filedelete:hover{
+    cursor: pointer;
+    font-size: larger;
+}
+.challenge-file-entry.deleted .challenge-filedelete{
+    font-weight: bold;
+}
+.challenge-file-entry.deleted .challenge-filename{
+    text-decoration: line-through;
+}
+.challenge-file-entry.deleted a{
+    opacity: 0.5;
 }
 /* already solved */
 .challenge-solved{

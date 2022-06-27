@@ -1,13 +1,10 @@
 TODO
 
-- Finish implementing challengecreator
- -> Possibility to delete uploaded files
- -> load current files into fields
-
-- Implement json Webtoken
+(- Implement json Webtoken
  -> (Do not set cookie via js)
  -> (Login form without ajax call)
  -> More checking needed? (FINAL)
+)
 
 - (When getting challenge via ajax: Pass category as object and not only as Name)
 

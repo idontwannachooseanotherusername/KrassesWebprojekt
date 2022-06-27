@@ -81,6 +81,10 @@ module.exports.defaultData = function(data) {
             return "Empty void.";
         case "country":
             return "Planet Earth";
+        case "user":
+            return "../Frontend/data/user_data/";
+        case "challenge":
+            return "../Frontend/data/challenge_data/";
         default:
             return "";
     }

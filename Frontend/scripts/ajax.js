@@ -263,34 +263,7 @@ function load_challenge(){
         $('.challenge-text')[0].innerHTML = response.daten.description;
 
         if(response.daten.files.length!==0){
-            var downloadlist = document.createElement('ul');
-            $(downloadlist).css('list-style', 'none');
-            downloadlist.style.padding = 'unset';
-            var heading = document.createElement('h3');
-            heading.innerHTML = "Downloads";
-            downloadlist.append(heading);
-            for (var i = 0; i < response.daten.files.length; i++){
-                var data = document.createElement('li');
-                data.className = "challenge-file-entry"
-                var file = document.createElement('div');
-                file.className = "challenge-file";
-                var span = document.createElement("span");
-                var data_link = document.createElement("a");
-                var filename = document.createElement("div");
-                var filepath = response.daten.files[i].split('/');
-                filename.innerHTML = filepath[filepath.length-1].split('.')[0];
-                span.innerHTML = filepath[filepath.length-1].split('.')[1];
-                filename.className = "challenge-filename";
-                data_link.href = response.daten.files[i];
-                data_link.setAttribute('download',"");
-                file.appendChild(span);
-                data_link.appendChild(file);
-                data_link.appendChild(filename);
-                data.appendChild(data_link);
-                downloadlist.appendChild(data);
-            }
-            document.getElementsByClassName("challenge-downloads")[0].append(downloadlist);
-            $('.challenge-downloads')[0].append.downloadlist;
+            create_challenge_files(response.daten.files);
         }
 
         if(response.daten.solved){
@@ -310,6 +283,62 @@ function load_challenge(){
     }).fail(function (jqXHR, statusText, error) {
         response_handling(jqXHR, statusText, error);
     });
+}
+
+function create_challenge_files(files, deletable=false){
+    var downloadlist = document.createElement('ul');
+    $(downloadlist).css('list-style', 'none');
+    downloadlist.style.padding = 'unset';
+    if (!deletable){
+        var heading = document.createElement('h3');
+        heading.innerHTML = "Downloads";
+        downloadlist.append(heading);
+    }
+    
+    for (var i = 0; i < files.length; i++){
+        var data = document.createElement('li');
+        data.className = "challenge-file-entry";
+        data.id = "file-" + files[i].id;
+        var file = document.createElement('div');
+        file.className = "challenge-file";
+        var span = document.createElement("span");
+        var data_link = document.createElement("a");
+        var filename = document.createElement("div");
+        var filepath = files[i].path.split('/');
+        filename.innerHTML = filepath[filepath.length-1].split('.')[0];
+        span.innerHTML = filepath[filepath.length-1].split('.')[1];
+        filename.className = "challenge-filename";
+        data_link.href = files[i].path;
+        data_link.setAttribute('download',"");
+
+        if (deletable){
+            var del = document.createElement("div");
+            del.className = "challenge-filedelete";
+            del.innerHTML = "🗑️";
+            del.title = "delete";
+            del.onclick = (function() {delete_challengefile_toggle(this)});
+            data.appendChild(del);
+        }
+
+        file.appendChild(span);
+        data_link.appendChild(file);
+        data_link.appendChild(filename);
+        data.appendChild(data_link);
+        downloadlist.appendChild(data);
+    }
+    document.getElementsByClassName("challenge-downloads")[0].append(downloadlist);
+    $('.challenge-downloads')[0].append.downloadlist;
+}
+
+function delete_challengefile_toggle(icon){
+    var file = icon.parentNode;
+
+    if (file.classList && file.classList.contains("deleted")){
+        file.classList.remove("deleted");
+    }
+    else{
+        file.classList.add("deleted");
+    }
 }
 
 function show_login_prompt(){
@@ -519,7 +548,7 @@ function submit_challenge(event){
     formdata = new FormData();
             
     for (var file of inpFile.files){
-            formdata.append("myFiles[]", file);
+        formdata.append("myFiles[]", file);
     }
     
     var challengeid = get_url_params().id;
@@ -538,7 +567,14 @@ function submit_challenge(event){
             continue;
         }
         formdata.append(daten[i].name, daten[i].value);
-    } 
+    }
+    var deleted = [];
+    for(var file of document.getElementsByClassName("challenge-file-entry")){
+        if (file.classList.contains("deleted")){
+            deleted.push(file.id.split("-")[1]);
+        }
+    }
+    formdata.append("deleted", deleted);
     formdata.append("tags", tags);
 
     $.ajax({
@@ -657,7 +693,11 @@ function load_challenge_editor(){
         }
         $("#password").attr("placeholder", "unchanged");
         $("#password").removeAttr('required');
-        // TODO: Possibility to delete and upload files
+        
+        if(response.daten.files.length!==0){
+            create_challenge_files(response.daten.files, true);
+        }
+
         load_challenge_editor_tags(response.daten.tags);
         $(".visuell-view")[0].innerHTML = response.daten.description;
         hide_loading();
