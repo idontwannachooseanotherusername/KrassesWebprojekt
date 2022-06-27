@@ -2,10 +2,12 @@ const helper = require('../helper.js');
 const ChallengeDao = require('../dao/challengeDao.js');
 const HintDao = require('../dao/hintDao.js');
 const ChallengetagDao = require('../dao/challengetagDao.js');
+const ChallengefileDao = require('../dao/challengefileDao.js');
 const express = require('express');
 const req = require('express/lib/request');
 const UserDao = require('../dao/userDao.js');
 var serviceRouter = express.Router();
+const fileHelper = require('../fileHelper.js');
 
 helper.log('- Service Challenge');
 
@@ -105,7 +107,6 @@ serviceRouter.get('/challenge/exists/:id', function(request, response) {
 
 serviceRouter.post('/challenge/', function(request, response) {
     helper.log('Service Challenge: Client requested creation of new record');
-    console.log(request.body);
 
     if (!helper.UserHasAccess(request.headers.cookie)){
         helper.logError('Service Challenge: User not logged in.');
@@ -139,21 +140,46 @@ serviceRouter.post('/challenge/', function(request, response) {
     const challengeDao = new ChallengeDao(request.app.locals.dbConnection);
     const hintDao = new HintDao(request.app.locals.dbConnection);
     const challengetagDao = new ChallengetagDao(request.app.locals.dbConnection);
+    const challengefileDao = new ChallengefileDao(request.app.locals.dbConnection);
     const userDao = new UserDao(request.app.locals.dbConnection);
     var b = request.body;
+    var challengeid;
 
     try {
-        var result = challengeDao.create(b.id, b.challengename, b.difficulty, b.categoryid, b.tags, b.description, b.password, b.creationdate);
-        hintDao.create(result.challengeid, 1, request.body.hint1);
-        hintDao.create(result.challengeid, 2, request.body.hint2);
-        hintDao.create(result.challengeid, 3, request.body.hint3);
+        if (fileHelper.hasUploadedFiles(request)) {
+            var files = fileHelper.getAllUplodedFilesAsArray(request, true);
+
+            if (files.length > 10){
+                response.status(400).json(helper.jsonMsgError("Too many files! Max amount is 10."));
+                return;
+            }
+            files.forEach(function(file) {
+                if (!fileHelper.isFileOkay(file)){
+                    response.status(400).json(helper.jsonMsgError("Error in uploaded files"));
+                    return;
+                }
+            });
+        }
+
+        challenge = challengeDao.create(b.id, b.challengename, b.difficulty, b.categoryid,
+                                            b.tags, b.description, b.password, b.creationdate);
+        hintDao.create(challenge.challengeid, 1, request.body.hint1);
+        hintDao.create(challenge.challengeid, 2, request.body.hint2);
+        hintDao.create(challenge.challengeid, 3, request.body.hint3);
         for (var tagid of request.body.tags){
-            challengetagDao.create(result.challengeid, tagid);
+            challengetagDao.create(challenge.challengeid, tagid);
         }
         var user = userDao.loadById(b.id);
-        userDao.update_points(user.userid, user.points + result.difficulty.level);
+        userDao.update_points(user.userid, user.points + challenge.difficulty.level);
+
+        if (fileHelper.hasUploadedFiles(request)) {
+            files.forEach(function(file) {
+                challengefileDao.create(file, challenge.challengeid);
+            });
+        }
+
         helper.log('Service Challenge: Record inserted');
-        response.status(200).json(helper.jsonMsgOK(result));
+        response.status(200).json(helper.jsonMsgOK(challenge));
     } catch (ex) {
         helper.logError('Service Challenge: Error creating new record. Exception occured: ' + ex.message);
         response.status(400).json(helper.jsonMsgError(ex.message));
@@ -162,6 +188,26 @@ serviceRouter.post('/challenge/', function(request, response) {
 
 serviceRouter.put('/challenge/:id', function(request, response) {
     helper.log('Service Challenge: Client requested update of existing record');
+
+    if (!helper.UserHasAccess(request.headers.cookie)){
+        helper.logError('Service Challenge: User not logged in.');
+        response.status(401).json(helper.jsonMsgError('You need to be logged in to do that.'));
+        return;
+    }
+    else{
+        const challengeDao = new ChallengeDao(request.app.locals.dbConnection);
+        try{
+            var challenge = challengeDao.loadById(request.params.id);
+            if (challenge.user.userid != helper.IdFromToken(request.headers.cookie)){
+                response.status(401).json(helper.jsonMsgError('This is not your challenge.'));
+                return;
+            }
+        }
+        catch (ex){
+            helper.logError('Service Challenge: Error updating record by id. Exception occured: ' + ex.message);
+            response.status(400).json(helper.jsonMsgError(ex.message));
+        }
+    }
 
     var errorMsgs=[];
     if (helper.isUndefined(request.body.challengename)) 
@@ -179,7 +225,23 @@ serviceRouter.put('/challenge/:id', function(request, response) {
         return;
     }
 
+    if (fileHelper.hasUploadedFiles(request)) {
+        var files = fileHelper.getAllUplodedFilesAsArray(request, true);
+
+        if (files.length > 10){
+            response.status(400).json(helper.jsonMsgError("Too many files! Max amount is 10."));
+            return;
+        }
+        files.forEach(function(file) {
+            if (!fileHelper.isFileOkay(file)){
+                response.status(400).json(helper.jsonMsgError("Error in uploaded files"));
+                return;
+            }
+        });
+    }
+
     const challengeDao = new ChallengeDao(request.app.locals.dbConnection);
+    const challengefileDao = new ChallengefileDao(request.app.locals.dbConnection);
     const hintDao = new HintDao(request.app.locals.dbConnection);
     request.body.description = helper.Sanitize(request.body.description);
     try {
@@ -188,7 +250,17 @@ serviceRouter.put('/challenge/:id', function(request, response) {
         hintDao.update(request.params.id, 3, request.body.hint3);
         var result = challengeDao.update(request.params.id, request.body.challengename, request.body.description,
                                          request.body.password, request.body.difficulty, request.body.categoryid,
-                                         request.body.tags);
+                                         request.body.tags.split(','));
+
+        for (var fileid of request.body.deleted.split(",")){
+        if (!helper.isEmpty(fileid))
+            challengefileDao.delete(fileid);
+        }
+        if (fileHelper.hasUploadedFiles(request)) {
+            files.forEach(function(file) {
+                challengefileDao.create(file, request.params.id);
+            });
+        }
         helper.log('Service Challenge: Record updated, id=' + request.body.id);
         response.status(200).json(helper.jsonMsgOK(result));
     } catch (ex) {

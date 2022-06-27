@@ -13,7 +13,6 @@ class HintDao {
 
     loadById(id) {
         var sql = 'SELECT * FROM Hint WHERE HintID=?';
-        // TODO: "Cannot read property 'prepare' of undefined" ???
         var statement = this._conn.prepare(sql);
         var result = statement.get(id);
 

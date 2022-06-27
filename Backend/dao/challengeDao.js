@@ -5,6 +5,7 @@ const CategoryDao = require('./categoryDao.js');
 const HintDao = require('./hintDao.js');
 const SolvedDao = require('./solvedDao.js');
 const UserhintsDao = require('./userhintsDao.js');
+const ChallengefileDao = require('./challengefileDao.js');
 const md5 = require('md5');
 const { result } = require('lodash');
 const { param } = require('express/lib/request');
@@ -30,6 +31,7 @@ class ChallengeDao {
         const difficultyDao = new DifficultyDao(this._conn);
         const challengetagDao = new ChallengeTagDao(this._conn);
         const categoryDao = new CategoryDao(this._conn);
+        const challengefileDao = new ChallengefileDao(this._conn);
 
         var sql = 'SELECT * FROM Challenge WHERE ChallengeID=?';
         var statement = this._conn.prepare(sql);
@@ -47,7 +49,7 @@ class ChallengeDao {
         var statement = this._conn.prepare(sql);
         var user = statement.get(result.userid);
         if (helper.isUndefined(user)) 
-            throw new Error('No user found by id=' + id);
+            throw new Error('No user found by id=' + result.userid);
         user = helper.objectKeysToLower(user);
         result.user = {
             username: user.username,
@@ -58,6 +60,16 @@ class ChallengeDao {
             result.user.userimage = helper.defaultData("profile");
         
             delete result.userid;
+
+        // Get Files
+        var files = challengefileDao.loadByChallengeId(id);
+        result.files = [];
+        for (var file of files){
+            result.files.push({
+                id: file.fileid,
+                path: "/data/challenge_data/" + id + "/" + file.filepath
+            });
+        }
 
         result.difficulty = difficultyDao.loadById(result.difficultyid);
         delete result.difficultyid;
@@ -106,7 +118,14 @@ class ChallengeDao {
             result[i].creationdate = helper.formatToGermanDateTime(dt)
 
             // Resolve ids
-            if (helper.isEmpty(user.picturepath)) {user.picturepath = helper.defaultData("profile");}
+            if (helper.isEmpty(user.picturepath)) {
+                if (user.deleted){
+                    user.picturepath = helper.defaultData("profile_d");
+                }else{
+                    user.picturepath = helper.defaultData("profile");
+                }
+            }
+            else{user.picturepath = "/data/user_data/" + user.userid + "/" + user.picturepath;}
             result[i].user = {
                 username: user.username,
                 userid: user.userid,
@@ -189,7 +208,7 @@ class ChallengeDao {
         return false;
     }
 
-    create(userid, challengename = 'Challengename', difficultyid = 1, categoryid = 0, tags = [], description = '', password = '', creationdate = '') {       
+    create(userid, challengename = 'Challengename', difficultyid = 1, categoryid, tags = [], description = '', password = 'password', creationdate = '') {       
         var sql = 'INSERT INTO Challenge (ChallengeName, DifficultyID, CategoryID, Description, CreationDate, Solution, UserID) VALUES (?,?,?,?,?,?,?)';
         var statement = this._conn.prepare(sql);
 
@@ -199,8 +218,7 @@ class ChallengeDao {
         if (result.changes != 1) 
             throw new Error('Could not insert new Record. Data: ' + params);
 
-        var challenge = this.loadByIdUnsterilized(result.lastInsertRowid);
-        return challenge;
+        return this.loadByIdUnsterilized(result.lastInsertRowid);
     }
 
     update(id, challengename = '',  description = '', solution = '', difficultyid = '', categoryid = '', tags = []) {

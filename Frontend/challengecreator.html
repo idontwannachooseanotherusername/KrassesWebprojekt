@@ -4,9 +4,9 @@
         <title>Challengecreator</title>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <link rel="icon" type="image/png" sizes="32x32" href="images/ico/favicon-32x32.png">
-        <link rel="icon" type="image/png" sizes="16x16" href="images/ico/favicon-16x16.png">
-        <link rel="manifest" href="images/ico/site.webmanifest">
+        <link rel="icon" type="image/png" sizes="32x32" href="data/ico/favicon-32x32.png">
+        <link rel="icon" type="image/png" sizes="16x16" href="data/ico/favicon-16x16.png">
+        <link rel="manifest" href="data/ico/site.webmanifest">
         <link rel="stylesheet" type="text/css" href="css/main.css"></link>
         <link rel="stylesheet" type="text/css" href="css/levels.css"></link>
         <link rel="stylesheet" type="text/css" href="css/editor.css"></link>      
@@ -34,7 +34,7 @@
         </header>
         <main>
             <div id="loading">
-                <img id="loading-image" class="spin" src="images/loading.png">
+                <img id="loading-image" class="spin" src="data/loading.png">
             </div>
             <section class="challenge-site">
                 <article>
@@ -66,7 +66,7 @@
                         <label for="description"><h2>Description</h2></label>
 
                         
-                        <!--https://webdeasy.de/en/program-wysiwyg-editor/-->
+                        <!--Code taken from https://webdeasy.de/en/program-wysiwyg-editor/ and modified-->
                         <div class="wp-webdeasy-comment-editor">
                             <div class="toolbar">
                                 <div class="line">
@@ -287,8 +287,9 @@
                             <textarea id="hint3" name="hint3" placeholder="optional Hint"></textarea>
                         </div>
                         <h2>Files</h2>
+                        <div class="challenge-downloads"></div>
                         <label id="fileupload" for="files">Click here to upload files.</label>
-                        <input id="files" name="files" type="file" multiple></input><br>
+                        <input id="files" name="files" type="file" onchange="show_uploaded_files(this.files)" multiple></input><br>
                         <label for="password"><h2>Solution password</h2></label>
                         <input id="password" name="password" type="text" placeholder="super secret password" required></input>
                         <br><br>
@@ -319,3 +320,5 @@
         </footer>
     </body>
 </html>
+
+

@@ -67,7 +67,7 @@ function allowed(tag){
 
 // Default image paths
 module.exports.defaultData = function(data) {
-    path = "/images/default_data/";
+    path = "/data/default_data/";
     switch(data.toLowerCase()){
         case "banner":
             return path + "default_banner.png";
@@ -81,6 +81,10 @@ module.exports.defaultData = function(data) {
             return "Empty void.";
         case "country":
             return "Planet Earth";
+        case "user":
+            return "../Frontend/data/user_data/";
+        case "challenge":
+            return "../Frontend/data/challenge_data/";
         default:
             return "";
     }
